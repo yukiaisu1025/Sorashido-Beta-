@@ -70,6 +70,9 @@ body {
   -webkit-touch-callout: none;
 }
 button { font-family: inherit; color: inherit; cursor: pointer; }
+/* ダブルタップでの拡大を防ぐ（JavaScript の touchend ではなく CSS で。iPad でタッチの反応が遅れないように）。
+ * ライブ画面など、もっと細かく決めているところ（touch-action: none など）はそちらが優先 */
+html, body, body * { touch-action: manipulation; }
 button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focus-visible {
   outline: 3px solid var(--pink);
   outline-offset: 2px;
@@ -3850,7 +3853,7 @@ body.low-fx .br-fw { display: none; }
 (function () {
   'use strict';
   const G = (window.Game = window.Game || {});
-  G.VERSION = '2.15.1';
+  G.VERSION = '2.15.2';
   // 正式公開の前は 'Beta'。公開したら '' にすると、表示から Beta が消えます
   G.VERSION_STAGE = 'Beta';
   G.versionText = () => 'v' + G.VERSION + (G.VERSION_STAGE ? ' ' + G.VERSION_STAGE : '');
@@ -20315,10 +20318,13 @@ ${accessory(L, 'top')}
       this.root.appendChild(this.el);
 
       this.on(this.pauseBtn, 'click', () => this.pause());
-      this.on(this.canvas, 'pointerdown', (e) => this.onPointerDown(e));
-      this.on(this.canvas, 'pointermove', (e) => this.onPointerMove(e));
-      this.on(this.canvas, 'pointerup', (e) => this.onPointerUp(e));
-      this.on(this.canvas, 'pointercancel', (e) => this.onPointerUp(e));
+      // 指の処理は passive にする（iPad の Safari が、タッチのたびにページの処理を待たなくてすむように。
+      // スクロールや拡大は CSS の touch-action: none で止めているので、preventDefault はいらない）
+      const pv = { passive: true };
+      this.on(this.canvas, 'pointerdown', (e) => this.onPointerDown(e), pv);
+      this.on(this.canvas, 'pointermove', (e) => this.onPointerMove(e), pv);
+      this.on(this.canvas, 'pointerup', (e) => this.onPointerUp(e), pv);
+      this.on(this.canvas, 'pointercancel', (e) => this.onPointerUp(e), pv);
       this.on(this.canvas, 'contextmenu', (e) => e.preventDefault());
       this.on(window, 'keydown', (e) => this.onKeyDown(e), { capture: true });
       this.on(window, 'keyup', (e) => this.onKeyUp(e), { capture: true });
@@ -20532,16 +20538,19 @@ ${accessory(L, 'top')}
         if (t > x.until + 0.2) x.el.remove();
       }
       // 見逃しMISS
+      // LATE: 画面の処理がおくれて指のイベントが少し遅れて届いても、押した時刻が判定の中なら取れるように、
+      //       見逃しにするのを少しだけ待つ（判定の幅そのものは変わらない）
+      const LATE = 0.07;
       for (let i = this.head; i < this.notes.length; i++) {
         const n = this.notes[i];
         if (n.time > t) break;
         if (n.done) continue;
         if (n.type === 'slide') {
-          if (!n.startDone && t > n.time + J.bad) {
+          if (!n.startDone && t > n.time + J.bad + LATE) {
             n.startDone = true;
             this.apply('miss', 0, L0(n) + NW(n) / 2, 'slide', n.gold);
           }
-        } else if (t > n.time + J.bad * (n.type === 'flick' ? G.FLICK_MUL : 1)) {
+        } else if (t > n.time + J.bad * (n.type === 'flick' ? G.FLICK_MUL : 1) + LATE) {
           n.done = true;
           this.apply('miss', 0, n.lane + 0.5, n.type, n.gold);
         }
@@ -20790,23 +20799,31 @@ ${accessory(L, 'top')}
       if (e.repeat || this.state !== 'playing' || this.auto) return;
       this.keysHeld.set(e.code, m.lane);
       this.laneFlash[m.lane] = 1;
-      const t = this.songTimeAt(e.timeStamp || performance.now());
+      const t = this.songTimeAt(this.evTime(e));
       this.press(m.lane, t, m.flick ? 'flickKey' : 'key');
     }
     onKeyUp(e) {
       if (this.keysHeld.has(e.code)) this.keysHeld.delete(e.code);
     }
+    // 入力イベントの時刻（おかしな値のときは、いまの時刻を使う）
+    evTime(e) {
+      const now = performance.now();
+      const ts = e.timeStamp;
+      return ts > 0 && ts <= now + 5 && ts > now - 1000 ? ts : now;
+    }
     onPointerDown(e) {
       if (this.state !== 'playing' || this.auto) return;
-      e.preventDefault();
       if (e.pointerType === 'touch') this.touchUsed = true;
-      try {
-        this.canvas.setPointerCapture(e.pointerId);
-      } catch (err) {}
+      else {
+        // マウス・ペンはドラッグが画面の外に出ても追いかけられるように（タッチは自動でそうなる）
+        try {
+          this.canvas.setPointerCapture(e.pointerId);
+        } catch (err) {}
+      }
       const lf = this.laneFromPoint(e.clientX, e.clientY);
-      const p = { lf, ax: e.clientX, ay: e.clientY, at: e.timeStamp, lx: e.clientX, ly: e.clientY };
+      const p = { lf, ax: e.clientX, ay: e.clientY, at: this.evTime(e), lx: e.clientX, ly: e.clientY };
       this.pointers.set(e.pointerId, p);
-      const t = this.songTimeAt(e.timeStamp || performance.now());
+      const t = this.songTimeAt(this.evTime(e));
       const lane = Math.floor(lf);
       if (lane >= 0 && lane <= 5) this.laneFlash[lane] = 1;
       if (!this.press(U.clamp(lane, 0, 5), t, 'touch')) {
@@ -20820,7 +20837,7 @@ ${accessory(L, 'top')}
       const p = this.pointers.get(e.pointerId);
       if (!p || this.state !== 'playing') return;
       p.lf = this.laneFromPoint(e.clientX, e.clientY);
-      const ts = e.timeStamp || performance.now();
+      const ts = this.evTime(e);
       const lx = p.lx, ly = p.ly;
       p.lx = e.clientX;
       p.ly = e.clientY;
@@ -29382,7 +29399,7 @@ ${accessory(L, 'top')}
   }
 
   document.addEventListener('pointerdown', (e) => {
-    if (e.button > 0) return;
+    if (e.button > 0 || UI.cur === 'live') return; // ライブ中は何もしない（指の処理をじゃましない）
     const b = pressTarget(e);
     if (b) {
       press(b);
@@ -29395,7 +29412,7 @@ ${accessory(L, 'top')}
       window.addEventListener('pointercancel', up, true);
     }
     tapFx(e.clientX, e.clientY);
-  }, true);
+  }, { capture: true, passive: true });
   // キーボードで押したときも、同じように動かす
   document.addEventListener('keydown', (e) => {
     if ((e.code === 'Enter' || e.code === 'Space') && document.activeElement && document.activeElement.matches && document.activeElement.matches(PRESSABLE) && !e.repeat) {
@@ -29526,17 +29543,13 @@ ${accessory(L, 'top')}
       ['italic 900 40px "Exo 2"', 'italic 800 40px "Exo 2"', '800 20px "Exo 2"'].forEach((f) => document.fonts.load(f).catch(() => {}));
     }
     // 自動再生の制限で BGM が止まっていたら、画面をさわったときに鳴らす
+    // （passive: 画面をさわったときに、ブラウザがこの処理を待たずにすむように）
     document.addEventListener('pointerdown', () => {
-      if (G.Audio.bgm && G.UI.cur !== 'title') G.Audio.bgm.poke(); // タイトル画面は、タップの処理の中で鳴らす
-    }, true);
-    // ダブルタップによる拡大を防ぐ
-    let last = 0;
-    document.addEventListener('touchend', (e) => {
-      const now = Date.now();
-      // Make Music のエディターは CSS（touch-action: manipulation）で拡大を防ぐので、続けてすばやくタップできるようにする
-      if (now - last < 300 && e.target.closest && !e.target.closest('input, .mme')) e.preventDefault();
-      last = now;
-    }, { passive: false });
+      if (G.Audio.bgm && G.UI.cur !== 'title' && G.UI.cur !== 'live') G.Audio.bgm.poke(); // タイトル画面は、タップの処理の中で鳴らす
+    }, { capture: true, passive: true });
+    // ダブルタップによる拡大は CSS の touch-action: manipulation で防ぐ。
+    // 前はページ全体に touchend の処理（passive でない）を付けていたが、iPad の Safari では
+    // そのせいでタッチのたびにブラウザがページの処理を待つことになり、ライブ中に指の反応が遅れたり、取りこぼしたりしていた
     // マイ楽曲（このブラウザに保存した曲）を読み込む
     if (G.Local) {
       G.Local.load().then(() => {
