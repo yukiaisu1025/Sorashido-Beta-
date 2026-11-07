@@ -677,6 +677,8 @@ button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focu
 }
 @keyframes jacketIn { from { opacity: 0; transform: scale(0.96) rotate(-1deg); } to { opacity: 1; transform: none; } }
 .big-jacket svg { display: block; width: 100%; height: 100%; }
+.big-jacket-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
+.big-jacket-badge { position: absolute; left: 8px; top: 8px; padding: 2px 9px; border-radius: 999px; background: rgba(21, 18, 44, 0.72); color: #fff; font-size: 11px; font-weight: 800; pointer-events: none; }
 .big-lock { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 18px; background: rgba(23, 26, 56, 0.78); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--white); text-align: center; }
 .big-lock span { width: 40px; height: 40px; }
 .big-lock b { font-family: var(--f-num); font-style: italic; font-weight: 900; letter-spacing: 0.2em; }
@@ -923,10 +925,17 @@ button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focu
 .live-bg { position: absolute; inset: 0; }
 .live-bg-art { position: absolute; inset: -40px; filter: blur(18px) saturate(1.2); transform: scale(1.1); opacity: 0.9; }
 .live-bg-art svg { width: 100%; height: 100%; display: block; }
+.live-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
+.live-bg.has-video .live-bg-art { display: none; }
+.live-bg.has-video .live-bg-grad { background: linear-gradient(180deg, rgba(21, 18, 44, 0.05), rgba(21, 18, 44, 0.6)); }
 .low-fx .live-bg-art { filter: none; }
 .live-bg-grad { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(21, 18, 44, 0.2), rgba(21, 18, 44, 0.85)); }
 .live-bg-dim { position: absolute; inset: 0; background: var(--night); }
 .live-canvas { position: absolute; inset: 0; display: block; touch-action: none; }
+.live-lane-canvas { position: absolute; inset: 0; display: block; pointer-events: none; }
+/* 背景のジャケット: ぼかした絵を1回だけ作っておく（js/game.js の bakeBlurredJacket）。毎フレームの blur の合成をなくす */
+.live-bg-art.baked { filter: none; }
+.live-bg-baked { display: block; width: 100%; height: 100%; object-fit: contain; }
 .live-hud {
   position: absolute;
   inset: 0 0 auto 0;
@@ -1137,7 +1146,7 @@ button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focu
 .lz-fog { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.2s ease; z-index: 1; overflow: hidden;
   background: radial-gradient(ellipse 68% 60% at 50% 54%, rgba(0, 0, 0, 0) 46%, rgba(6, 4, 14, 0.62) 78%, rgba(4, 2, 10, 0.95) 100%); }
 .live.life-zero .lz-fog { opacity: 1; }
-.lz-fog i { position: absolute; width: 60%; height: 60%; border-radius: 50%; background: radial-gradient(circle, rgba(8, 6, 18, 0.7), rgba(8, 6, 18, 0) 68%); filter: blur(18px); animation: lz-drift 9s ease-in-out infinite alternate; }
+.lz-fog i { position: absolute; width: 60%; height: 60%; border-radius: 50%; background: radial-gradient(circle closest-side, rgba(8, 6, 18, 0.7), rgba(8, 6, 18, 0.35) 55%, rgba(8, 6, 18, 0) 100%); animation: lz-drift 9s ease-in-out infinite alternate; }
 .lz-fog i:nth-child(1) { left: -26%; top: -24%; }
 .lz-fog i:nth-child(2) { right: -28%; top: 20%; animation-delay: -3s; animation-duration: 11s; }
 .lz-fog i:nth-child(3) { left: 10%; bottom: -34%; animation-delay: -6s; animation-duration: 13s; }
@@ -4520,6 +4529,185 @@ body.low-fx .batt-big { animation: none; }
 @keyframes tm-new { 50% { transform: translateY(-3px); } }
 .am-cur.am-new { background: var(--pink); }
 
+/* あそびかた: スコアとランク */
+.how-ranks { display: flex; gap: 8px; justify-content: center; align-items: center; }
+.how-ranks .hud-rank { position: static; transform: none; }
+
+/* ---------- ガチャの演出（v2.26・js/gachafx.js） ---------- */
+.gfx {
+  position: fixed; inset: 0; z-index: 160; overflow: hidden; cursor: pointer;
+  display: flex; flex-direction: column;
+  font-family: var(--f-body); color: #fff; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
+  --gc: #9DB7FF;
+  background: radial-gradient(ellipse 120% 80% at 50% 112%, #3D2E80 0%, #1C1646 46%, #0B0920 100%);
+  animation: fadeIn 0.25s ease both;
+}
+.gfx-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.gfx-star { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px #fff; opacity: 0.2; transform: scale(var(--s)); animation: gfxTwinkle 2.4s var(--d) ease-in-out infinite; }
+@keyframes gfxTwinkle { 50% { opacity: 0.95; } }
+.gfx-spot { position: absolute; top: -12%; width: 46vw; height: 125%; background: linear-gradient(180deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0) 78%); clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%); transform-origin: 50% 0; }
+.gfx-spot.l { left: 0; transform: rotate(-20deg); animation: gfxSpotL 5.5s ease-in-out infinite alternate; }
+.gfx-spot.r { right: 0; transform: rotate(20deg); animation: gfxSpotR 5.5s ease-in-out infinite alternate; }
+@keyframes gfxSpotL { to { transform: rotate(-7deg); } }
+@keyframes gfxSpotR { to { transform: rotate(7deg); } }
+.gfx-floor { position: absolute; left: -10%; right: -10%; bottom: -34%; height: 62%; border-radius: 50%; background: radial-gradient(ellipse at 50% 22%, rgba(157, 183, 255, 0.28), rgba(157, 183, 255, 0) 62%); }
+.gfx-floor::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(ellipse at 50% 22%, var(--gc), transparent 60%); opacity: 0; transition: opacity 0.5s; }
+.gfx.playing .gfx-floor::after { opacity: 0.4; }
+.gfx.low .gfx-spot, .gfx.low .gfx-star { animation: none; }
+
+.gfx-top { position: relative; z-index: 3; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: calc(10px + var(--sat)) var(--gutter-r) 0 var(--gutter-l); }
+.gfx-chip { max-width: 56vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 5px 14px; border-radius: 999px; background: var(--c); color: #fff; font-weight: 900; font-size: 13px; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7), 0 4px 14px rgba(0, 0, 0, 0.3); }
+.gfx-chip.res { background: linear-gradient(90deg, #FF6FA8, #FFB547); font-size: 15px; animation: gfxUp 0.35s ease both; }
+.gfx-count { font-family: var(--f-num); font-weight: 900; font-style: italic; font-size: 13px; opacity: 0.8; }
+.gfx-skip { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 7px 15px; border-radius: 999px; border: 2px solid rgba(255, 255, 255, 0.55); background: rgba(10, 8, 32, 0.45); color: #fff; font-family: var(--f-num); font-weight: 900; font-style: italic; font-size: 14px; letter-spacing: 0.06em; cursor: pointer; }
+.gfx-skip i { font-style: normal; font-size: 10px; letter-spacing: -2px; }
+.gfx.done .gfx-skip, .gfx.done .gfx-count { display: none; }
+
+.gfx-stage { position: relative; z-index: 2; flex: 1; min-height: 0; display: grid; place-items: center; padding: 8px var(--gutter-r) 8px var(--gutter-l); }
+.gfx-foot { position: relative; z-index: 3; min-height: 64px; display: flex; align-items: center; justify-content: center; padding: 0 var(--gutter-r) calc(12px + var(--sab)) var(--gutter-l); }
+.gfx-hint { display: flex; flex-direction: column; align-items: center; gap: 2px; animation: gfxBlink 1.4s ease-in-out infinite; transition: opacity 0.3s; }
+.gfx-hint b { font-family: var(--f-display); font-weight: 400; font-size: 20px; letter-spacing: 0.04em; text-shadow: 0 0 12px rgba(157, 183, 255, 0.9); }
+.gfx-hint small { font-family: var(--f-num); font-weight: 800; font-style: italic; font-size: 11px; letter-spacing: 0.2em; opacity: 0.75; }
+.gfx-hint.small small { font-family: var(--f-body); font-style: normal; font-size: 12px; letter-spacing: 0.08em; }
+.gfx-hint.out { opacity: 0; animation: none; }
+@keyframes gfxBlink { 50% { opacity: 0.5; } }
+@keyframes gfxUp { from { transform: translateY(14px); opacity: 0; } }
+@keyframes gfxSpin { to { transform: rotate(360deg); } }
+
+/* レコード */
+.gfx-deck { --ds: min(60vmin, 380px); position: relative; width: var(--ds); height: var(--ds); animation: gfxDeckIn 0.6s cubic-bezier(.2, 1.3, .4, 1) both; }
+@keyframes gfxDeckIn { from { transform: translateY(30px) scale(0.85); opacity: 0; } }
+.gfx-deck.shake { animation: gfxShake 0.5s linear; }
+@keyframes gfxShake { 10%, 50%, 90% { transform: translate(-6px, 2px); } 30%, 70% { transform: translate(6px, -2px); } }
+.gfx-glow { position: absolute; inset: -24%; border-radius: 50%; pointer-events: none; background: radial-gradient(circle closest-side, var(--gc) 35%, transparent 100%); opacity: 0; transition: opacity 0.4s; }
+.gfx.playing .gfx-glow { opacity: 0.7; animation: gfxPulse 0.9s ease-in-out infinite; }
+@keyframes gfxPulse { 50% { transform: scale(1.06); opacity: 1; } }
+.gfx-ring { position: absolute; inset: -6%; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 0.3s; background: var(--gc);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 87%, #000 89%, #000 96%, transparent 100%); mask: radial-gradient(circle closest-side, transparent 87%, #000 89%, #000 96%, transparent 100%); }
+.gfx.playing .gfx-ring { opacity: 0.95; }
+.gfx.t4 .gfx-ring { background: conic-gradient(#FF6FA8, #FFD54A, #7CF0C8, #7CC8FF, #B48CFF, #FF6FA8); animation: gfxSpin 1.4s linear infinite; }
+.gfx-plate { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; background: radial-gradient(circle, #36325A 0 60%, #23203F 61% 100%); box-shadow: inset 0 0 0 calc(var(--ds) * 0.014) #A6A1CC, 0 calc(var(--ds) * 0.05) calc(var(--ds) * 0.12) rgba(0, 0, 0, 0.55); }
+.gfx-disc { position: absolute; inset: 0; will-change: transform; }
+.gfx-disc svg, .gfx-arm svg { display: block; width: 100%; height: 100%; }
+.gfx-sheen { position: absolute; inset: 8%; border-radius: 50%; pointer-events: none; background: conic-gradient(from 25deg, transparent 0 6%, rgba(255, 255, 255, 0.15) 11%, transparent 17% 50%, rgba(255, 255, 255, 0.1) 61%, transparent 67%); }
+.gfx-arm { position: absolute; inset: 0; pointer-events: none; transform-origin: 93% 8%; transform: rotate(-26deg); transition: transform 0.5s cubic-bezier(.4, 1.5, .5, 1); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.45)); }
+.gfx-arm svg { overflow: visible; }
+.gfx.playing .gfx-arm { transform: rotate(0deg); }
+.gfx-notes { position: absolute; inset: 0; pointer-events: none; }
+.gfx-note { position: absolute; left: 50%; top: 50%; font-style: normal; font-weight: 900; line-height: 1; font-size: calc(var(--ds) * 0.1); color: var(--c); text-shadow: 0 0 10px var(--c), 0 0 2px #fff; transform: translate(-50%, -50%); animation: gfxNote 1.3s ease-out forwards; }
+@keyframes gfxNote {
+  0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--x) * var(--ds) * 0.78), calc(-50% + var(--y) * var(--ds) * 0.78)) rotate(var(--r)) scale(1.1); opacity: 0; }
+}
+.gfx-pop { position: absolute; inset: 0; border-radius: 50%; border: 4px solid var(--gc); pointer-events: none; animation: gfxPop 0.7s ease-out forwards; }
+.gfx.t4 .gfx-pop { border-color: #fff; box-shadow: 0 0 30px #FFD54A, inset 0 0 30px #FF8FC8; }
+@keyframes gfxPop { from { transform: scale(0.85); opacity: 1; } to { transform: scale(1.7); opacity: 0; } }
+.gfx-flash { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: 0; background: radial-gradient(circle, #fff 30%, var(--gc) 100%); }
+.gfx-flash.on { animation: gfxFlash 0.7s ease-out both; }
+@keyframes gfxFlash { 25% { opacity: 1; } 100% { opacity: 0; } }
+
+/* カード */
+.gfx-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--gap); }
+.gfx-card { position: relative; width: var(--cw); height: calc(var(--cw) * 1.4); perspective: calc(var(--cw) * 6); }
+.gfx-card.deal { animation: gfxDeal 0.55s calc(var(--i) * 0.05s) cubic-bezier(.2, 1.2, .4, 1) both; }
+@keyframes gfxDeal { from { transform: translate(var(--fx), var(--fy)) scale(0.25) rotate(var(--fr)); opacity: 0; } 35% { opacity: 1; } to { transform: none; opacity: 1; } }
+.gfx-flip { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(.3, 1.35, .5, 1); }
+.gfx-card.open .gfx-flip { transform: rotateY(180deg); }
+.gfx-face { position: absolute; inset: 0; border-radius: calc(var(--cw) * 0.066); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.gfx-front { transform: rotateY(180deg); }
+.gfx-front svg { display: block; width: 100%; height: 100%; }
+.gfx-back {
+  --rc: #7CC8FF;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden;
+  border: calc(var(--cw) * 0.035) solid var(--rc);
+  background: radial-gradient(circle at 50% 42%, #4A3C9A 0%, #241D5C 55%, #140F38 100%);
+  box-shadow: 0 0 calc(var(--cw) * 0.14) var(--rc), inset 0 0 calc(var(--cw) * 0.1) rgba(0, 0, 0, 0.4);
+}
+.gfx-card.r3 .gfx-back { --rc: #FF7AB8; }
+.gfx-card.r4 .gfx-back {
+  --rc: #FFD54A; border-color: transparent;
+  background: radial-gradient(circle at 50% 42%, #4A3C9A 0%, #241D5C 55%, #140F38 100%) padding-box, conic-gradient(#FF6FA8, #FFD54A, #7CF0C8, #7CC8FF, #B48CFF, #FF6FA8) border-box;
+  animation: gfxRainbow 1.4s linear infinite;
+}
+@keyframes gfxRainbow { 0%, 100% { box-shadow: 0 0 calc(var(--cw) * 0.16) #FFD54A; } 33% { box-shadow: 0 0 calc(var(--cw) * 0.2) #FF8FC8; } 66% { box-shadow: 0 0 calc(var(--cw) * 0.18) #7CF0D8; } }
+.gfx-back-staff { position: absolute; left: 10%; right: 10%; top: 33%; height: 22%; background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px 25%); }
+.gfx-back-note { position: relative; font-size: calc(var(--cw) * 0.42); line-height: 1; color: var(--rc); text-shadow: 0 0 calc(var(--cw) * 0.08) var(--rc); }
+.gfx-back small { position: relative; margin-top: 6%; font-family: var(--f-num); font-weight: 900; font-style: italic; font-size: max(7px, calc(var(--cw) * 0.085)); letter-spacing: 0.08em; opacity: 0.85; }
+.gfx-card.charge { z-index: 2; animation: gfxCharge 0.76s ease-in both; }
+.gfx-card.charge .gfx-back { filter: brightness(1.45); }
+@keyframes gfxCharge { 20%, 40%, 60%, 80% { transform: translateX(-3px) rotate(-1.5deg) scale(1.05); } 30%, 50%, 70%, 90% { transform: translateX(3px) rotate(1.5deg) scale(1.08); } 100% { transform: scale(1.1); } }
+.gfx-card.burst::before { content: ''; position: absolute; inset: -45%; z-index: 3; border-radius: 50%; pointer-events: none; background: radial-gradient(circle closest-side, rgba(255, 255, 255, 0.95) 0%, rgba(255, 213, 74, 0.6) 40%, transparent 100%); animation: gfxBurst 0.9s ease-out forwards; }
+@keyframes gfxBurst { from { transform: scale(0.4); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+.gfx-card.r4.open .gfx-front { box-shadow: 0 0 0 3px #FFE27A, 0 0 calc(var(--cw) * 0.16) rgba(255, 194, 61, 0.9); }
+.gfx-card.r3.open .gfx-front { box-shadow: 0 0 calc(var(--cw) * 0.08) rgba(255, 122, 184, 0.7); }
+.gfx-tag { position: absolute; z-index: 4; top: calc(var(--cw) * -0.07); left: 50%; transform: translate(-50%, 0) scale(0); padding: 1px 8px; border-radius: 6px; white-space: nowrap; background: #6E6A8F; color: #fff; font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: max(10px, calc(var(--cw) * 0.075)); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); }
+.gfx-tag.new { background: var(--pink); }
+.gfx-tag.up { background: var(--mint); }
+.gfx-card.tagged .gfx-tag { animation: gfxTag 0.35s var(--ti) cubic-bezier(.2, 1.6, .4, 1) both; }
+@keyframes gfxTag { from { transform: translate(-50%, 0) scale(0); } to { transform: translate(-50%, 0) scale(1); } }
+.gfx-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; animation: gfxUp 0.35s 0.15s ease both; }
+.gfx-actions .btn { min-width: 118px; }
+.gfx-cost { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; font-family: var(--f-num); font-weight: 900; font-size: 13px; }
+.gfx-cost i { display: inline-flex; width: 14px; height: 14px; }
+.gfx-cost svg { width: 100%; height: 100%; }
+
+/* ★4 のカットイン */
+.gfx-cut {
+  position: absolute; inset: 0; z-index: 6; overflow: hidden;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 4%;
+  padding: calc(16px + var(--sat)) calc(var(--gutter-r) + 3%) calc(44px + var(--sab)) calc(var(--gutter-l) + 3%);
+  background: radial-gradient(ellipse at 68% 50%, #FFFFFF 0%, #FFF4D9 20%, var(--cc) 72%, #1B1544 135%);
+  animation: gfxCutIn 0.35s ease both;
+}
+.gfx-cut.out { animation: gfxCutOut 0.24s ease both; }
+@keyframes gfxCutIn { from { opacity: 0; } }
+@keyframes gfxCutOut { to { opacity: 0; transform: scale(1.04); } }
+.gfx-cut-rays { position: absolute; left: 68%; top: 50%; width: 240vmax; height: 240vmax; margin: -120vmax 0 0 -120vmax; pointer-events: none; background: repeating-conic-gradient(rgba(255, 255, 255, 0.3) 0 6deg, rgba(255, 255, 255, 0) 6deg 18deg); animation: gfxSpin 24s linear infinite; }
+.gfx.low .gfx-cut-rays { animation: none; }
+.gfx-cf { position: absolute; top: -24px; width: 8px; height: 13px; border-radius: 2px; background: var(--c); pointer-events: none; animation: gfxCf 2.6s var(--d) linear infinite; }
+@keyframes gfxCf { from { transform: translateY(0) rotate(var(--r)); } to { transform: translateY(calc(100vh + 40px)) rotate(calc(var(--r) + 540deg)); } }
+.gfx-cut-band { position: absolute; left: -10%; right: -10%; bottom: 12%; height: 18%; pointer-events: none; background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4) 25%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0)); transform: rotate(-5deg); }
+.gfx-cut-art { position: relative; grid-column: 2; grid-row: 1; justify-self: center; height: min(calc(100vh - 110px), 580px); aspect-ratio: 300 / 420; max-width: 100%; filter: drop-shadow(0 14px 30px rgba(20, 16, 50, 0.45)); animation: gfxArtIn 0.65s 0.05s cubic-bezier(.2, 1.15, .4, 1) both; }
+.gfx-cut-art svg { display: block; width: 100%; height: 100%; }
+@keyframes gfxArtIn { from { transform: translateX(55%) rotate(12deg) scale(0.9); opacity: 0; } to { transform: rotate(-3deg); opacity: 1; } }
+.gfx-cut-art { transform: rotate(-3deg); }
+.gfx-cut-info { position: relative; grid-column: 1; grid-row: 1; justify-self: end; width: min(100%, 480px); display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 18px 22px 20px; border-radius: 20px; background: rgba(21, 17, 52, 0.76); box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35), 0 12px 30px rgba(0, 0, 0, 0.35); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: gfxInfoIn 0.45s 0.25s cubic-bezier(.2, 1.2, .4, 1) both; }
+@keyframes gfxInfoIn { from { transform: translateX(-30px); opacity: 0; } }
+.gfx-cut-stars { display: flex; gap: 2px; }
+.gfx-cut-stars i { display: inline-block; font-style: normal; font-size: 30px; line-height: 1; color: #FFE45C; text-shadow: 0 0 10px rgba(255, 213, 74, 0.9), 0 2px 0 #C98A00; animation: gfxStar 0.4s calc(0.4s + var(--i) * 0.12s) cubic-bezier(.2, 1.8, .4, 1) both; }
+@keyframes gfxStar { from { transform: scale(0) rotate(-90deg); opacity: 0; } }
+.gfx-cut-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.gfx-cut-grp { padding: 2px 10px; border-radius: 999px; background: var(--g); color: #fff; font-weight: 900; font-size: 12px; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7); }
+.gfx-cut-new { padding: 2px 10px; border-radius: 999px; background: var(--pink); color: #fff; font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: 12px; letter-spacing: 0.05em; animation: gfxNewGlow 1.2s ease-in-out infinite; }
+.gfx-cut-new.up { background: var(--mint); animation: none; }
+@keyframes gfxNewGlow { 50% { box-shadow: 0 0 14px rgba(255, 94, 156, 0.9); } }
+.gfx-cut-title { font-family: var(--f-display); font-weight: 400; font-size: clamp(20px, 2.9vw, 34px); line-height: 1.2; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25); }
+.gfx-cut-name { font-weight: 800; font-size: clamp(14px, 1.7vw, 19px); opacity: 0.92; }
+.gfx-cut-line { position: relative; margin: 6px 0 0; padding: 10px 14px; border-radius: 14px; background: #fff; color: var(--ink); font-weight: 700; font-size: clamp(13px, 1.5vw, 16px); line-height: 1.55; animation: gfxUp 0.4s 0.85s ease both; }
+.gfx-cut-line::before { content: ''; position: absolute; left: 22px; top: -8px; border: 8px solid transparent; border-top: 0; border-bottom-color: #fff; }
+.gfx-cut-hint { position: absolute; left: 0; right: 0; bottom: calc(12px + var(--sab)); text-align: center; font-weight: 800; font-size: 13px; letter-spacing: 0.08em; color: #fff; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6); animation: gfxHintIn 0.3s 0.9s both, gfxBlink 1.4s 1.2s ease-in-out infinite; }
+@keyframes gfxHintIn { from { opacity: 0; } }
+@media (orientation: portrait) {
+  .gfx-cut { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; align-content: center; gap: 16px; }
+  .gfx-cut-art { grid-column: 1; grid-row: 1; height: min(44vh, 420px); }
+  .gfx-cut-info { grid-column: 1; grid-row: 2; justify-self: center; }
+  .gfx-cut-rays { left: 50%; top: 32%; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .gfx-top { min-height: 44px; padding-top: calc(6px + var(--sat)); }
+  .gfx-foot { min-height: 54px; padding-bottom: calc(8px + var(--sab)); }
+  .gfx-hint b { font-size: 17px; }
+  .gfx-cut { padding-bottom: calc(34px + var(--sab)); }
+  .gfx-cut-art { height: calc(100vh - 70px); }
+  .gfx-cut-info { gap: 5px; padding: 12px 16px 14px; }
+  .gfx-cut-stars i { font-size: 22px; }
+  .gfx-cut-line { padding: 7px 11px; font-size: 12.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gfx-spot, .gfx-star, .gfx-cut-rays, .gfx-cf { animation: none; }
+}
+
 </style>
 </head>
 <body>
@@ -4533,7 +4721,7 @@ body.low-fx .batt-big { animation: none; }
 (function () {
   'use strict';
   const G = (window.Game = window.Game || {});
-  G.VERSION = '2.23.0';
+  G.VERSION = '2.27.0';
   // 制作者の名前（起動時のロゴ・ライセンス・著作権の表示に使う）
   G.MAKER = 'YUKIGROUP';
   G.COPYRIGHT = '© 2026 YUKIGROUP';
@@ -4669,13 +4857,23 @@ body.low-fx .batt-big { animation: none; }
   // 判定幅 (秒)（v2.7 で少し甘くしました: 旧 0.045 / 0.09 / 0.125 / 0.16）
   G.JUDGE = { perfect: 0.052, great: 0.1, good: 0.14, bad: 0.175 };
   G.FLICK_MUL = 1.25; // フリックはやや広め
+  /*
+   * スコア（v2.25 から、総合力でスコアが大きく変わる）
+   *   スコア = スコアの大きさ × 判定率
+   *     スコアの大きさ = 300,000 ＋ 総合力（編成ボーナスこみ）× 13 … 総合力 50,000 で 950,000
+   *     判定率 = 判定（PERFECT 100%〜）95% ＋ 最大コンボ 5%。スキル中のノーツと金ノーツは、そのぶん多く入る
+   *   ランク S は 1,000,000。総合力 50,000 で、うまく遊んで（スキルこみで判定率 105% くらい）やっと届く
+   */
+  G.SCORE = { base: 300000, perPower: 13 };
+  G.scoreScale = (power) => G.SCORE.base + G.SCORE.perPower * Math.max(0, power || 0);
   G.RANKS = [
-    { r: 'S', min: 900000 },
-    { r: 'A', min: 800000 },
+    { r: 'S', min: 1000000 },
+    { r: 'A', min: 850000 },
     { r: 'B', min: 700000 },
     { r: 'C', min: 500000 },
     { r: 'D', min: 0 },
   ];
+  G.RANK_BAR_MAX = 1100000; // ランクのゲージの右はし
   G.rankOf = (score) => G.RANKS.find((x) => score >= x.min).r;
   G.betterRank = (a, b) => (G.RANKS.findIndex((x) => x.r === a) <= G.RANKS.findIndex((x) => x.r === b) ? a : b);
   G.recRank = (rec) => rec.rank || G.rankOf(Math.min(rec.score, 1e6));
@@ -4944,6 +5142,10 @@ body.low-fx .batt-big { animation: none; }
       if (all || this.isRead('s2')) ids.push('ren');
       if (all || this.isRead('b1')) ids.push('ruka', 'itsuki', 'haru');
       if (all || this.isRead('y1')) ids.push('suzu', 'kaede', 'gou', 'shino');
+      // v2.24 の新メンバー（加入のお話を読むと、ホームや選曲などに出てくる）
+      if (all || this.isRead('s7')) ids.push('sena', 'yuu');
+      if (all || this.isRead('b5')) ids.push('chika', 'kanade');
+      if (all || this.isRead('y6')) ids.push('souma');
       return ids;
     },
   };
@@ -11305,13 +11507,29 @@ body.low-fx .batt-big { animation: none; }
       lines: ['……ビートは、裏切らない。', 'BPMをひとつ上げるか。いや、二つだな。', '放送室の鍵か？　持ってるのは俺だけだ。', '悪くない。……もう一回だ。'],
     },
 
+    // v2.24 で加入（ステラリズム編 第3部「五つの星」）
+    sena: {
+      name: '月島 セナ', short: 'セナ', kana: 'つきしま せな', role: 'VJ・映像', grade: '高校2年', group: 'stella',
+      color: '#D65DF0',
+      profile: '月見ヶ丘高校の2年生で、映像研究部。いつも首からカメラを下げていて、ステラリズムのライブをこっそり撮っては、音に合わせた映像を作っていた。マイペースで、ぽつりとつぶやく一言がやけに鋭い。',
+      look: { style: 'braid', hair: '#3B3F6E', hairLight: '#6A70A8', hairDark: '#24264A', eye: '#C24FE0', ribbon: '#D65DF0', acc: 'camera', blazer: '#E7EAF4' },
+      lines: ['今の顔、いいね。……もう一回、撮らせて。', '音に色をつけるのが、わたしの仕事。', '光は、音より先に届くんだよ。', 'ステラリズムの夜は、わたしが映す。'],
+    },
+    yuu: {
+      name: '春風 ユウ', short: 'ユウ', kana: 'はるかぜ ゆう', role: 'シンセベース', grade: '高校1年', group: 'stella',
+      color: '#12B5A6',
+      profile: '月見ヶ丘高校の1年生。中学生のころから、お昼の放送で流れるビートにあこがれていた、レンの「自称・弟子」。素直でまじめだけど、緊張するとしゃべりが止まらなくなる。低音がうねると、つい小さくガッツポーズ。',
+      look: { style: 'wolf', hair: '#2F6F8F', hairLight: '#5FA3C0', hairDark: '#1C4A60', eye: '#12B5A6', tie: '#12B5A6', acc: 'beanie', male: true, blazer: '#E7EAF4' },
+      lines: ['レン先輩のビート、ぜんぶ覚えてます！', '低音、うねらせていきます！', 'す、すみません、緊張すると早口になって……！', 'ベースが鳴ると、床がゆれるんですよ！'],
+    },
+
     /* ---- ブラス・ブーケ（桜坂高校 吹奏楽部） ---- */
     ruka: {
       name: '朝比奈 ルカ', short: 'ルカ', kana: 'あさひな るか', role: 'トランペット・ボーカル', grade: '高校2年', group: 'brass',
       color: '#FF7A59',
-      profile: '桜坂高校吹奏楽部の2年生。思いついたら一直線の、明るいトランペット吹き。部員が3人だけになった吹奏楽部を守るため、「3人でできる音楽」をはじめた。ちょっとおっちょこちょい。',
+      profile: '桜坂高校吹奏楽部の2年生。思いついたら一直線の、明るいトランペット吹き。部員が3人だけになった吹奏楽部を守るため、「3人でできる音楽」をはじめた。いまは5人になったブラス・ブーケで、毎日パッパラパー。ちょっとおっちょこちょい。',
       look: { style: 'wave', hair: '#F06A6F', hairLight: '#FFA9A3', hairDark: '#C2434F', eye: '#F2A33B', ribbon: '#FF7A59', acc: 'flower', uniform: 'sailor' },
-      lines: ['パッパラパー！　今日もはりきっていこー！', '3人だって、ブラスは鳴らせるんだから！', 'ファンファーレは、はじまりの合図だよ！', 'あわわ、楽譜さかさまだった……！'],
+      lines: ['パッパラパー！　今日もはりきっていこー！', '五輪の花束で、満開にいこう！', 'ファンファーレは、はじまりの合図だよ！', 'あわわ、楽譜さかさまだった……！'],
     },
     itsuki: {
       name: '白鳥 いつき', short: 'いつき', kana: 'しらとり いつき', role: 'サックス', grade: '高校3年', group: 'brass',
@@ -11326,6 +11544,22 @@ body.low-fx .batt-big { animation: none; }
       profile: '大阪から引っ越してきた1年生。マーチングスネアもカホンも鉄琴も、たたけるものはなんでもたたく。関西弁でよくしゃべる、ブラス・ブーケのムードメーカー。',
       look: { style: 'fluffy', hair: '#5A3B2E', hairLight: '#8C6652', hairDark: '#3A251C', eye: '#5DAF2E', tie: '#8FD14F', acc: 'whistle', male: true, uniform: 'gakuran' },
       lines: ['ほな、いっちょやったろか！', 'リズムは任しとき！　ズンチャッ、ズンチャッ！', 'いつき先輩、カタすぎやって～。', 'たたけるもんは、なんでも楽器や！'],
+    },
+
+    // v2.24 で加入（ブラス・ブーケ編 第5話「花束は五輪」）
+    chika: {
+      name: '花村 チカ', short: 'チカ', kana: 'はなむら ちか', role: 'トロンボーン', grade: '高校1年', group: 'brass',
+      color: '#E3B930',
+      profile: '桜坂祭のステージを見て吹奏楽部に入った1年生。トロンボーンのスライドを「のびーる」と動かすのが大好き。おっとりマイペースで、かばんの中はいつもおやつでいっぱい。',
+      look: { style: 'lowtwin', hair: '#8EC5E8', hairLight: '#C8E6F7', hairDark: '#5A93BF', eye: '#D9A21E', ribbon: '#E3B930', acc: 'clips', uniform: 'sailor' },
+      lines: ['のびーる、のびーる……トロンボーンって楽しいね〜。', 'おやつ、半分こする？', 'スライドは、ゆっくりでも、ちゃんと届くんだよ〜。', 'ルカ先輩、今日もまぶしいなぁ。'],
+    },
+    kanade: {
+      name: '相沢 カナデ', short: 'カナデ', kana: 'あいざわ かなで', role: 'クラリネット', grade: '高校2年', group: 'brass',
+      color: '#C0607A',
+      profile: '桜坂高校の2年生。去年、先輩たちが卒業したときに吹奏楽部をやめてしまった元部員で、ルカとは同じ中学の幼なじみ。まじめで、言いかたがきつくなりがち。でも、だれよりも練習ノートが分厚い。',
+      look: { style: 'long', hair: '#5A3A3E', hairLight: '#8A5E62', hairDark: '#3A2226', eye: '#C0607A', ribbon: '#C0607A', acc: 'headband', uniform: 'sailor' },
+      lines: ['音程、少し高いわ。……もう一回。', 'やめたんじゃない。……休んでただけ。', 'ルカ、また楽譜さかさま。', 'クラリネットは、いちばん近くで歌う楽器なの。'],
     },
 
     /* ---- 宵ノ鈴（水無瀬高校 和楽器部） ---- */
@@ -11357,9 +11591,17 @@ body.low-fx .batt-big { animation: none; }
       look: { style: 'bun', hair: '#E9E2F2', hairLight: '#FFFFFF', hairDark: '#B4A6C8', eye: '#9B4F9E', ribbon: '#9B4F9E', acc: 'cat', blazer: '#2E4A3A', wa: true },
       lines: ['……ひゅるり。風の音、いまのメロディにします。', '静かな音にも、出番はあると思うんです。', 'ねこ……かわいい……。', 'みなさんの音、ぜんぶ楽譜にしたいです。'],
     },
+    // v2.24 で加入（宵ノ鈴編 第6話「五つめの鈴」）
+    souma: {
+      name: '橘 ソウマ', short: 'ソウマ', kana: 'たちばな そうま', role: '尺八', grade: '高校2年', group: 'yoi',
+      color: '#6B8E3A',
+      profile: '水無瀬高校の2年生。おじいさんゆずりの尺八を、神社の裏の竹林でひとり吹いていた。物静かでていねいな話しかたなのに、ときどき口でリズムを刻みはじめる、ふしぎな人。',
+      look: { style: 'center', hair: '#2E3A2A', hairLight: '#56664E', hairDark: '#1A2218', eye: '#6B8E3A', tie: '#6B8E3A', acc: 'omamori', male: true, blazer: '#2E4A3A', wa: true },
+      lines: ['竹の音は、息の音です。', '……ブン、ツ、ブブン、ツ。あ、失礼しました。', '風が強い日は、尺八がよく鳴るんですよ。', '宵ノ鈴の音に、そっと息を足させてください。'],
+    },
   };
   for (const id in G.CHARS) if (!G.CHARS[id].group) G.CHARS[id].group = 'sorashido';
-  G.CHAR_ORDER = ['hiyori', 'sota', 'kotone', 'riku', 'yuine', 'tsubasa', 'mio', 'ren', 'ruka', 'itsuki', 'haru', 'suzu', 'kaede', 'gou', 'shino'];
+  G.CHAR_ORDER = ['hiyori', 'sota', 'kotone', 'riku', 'yuine', 'tsubasa', 'mio', 'ren', 'sena', 'yuu', 'ruka', 'itsuki', 'haru', 'chika', 'kanade', 'suzu', 'kaede', 'gou', 'shino', 'souma'];
   G.CHAR_GROUPS = [
     { id: 'sorashido', name: 'ソラシド', school: '青空高校', color: '#20C9B6' },
     { id: 'stella', name: 'ステラリズム', school: '月見ヶ丘高校', color: '#7A3CFF' },
@@ -11476,6 +11718,27 @@ body.low-fx .batt-big { animation: none; }
       tips: [[268, 182, 6], [250, 194, 8], [230, 190, 8], [210, 180, 8], [190, 168, 6], [168, 170, 3], [148, 168, 1]],
       lock: 'M130,170 C120,206 122,236 132,258 C136,234 138,210 144,188 Z',
     },
+    // v2.24: セナ（横の三つ編み）・チカ（低い二つ結び）・ユウ（ウルフ）・ソウマ（センター分け）
+    braid: {
+      tips: [[268, 172, -3], [248, 190, -4], [228, 186, -5], [208, 196, -6], [186, 186, -6], [164, 192, -4], [142, 174, -2]],
+      lock: 'M130,166 C118,214 120,262 134,296 C140,264 142,228 150,194 Z',
+    },
+    lowtwin: {
+      tips: [[266, 178, 1], [246, 194, 2], [224, 186, 1], [202, 198, 0], [180, 188, -1], [158, 194, -2], [138, 178, -2]],
+      lock: 'M130,166 C116,214 118,258 132,288 C138,258 142,226 150,194 Z',
+    },
+    wolf: {
+      male: true,
+      tips: [[272, 190, 4], [256, 204, 6], [236, 190, -2], [216, 206, 4], [196, 190, -3], [176, 204, 3], [156, 192, -2], [138, 180, -3]],
+      lock: 'M128,168 C114,208 116,248 126,276 C132,252 136,226 144,190 Z',
+      depth: 26,
+    },
+    center: {
+      male: true,
+      tips: [[270, 206, 9], [250, 202, 9], [228, 182, 7], [200, 146, 0], [172, 182, -7], [150, 202, -9], [130, 206, -9]],
+      lock: 'M130,170 C118,210 120,246 130,272 C136,244 138,214 144,188 Z',
+      depth: 22,
+    },
     fluffy: {
       male: true,
       tips: [[270, 182, 4], [252, 196, 2], [232, 188, -2], [212, 200, 3], [190, 190, -3], [170, 200, 2], [150, 190, -2], [136, 178, -3]],
@@ -11528,13 +11791,40 @@ body.low-fx .batt-big { animation: none; }
         return `<path ${f} d="M120,192 C110,128 144,80 196,70 C248,64 290,98 286,156 C286,172 284,182 280,194 Z"/>`;
       case 'fluffy':
         return `<path ${f} d="M116,190 C100,170 104,140 118,128 C112,100 132,78 156,76 C168,58 194,52 212,60 C234,52 262,66 268,88 C290,98 302,128 290,150 C300,168 296,184 284,194 Z"/>`;
+      case 'braid':
+        return `<path ${f} d="M118,176 C114,100 154,62 200,62 C246,62 286,100 282,176 C284,222 278,256 266,276 L134,276 C122,256 116,222 118,176 Z"/>`;
+      case 'lowtwin': {
+        const tail = 'M134,236 C100,262 92,330 100,398 C104,428 116,452 132,470 C126,432 128,394 136,358 C142,318 150,286 160,262 Z';
+        return `<path ${f} d="${tail}"/><path ${f} d="${mirror(tail)}"/>
+          <path ${f} d="M120,176 C116,102 156,64 200,64 C244,64 284,102 280,176 C282,226 274,262 258,282 L142,282 C126,262 118,226 120,176 Z"/>
+          <circle cx="132" cy="262" r="12" fill="${L.ribbon}" stroke="${shade(L.ribbon, -0.35)}" stroke-width="2"/><circle cx="268" cy="262" r="12" fill="${L.ribbon}" stroke="${shade(L.ribbon, -0.35)}" stroke-width="2"/>`;
+      }
+      case 'wolf':
+        return `<path ${f} d="M116,188 C102,130 128,80 172,66 Q190,52 210,56 C258,60 296,100 288,170 C292,210 290,240 280,264 Q270,252 266,238 Q262,264 252,280 Q244,260 240,246 L160,246 Q156,260 148,280 Q138,264 134,238 Q130,252 120,264 C110,240 108,212 116,188 Z"/>`;
+      case 'center':
+        return `<path ${f} d="M118,194 C108,128 142,78 196,68 C250,62 292,98 288,160 C288,180 286,192 282,200 Z"/>`;
       case 'messy':
       default:
         return `<path ${f} d="M120,188 C108,132 128,84 168,68 Q170,52 178,44 Q190,56 198,60 Q212,46 226,44 Q228,58 232,68 C272,82 294,128 282,188 Z"/>`;
     }
   }
 
-  function frontHair(L, k) {
+  // 肩の前に下ろした三つ編み（small: ちびキャラ用に短く）
+  function braidFront(L, f, small) {
+    const n = small ? 4 : 7;
+    let s = '';
+    for (let i = 0; i < n; i++) {
+      const t = i / (n - 1);
+      const x = 262 + t * (small ? 10 : 24), y = 252 + t * (small ? 66 : 150);
+      s += `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${(15 - t * 3).toFixed(1)}" ry="${small ? 13 : 16}" transform="rotate(${i % 2 ? 24 : -24} ${x.toFixed(1)} ${y.toFixed(1)})" ${f}/>`;
+    }
+    const ex = 262 + (small ? 10 : 24), ey = 252 + (small ? 66 : 150);
+    s += `<rect x="${ex - 9}" y="${ey + 10}" width="18" height="8" rx="4" fill="${L.ribbon}" stroke="${shade(L.ribbon, -0.35)}" stroke-width="1.6"/>`;
+    s += `<path d="M${ex - 8},${ey + 18} Q${ex},${ey + (small ? 34 : 44)} ${ex + 8},${ey + 18} Z" ${f}/>`;
+    return s;
+  }
+
+  function frontHair(L, k, small) {
     const f = `fill="url(#${k}hf)" stroke="${shade(L.hairDark, -0.3)}" stroke-width="2.2" stroke-linejoin="round"`;
     let bangs, lock;
     {
@@ -11548,7 +11838,8 @@ body.low-fx .batt-big { animation: none; }
     const sideLocks = L.style === 'pony' || L.style === 'side'
       ? `<path ${f} d="${lock}"/><path ${f} d="${mirror(lock)}"/>`
       : `<path ${f} d="${lock}"/><path ${f} d="${mirror(lock)}"/>`;
-    return { bangs, html: `${sideLocks}<path ${f} d="${bangs}"/>${shine}` };
+    const extra = L.style === 'braid' ? braidFront(L, f, small) : '';
+    return { bangs, html: `${sideLocks}${extra}<path ${f} d="${bangs}"/>${shine}` };
   }
 
   function eyes(L, k, expr) {
@@ -11778,6 +12069,19 @@ body.low-fx .batt-big { animation: none; }
       return `<path d="M180,334 Q200,392 220,334" fill="none" stroke="${L.tie}" stroke-width="3.5"/>
         <g transform="translate(200,392) rotate(-12)"><rect x="-13" y="-7" width="26" height="15" rx="7" fill="#E8EDF5" stroke="#8D96AA" stroke-width="2"/><circle cx="-5" cy="1" r="3.5" fill="#8D96AA"/><rect x="11" y="-6" width="9" height="7" rx="2" fill="#E8EDF5" stroke="#8D96AA" stroke-width="2"/></g>`;
     }
+    if (layer === 'neck' && a === 'camera') {
+      // 首から下げたカメラ
+      return `<path d="M170,332 C164,372 176,404 186,416 M230,332 C236,372 224,404 214,416" fill="none" stroke="#2B2F45" stroke-width="5" stroke-linecap="round"/>
+        <g transform="translate(200,426) rotate(-4)"><rect x="-30" y="-19" width="60" height="40" rx="8" fill="#2B2F45"/><rect x="-16" y="-26" width="22" height="9" rx="2" fill="#2B2F45"/>
+        <circle cx="3" cy="2" r="14" fill="#4A5070" stroke="#E8EAF2" stroke-width="3"/><circle cx="3" cy="2" r="6.5" fill="${L.ribbon}"/><circle cx="0" cy="-1" r="2.2" fill="#fff"/>
+        <rect x="18" y="-13" width="8" height="5" rx="1.5" fill="${L.ribbon}"/></g>`;
+    }
+    if (layer === 'neck' && a === 'omamori') {
+      // 赤いお守り
+      return `<path d="M184,334 Q170,360 166,386" fill="none" stroke="#C9A646" stroke-width="3"/>
+        <g transform="translate(166,400) rotate(8)"><path d="M-11,-12 L11,-12 L11,14 Q0,20 -11,14 Z" fill="#D2333F" stroke="#8E1E28" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M-6,-2 h12 M-6,4 h12" stroke="#FFD36B" stroke-width="2"/><circle cx="0" cy="-15" r="4" fill="none" stroke="#C9A646" stroke-width="2.5"/></g>`;
+    }
     if (layer === 'face' && a === 'glasses') {
       return `<g fill="rgba(255,255,255,.12)" stroke="#3d3163" stroke-width="3">
         <rect x="138" y="186" width="58" height="56" rx="18"/><rect x="204" y="186" width="58" height="56" rx="18"/></g>
@@ -11840,6 +12144,29 @@ body.low-fx .batt-big { animation: none; }
       return `<g transform="translate(252,114) rotate(14)"><path d="M-14,-6 L-12,-18 L-4,-10 L4,-10 L12,-18 L14,-6 Q14,10 0,10 Q-14,10 -14,-6 Z" fill="#fff" stroke="${L.ribbon}" stroke-width="2.5" stroke-linejoin="round"/>
         <circle cx="-5" cy="-1" r="2" fill="#4A3A40"/><circle cx="5" cy="-1" r="2" fill="#4A3A40"/><path d="M-2,4 q2,2 4,0" stroke="#4A3A40" stroke-width="1.5" fill="none"/></g>`;
     }
+    if (layer === 'top' && a === 'beanie') {
+      // ニット帽（ぼんぼりつき）
+      const c = L.tie, dk = shade(L.tie, -0.4);
+      let ribs = '';
+      for (let x = 132; x <= 268; x += 12) ribs += `<path d="M${x},${154 - Math.round(Math.cos(((x - 200) / 80) * 1.2) * 14)} l0,16" stroke="${dk}" stroke-width="2" opacity=".5"/>`;
+      return `<path d="M124,158 C118,90 156,56 200,56 C244,56 282,90 276,158 Q200,134 124,158 Z" fill="${c}" stroke="${dk}" stroke-width="2.4"/>
+        <path d="M150,96 Q200,76 250,96 M140,124 Q200,104 260,124" fill="none" stroke="${dk}" stroke-width="2" opacity=".35"/>
+        <path d="M118,148 Q200,124 282,148 L284,170 Q200,146 116,170 Z" fill="${shade(c, -0.15)}" stroke="${dk}" stroke-width="2.4" stroke-linejoin="round"/>${ribs}
+        <circle cx="200" cy="52" r="15" fill="#F4F6FA" stroke="#C9CFE0" stroke-width="2"/>`;
+    }
+    if (layer === 'top' && a === 'clips') {
+      // ヘアピン2本と、小さな音符
+      return `<g transform="translate(152,114) rotate(-32)"><rect x="-17" y="-3.5" width="34" height="7" rx="3.5" fill="${L.ribbon}" stroke="#fff" stroke-width="1.8"/></g>
+        <g transform="translate(156,130) rotate(-14)"><rect x="-17" y="-3.5" width="34" height="7" rx="3.5" fill="#FF8FB8" stroke="#fff" stroke-width="1.8"/></g>
+        <g transform="translate(250,104) rotate(14)" stroke="#fff" stroke-width="1.8"><ellipse cx="0" cy="10" rx="7" ry="5" fill="${L.ribbon}" transform="rotate(-20 0 10)"/><rect x="5" y="-12" width="3.5" height="22" fill="${L.ribbon}" stroke="none"/></g>`;
+    }
+    if (layer === 'top' && a === 'headband') {
+      // カチューシャと小さなリボン
+      const c = L.ribbon;
+      return `<path d="M128,150 C126,82 274,82 272,150" fill="none" stroke="${shade(c, -0.35)}" stroke-width="12" stroke-linecap="round"/>
+        <path d="M128,150 C126,82 274,82 272,150" fill="none" stroke="${c}" stroke-width="8" stroke-linecap="round"/>
+        <g transform="translate(246,92) rotate(18)"><path d="M0,0 L-16,-10 L-16,10 Z M0,0 L16,-10 L16,10 Z" fill="${c}" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><circle r="4.5" fill="${shade(c, -0.2)}" stroke="#fff" stroke-width="1.5"/></g>`;
+    }
     if (layer === 'top' && a === 'flower') {
       // さくらのヘアピン
       let petals = '';
@@ -11896,7 +12223,7 @@ ${accessory(L, 'top')}
   /* ---------------- ちびキャラ（ホームの街やMVで使う） ----------------
    * 顔と髪は立ち絵と同じものを使い、体だけ小さく描きます。
    * 腕と足は <g class="cb-armL/cb-legL"> に分けてあるので、CSS で歩かせられます。 */
-  const SQUASH = { long: 0.72, hime: 0.78, twin: 0.86 };
+  const SQUASH = { long: 0.72, hime: 0.78, twin: 0.86, lowtwin: 0.82 };
   function chibiBody(L, outfit, color) {
     const female = !L.male;
     const leg = (x, cls, sock, shoe) => `<g class="${cls}">
@@ -12008,7 +12335,7 @@ ${accessory(L, 'top')}
     const head = 'transform="translate(200 194) scale(1.13) translate(-200 -186)"';
     const sq = SQUASH[L.style];
     const backT = sq ? `transform="translate(0 60) scale(1 ${sq}) translate(0 -60)"` : '';
-    const fh = frontHair(L, k);
+    const fh = frontHair(L, k, true);
     const b = chibiBody(L, outfit, c.color);
     const neck = outfit !== 'school' && (L.acc === 'pick' || L.acc === 'reed') ? '' : accessory(L, 'neck');
     return `<svg viewBox="0 0 400 530" xmlns="http://www.w3.org/2000/svg" class="chibi-svg" aria-hidden="true">
@@ -12933,6 +13260,59 @@ ${accessory(L, 'top')}
        * ブラス・ブーケ編（桜坂高校 吹奏楽部）
        * ============================================================ */
       {
+        id: 's7', arc: 'stella', part: 3, no: 7, title: '五つの星座', song: null, requiresClear: null, requiresRead: 'ch9',
+        summary: '4月。レンが東京へ旅立ち、放送室にはふたりだけ。……のはずが、「レン先輩の弟子です！」と名乗る1年生と、カメラを下げた2年生がやってきた。',
+        script: [
+          { bg: 'station' },
+          { place: '4月・月見ヶ丘駅前' },
+          { n: '春。レンが東京へ旅立ってから、二週間がたった。' },
+          { show: { tsubasa: 'L', mio: 'R' } },
+          { c: 'mio', e: 'sad', t: '……つばさ先輩。放送室、ひろくなっちゃいましたね。' },
+          { c: 'tsubasa', e: 'normal', t: '……ビートは、毎週ちゃんと届いてるわ。約束どおり。' },
+          { c: 'mio', e: 'think', t: 'でも、ライブのとき、となりでターンテーブルを回してる人がいないの、やっぱりさみしいです……。' },
+          { c: 'tsubasa', e: 'think', t: '…………。' },
+          { bg: 'broadcast' },
+          { place: '放課後・放送室' },
+          { se: 'door' },
+          { show: { tsubasa: 'LL', mio: 'L', yuu: 'R' } },
+          { c: 'yuu', name: '？？？', e: 'surprised', t: 'し、失礼します！　ここが、あの放送室ですか！？' },
+          { c: 'mio', e: 'surprised', t: 'わっ、だれ！？　新入生？' },
+          { c: 'yuu', e: 'happy', t: '1年の、春風ユウです！　中学のころから、お昼の放送のビートをずっと聴いてました！　あの、ぼく、レン先輩の弟子です！' },
+          { c: 'tsubasa', e: 'think', t: '……弟子？　先輩から、そんな話、ひとことも――' },
+          { c: 'yuu', e: 'shy', t: 'じ、自称です！　でも、先輩のビートはぜんぶ耳コピしました！　それと、これを預かってきました！' },
+          { n: 'ユウがさしだしたのは、小さなUSBメモリ。ラベルには、見おぼえのある字で「低音、たのむ」とだけ書いてあった。' },
+          { c: 'tsubasa', e: 'surprised', t: '……先輩の字。' },
+          { c: 'yuu', e: 'happy', t: '東京に行く前の日に、駅で会ったんです！　ぼく、シンセベースを弾いてて、それで「なら、ステラリズムの低音をたのむ」って……！　あっ、すみません、緊張すると早口になって！' },
+          { c: 'mio', e: 'laugh', t: 'あはは！　レン先輩、ちゃっかり後輩をスカウトしてたんだ！' },
+          { se: 'steps' },
+          { show: { tsubasa: 'LL', mio: 'L', yuu: 'R', sena: 'RR' } },
+          { c: 'sena', name: '？？？', e: 'normal', t: '……来たのは、その子だけじゃないよ。' },
+          { c: 'mio', e: 'surprised', t: 'えっ、またひとり来た！？' },
+          { c: 'sena', e: 'smile', t: '2年の、月島セナ。映像研究部。……これ、見て。' },
+          { n: 'セナがノートパソコンを開くと、画面いっぱいに夜の駅前のライブが映しだされた。シンセの音に合わせて、光の粒がふくらんだり、はじけたりしている。' },
+          { c: 'tsubasa', e: 'surprised', t: '……これ、わたしたちの駅前ライブ？' },
+          { c: 'sena', e: 'normal', t: '一年前から、ずっと撮ってた。音に合わせて、あとから光を足してたの。……勝手に、ごめん。' },
+          { c: 'mio', e: 'happy', t: 'すごいすごい！　ミオのくるりんに、星がついてる！' },
+          { c: 'sena', e: 'smile', t: 'ステラリズムの音には、色がある。それを、ステージのうしろに映したい。……VJ、やらせて。' },
+          { c: 'tsubasa', e: 'think', t: '…………。' },
+          { c: 'tsubasa', e: 'serious', t: '……わたしたちの音は、夜の音。うるさくて、とがってて、たまにさみしい。それでもいいなら。' },
+          { c: 'yuu', e: 'happy', t: 'はい！！' },
+          { c: 'sena', e: 'smile', t: '……うん。それが、いい。' },
+          { bg: 'livehouse' },
+          { place: '週末・ライブハウス' },
+          { show: { sena: 'LL', tsubasa: 'L', mio: 'R', yuu: 'RR' } },
+          { n: 'ステージのうしろの大きなスクリーンに、ビデオ通話の画面が映る。' },
+          { c: 'ren', name: 'レン（通話）', t: '……聞こえるか。今週のビートは、東京の地下鉄の音から作った。' },
+          { c: 'yuu', e: 'surprised', t: 'レ、レン先輩！　ぼく、ちゃんと低音、たのまれました！' },
+          { c: 'ren', name: 'レン（通話）', t: '……ああ。床、ゆらせ。' },
+          { c: 'tsubasa', e: 'smile', t: '……ステラリズムは、三人で始まって、ひとりが遠くへ行って、ふたり増えた。' },
+          { c: 'mio', e: 'laugh', t: 'レン先輩もいれて、五人！　五つの星座ですね！' },
+          { c: 'tsubasa', e: 'laugh', t: 'ステラリズム、今夜も開演よ。――五人で！' },
+          { n: 'シンセが鳴り、低音がうねり、スクリーンいっぱいに光の星座が広がった。' },
+          { n: '―― ステラリズム編　第3部　おしまい ――' },
+        ],
+      },
+      {
         id: 'b1', arc: 'brass', no: 1, title: '部員三人の吹奏楽部', song: 'lunchtime-brass', requiresClear: null, requiresRead: 'ch5',
         summary: '桜坂高校吹奏楽部、部員は3人。「このままじゃ休部になっちゃう！」――ルカが思いついたのは、3人だけでも鳴らせる音楽だった。',
         script: [
@@ -13145,6 +13525,49 @@ ${accessory(L, 'top')}
       /* ============================================================
        * 宵ノ鈴編（水無瀬高校 和楽器部）
        * ============================================================ */
+      {
+        id: 'b5', arc: 'brass', no: 5, title: '花束は五輪', song: null, requiresClear: null,
+        summary: '入部届け十一枚で、休部をまぬがれた吹奏楽部。「ブラス・ブーケに入れてほしい」とやってきたのは、おっとりした1年生と、ルカの幼なじみだった。',
+        script: [
+          { bg: 'bandroom_after' },
+          { place: '11月・吹奏楽部の部室' },
+          { show: { ruka: 'L', haru: 'R' } },
+          { c: 'haru', e: 'laugh', t: '十四人の吹奏楽部、毎日にぎやかでええなぁ！　合奏のたびに、音がぶあつうなっとる！' },
+          { c: 'ruka', e: 'happy', t: 'うん！　……でも、ブラス・ブーケの練習は、やっぱり三人だけなんだよね。' },
+          { show: { ruka: 'L', haru: 'R', chika: 'RR' } },
+          { c: 'chika', e: 'smile', t: 'あの〜、ルカ先輩〜。' },
+          { c: 'ruka', e: 'surprised', t: 'わっ、チカちゃん！？　いつからそこに！？' },
+          { c: 'chika', e: 'happy', t: 'ずっといました〜。1年の花村チカです〜。トロンボーンです〜。' },
+          { c: 'chika', e: 'smile', t: '桜坂祭のブラス・ブーケ、すっごくよかったので〜……わたしも、あの花束に入れてもらえませんか〜？' },
+          { c: 'haru', e: 'surprised', t: 'おっ、ブラス・ブーケに入りたいって！？' },
+          { c: 'chika', e: 'smile', t: 'はい〜。トロンボーンって、スライドがのびーるでしょ〜？　あの曲の「満開」のところで、のびーるってしたいんです〜。' },
+          { c: 'ruka', e: 'laugh', t: 'の、のびーる！　いいね、それ、ぜったい楽しい！' },
+          { se: 'door' },
+          { show: { kanade: 'LL', ruka: 'L', haru: 'R', chika: 'RR' } },
+          { c: 'kanade', e: 'serious', t: '……ルカ。楽譜、また置きっぱなし。それに、さかさま。' },
+          { c: 'ruka', e: 'surprised', t: 'カナデ……！' },
+          { c: 'haru', e: 'think', t: 'えっと……どちらさん？' },
+          { c: 'ruka', e: 'shy', t: '相沢カナデ。わたしと同じ中学の、幼なじみ。……去年まで、吹奏楽部にいたの。' },
+          { c: 'kanade', e: 'normal', t: '先輩たちが卒業して、部員が減って。……練習にならないから、やめた。それだけ。' },
+          { c: 'ruka', e: 'sad', t: '…………。' },
+          { c: 'kanade', e: 'think', t: '……でも、桜坂祭のステージ、見た。三人だけなのに、体育館がいっぱいになってた。' },
+          { c: 'kanade', e: 'shy', t: '入部届け、十一枚。そのうちの一枚は、わたし。……やめたんじゃなかった。休んでた、だけ。' },
+          { c: 'ruka', e: 'surprised', t: 'えっ……あの一枚、カナデだったの！？' },
+          { show: { kanade: 'LL', ruka: 'L', itsuki: 'C', haru: 'R', chika: 'RR' } },
+          { c: 'itsuki', e: 'smile', t: '……では、部長から提案です。ブラス・ブーケを、五人にしませんか。' },
+          { c: 'ruka', e: 'surprised', t: '部長！？　「三人のまま続けましょう」って……' },
+          { c: 'itsuki', e: 'smile', t: 'わたしは、卒業まであと半年です。そのあとも、この花束に咲きつづけてほしいんです。……それに。' },
+          { c: 'itsuki', e: 'happy', t: '花束は、三輪より、五輪のほうが、きっときれいですから。' },
+          { c: 'haru', e: 'laugh', t: 'ええこと言うやん、部長！　トロンボーンとクラリネットが入ったら、音の色がめっちゃ増えるで！' },
+          { c: 'kanade', e: 'serious', t: '……言っておくけど、練習はきびしくするから。ルカ、まず音程。' },
+          { c: 'ruka', e: 'laugh', t: 'うん！　カナデのきびしいの、なつかしい！' },
+          { c: 'chika', e: 'happy', t: 'じゃあ〜、五人の最初の曲は〜？' },
+          { c: 'ruka', e: 'happy', t: 'もちろん！――『満開ファンファーレ』、五人バージョン！' },
+          { n: 'トランペットが呼びかけ、サックスが答え、クラリネットがそっと寄りそう。トロンボーンがのびーるとすべりこんで、スネアがそれをまとめて前へ押しだした。' },
+          { n: '五つの花が、ひとつの花束になった。' },
+          { n: '―― ブラス・ブーケ編　第5話　おしまい ――' },
+        ],
+      },
       {
         id: 'y1', arc: 'yoi', no: 1, title: '止まった夏祭り', song: 'yoimiya-no-suzu', requiresClear: null, requiresRead: 's4',
         summary: '五年前から止まったままの、町の夏祭り「宵宮祭」。神社の娘・すずは、川原の三味線と森の笛の音に導かれて、ある決心をする。',
@@ -13394,6 +13817,49 @@ ${accessory(L, 'top')}
       /* ============================================================
        * 4グループ合同フェス編
        * ============================================================ */
+      {
+        id: 'y6', arc: 'yoi', no: 6, title: '五つめの鈴', song: null, requiresClear: null,
+        summary: '秋。お祭りの夜、しのの笛の下でずっと鳴っていた、低い「息の音」。その正体をさがして、宵ノ鈴は神社の裏の竹林へ。',
+        script: [
+          { bg: 'shrine' },
+          { place: '秋・宵宮神社' },
+          { n: '夏の宵宮祭も、四つのグループのフェスも終わって、神社の森はすっかり秋の色になった。' },
+          { show: { suzu: 'L', shino: 'R' } },
+          { c: 'shino', e: 'think', t: '……すず先輩。お祭りの夜のこと、ずっと気になっていることがあるんです。' },
+          { c: 'suzu', e: 'surprised', t: '気になること、ですか？' },
+          { c: 'shino', e: 'think', t: '『千本花火』のとき……わたしの笛の下で、低い音が、ずっと鳴っていたんです。風の音じゃない、息の音。' },
+          { c: 'suzu', e: 'think', t: '……そういえば、裏の竹林のほうから、聴こえていたような。' },
+          { show: { suzu: 'LL', shino: 'L', kaede: 'R', gou: 'RR' } },
+          { c: 'kaede', e: 'serious', t: 'なにそれ、オバケ？　オバケならバチで追いはらう！' },
+          { c: 'gou', e: 'normal', t: '……オバケは、バチでは、はらえない。' },
+          { bg: 'shrine_night' },
+          { place: '夜・神社の裏の竹林' },
+          { n: 'ひゅう、と風が抜けたあと。竹林のおくから、深くて、やわらかい音が聴こえてきた。' },
+          { show: { suzu: 'LL', shino: 'L', souma: 'R' } },
+          { c: 'souma', name: '？？？', e: 'surprised', t: '……あ。見つかって、しまいましたか。' },
+          { c: 'suzu', e: 'surprised', t: 'あなたは……同じ学年の、橘くん？' },
+          { c: 'souma', e: 'smile', t: '2年の、橘ソウマです。……お祭りの夜、勝手に音を足してしまって、すみませんでした。' },
+          { c: 'shino', e: 'surprised', t: 'やっぱり……あの低い音、尺八、だったんですね。' },
+          { c: 'souma', e: 'think', t: '祖父が、五年前まで、毎年あのお祭りで吹いていたんです。お祭りが止まって、祖父もそれきり、吹かなくなって。' },
+          { c: 'souma', e: 'smile', t: 'この尺八は、そのとき祖父がくれたものです。「祭りがもどったら、おまえが吹け」と。' },
+          { c: 'souma', e: 'shy', t: 'でも、宵ノ鈴のみなさんの音があんまりまぶしくて……。竹林のかげから、そっと息を足すのがせいいっぱいでした。' },
+          { show: { suzu: 'LL', shino: 'L', gou: 'C', souma: 'R', kaede: 'RR' } },
+          { c: 'kaede', e: 'laugh', t: 'なーんだ、オバケじゃなくて尺八か！　ねぇ、今の音、もう一回吹いて！' },
+          { n: 'ソウマが尺八をかまえると、低い音が、竹林をゆっくりと満たしていった。そこに、口で刻むリズムが重なる。' },
+          { c: 'souma', e: 'smile', t: '……ブン、ツ、ブブン、ツ。' },
+          { c: 'gou', e: 'surprised', t: '……口で、太鼓を。' },
+          { c: 'souma', e: 'shy', t: 'あ、失礼しました。くせなんです。息つぎのあいだも、リズムを止めたくなくて。' },
+          { c: 'shino', e: 'happy', t: '……すてき、です。わたしの笛は高くて、細いから……その音があると、足もとが、あったかいです。' },
+          { c: 'suzu', e: 'smile', t: '橘くん。……いいえ、ソウマくん。宵ノ鈴に、来てくれませんか。' },
+          { c: 'suzu', e: 'happy', t: '鈴は、ひとつでも鳴ります。でも、五つそろうと、もっと遠くまで届くんです。' },
+          { c: 'souma', e: 'surprised', t: '…………。' },
+          { c: 'souma', e: 'smile', t: '……はい。祖父の音のつづきを、みなさんの音のとなりで、吹かせてください。' },
+          { c: 'gou', e: 'laugh', t: '……ソイヤッ！！' },
+          { c: 'kaede', e: 'laugh', t: 'よーし、五人の宵ノ鈴、はじめての音合わせ、いくよ！' },
+          { n: '鈴が鳴り、三味線が駆け、太鼓が追いかけ、笛がのぼっていく。そのいちばん下で、竹の音が、静かに息をしていた。' },
+          { n: '―― 宵ノ鈴編　第6話　おしまい ――' },
+        ],
+      },
       {
         id: 'f1', arc: 'fes', no: 1, title: '15人の作戦会議', song: 'singalong-sky', requiresClear: null, requiresRead: 'y5',
         summary: '「4グループで、いっしょにフェスをやらない？」――つばさの提案で、15人がはじめて一か所に集まった。くじびきで決まった、グループをこえたチームとは。',
@@ -14010,21 +14476,134 @@ ${accessory(L, 'top')}
           { n: 'のちに、ステラリズムのミオといっしょに完成させたその曲は――『ネコネコ・パニック』と名づけられた。' },
         ],
       },
+      {
+        id: 'm-sena', arc: 'member', no: 16, title: '光の粒の理由', song: null, requiresCard: 'sena', requiresRead: 's7',
+        summary: 'セナはなぜ、ステラリズムのライブを一年も撮りつづけていたのか。夜の駅前で、ミオがその理由をたずねる。',
+        script: [
+          { bg: 'station' },
+          { place: '夜・月見ヶ丘駅前' },
+          { show: { mio: 'L', sena: 'R' } },
+          { c: 'mio', e: 'happy', t: 'セナ先輩！　今日も撮ってるんですか？' },
+          { c: 'sena', e: 'smile', t: 'うん。駅の光って、毎晩ちょっとずつちがうから。' },
+          { c: 'mio', e: 'think', t: 'ずっと聞きたかったんです。どうして一年も、ミオたちのライブを撮ってくれてたんですか？' },
+          { c: 'sena', e: 'think', t: '……わたし、しゃべるのが、へたなんだ。言いたいことが、いつも途中で消えちゃう。' },
+          { c: 'sena', e: 'normal', t: 'だから、ずっとカメラで話してた。「きれい」って言うかわりに、きれいなものを撮るの。' },
+          { c: 'sena', e: 'smile', t: '一年前の夜、ここで、つばさのシンセを聴いた。……音に、色が見えたの。紫と、水色と、ちょっとだけ金色。' },
+          { c: 'mio', e: 'surprised', t: '音に、色……！' },
+          { c: 'sena', e: 'shy', t: 'その色を、だれかに見せたかった。でも、言葉じゃ無理だから。……映像で、光の粒にした。' },
+          { c: 'mio', e: 'laugh', t: 'じゃあ、セナ先輩の映像って、ぜんぶ「きれい」って言ってるんですね！' },
+          { c: 'sena', e: 'surprised', t: '……そう、なのかも。' },
+          { c: 'sena', e: 'happy', t: 'ミオ。……今の顔、いいね。一枚、撮らせて。' },
+          { n: 'シャッターの音がして、駅前の光の中で、ミオがくるりと回った。' },
+        ],
+      },
+      {
+        id: 'm-yuu', arc: 'member', no: 17, title: 'ずーんと低い音', song: null, requiresCard: 'yuu', requiresRead: 's7',
+        summary: '毎週届く、東京からのビート。その中にはいつも、ユウだけに向けた、短い「宿題」がまじっていた。',
+        script: [
+          { bg: 'broadcast' },
+          { place: '放課後・放送室' },
+          { show: { yuu: 'L', tsubasa: 'R' } },
+          { c: 'yuu', e: 'think', t: 'うーん……ちがう……もっと、ずーんと……。' },
+          { c: 'tsubasa', e: 'think', t: 'ユウ、さっきから同じ低音ばかり鳴らしてるわね。' },
+          { c: 'yuu', e: 'shy', t: 'あっ、すみません！　レン先輩からの宿題なんです。毎週ビートといっしょに、ひとことだけ書いてあって。' },
+          { c: 'tsubasa', e: 'surprised', t: '宿題？' },
+          { c: 'yuu', e: 'normal', t: '一週目は「低音は、聴こえるより先に、感じる音だ」。二週目は「おなかで鳴らせ」。それで今週は……。' },
+          { n: 'ユウが見せたメモには、ひとことだけ。「休符も、低音だ」。' },
+          { c: 'yuu', e: 'think', t: '休符が低音って、どういう意味なんでしょう……？　鳴ってないのに……。' },
+          { c: 'tsubasa', e: 'smile', t: '……ふふ。先輩らしいわね。' },
+          { c: 'tsubasa', e: 'normal', t: 'ベースが一拍だまると、そのあとの一音が、何倍も大きく聴こえるでしょう。……だまるのも、音のうちってこと。' },
+          { c: 'yuu', e: 'surprised', t: '……あっ！' },
+          { n: 'ユウは、さっきのフレーズのまんなかに、ひとつだけ休符を置いた。' },
+          { n: 'ずん。……。ずーん。' },
+          { c: 'yuu', e: 'happy', t: 'ゆ、ゆれました！　今、床がゆれました！' },
+          { c: 'tsubasa', e: 'laugh', t: 'ええ。……合格よ。先輩にも、送ってあげなさい。' },
+        ],
+      },
+      {
+        id: 'm-chika', arc: 'member', no: 18, title: 'アンダンテのおやつ', song: null, requiresCard: 'chika', requiresRead: 'b5',
+        summary: 'いつものんびりのチカ。中学のころ、そののんびりのせいで、ある言葉を言われたことがあった。',
+        script: [
+          { bg: 'courtyard' },
+          { place: '昼休み・桜坂高校の中庭' },
+          { show: { chika: 'L', ruka: 'R' } },
+          { c: 'ruka', e: 'happy', t: 'チカちゃん、お昼いっしょに食べよー！' },
+          { c: 'chika', e: 'smile', t: 'はい〜。今日のおやつは、みかん大福です〜。' },
+          { c: 'ruka', e: 'laugh', t: 'お昼ごはんより先におやつ！？' },
+          { c: 'chika', e: 'think', t: '……ルカ先輩。わたし、中学のとき、合奏でいつも「遅い」って言われてたんです〜。' },
+          { c: 'chika', e: 'sad', t: 'みんなのテンポに追いつけなくて、トロンボーン、やめようかなって思ってました〜。' },
+          { c: 'ruka', e: 'surprised', t: 'そうだったの……？' },
+          { c: 'chika', e: 'smile', t: 'でも、桜坂祭で、ブラス・ブーケの曲を聴いたら……サビの前で、一回、音がふっと止まったでしょう〜？' },
+          { c: 'chika', e: 'happy', t: '急がなくても、音楽って、ちゃんと待っててくれるんだなぁって。……そう思ったんです〜。' },
+          { c: 'ruka', e: 'smile', t: 'チカちゃん……。' },
+          { c: 'ruka', e: 'laugh', t: 'うん！　それにね、チカちゃんのゆっくりなグリッサンド、わたし大好き！　満開の花が、ゆっくり開くみたいなんだもん！' },
+          { c: 'chika', e: 'happy', t: 'えへへ〜。……じゃあ、みかん大福、半分こしましょう〜。' },
+          { n: 'ふたりのお昼休みは、いつもより少しだけ、ゆっくり流れた。' },
+        ],
+      },
+      {
+        id: 'm-kanade', arc: 'member', no: 19, title: '分厚い練習ノート', song: null, requiresCard: 'kanade', requiresRead: 'b5',
+        summary: '吹奏楽部をやめていた一年のあいだ、カナデは何をしていたのか。ルカは、川原でその答えを見つける。',
+        script: [
+          { bg: 'riverside' },
+          { place: '夕方・川原' },
+          { show: { ruka: 'L' } },
+          { n: '夕方の川原に、クラリネットのロングトーンがのびていた。' },
+          { show: { ruka: 'L', kanade: 'R' } },
+          { c: 'ruka', e: 'surprised', t: 'カナデ！　ここで練習してたの？' },
+          { c: 'kanade', e: 'surprised', t: '……ルカ。どうしてここに。' },
+          { c: 'ruka', e: 'think', t: '部活のあと、いつもすぐ帰っちゃうから……気になって。' },
+          { n: 'ベンチの上には、ぼろぼろになったノートが何冊も積まれていた。' },
+          { c: 'ruka', e: 'surprised', t: 'これ、ぜんぶ練習ノート……？　日付、去年の春から、毎日……。' },
+          { c: 'kanade', e: 'shy', t: '……部活はやめた。でも、クラリネットまでやめたら、もう二度ともどれない気がしたの。' },
+          { c: 'kanade', e: 'think', t: 'だから、毎日ここで吹いてた。だれにも聴かせない音を、一年ぶん。' },
+          { c: 'ruka', e: 'sad', t: '……ずっと、ひとりで？' },
+          { c: 'kanade', e: 'normal', t: 'ひとりだったから、音程だけは正確になった。……ルカの音程は、相変わらずだけど。' },
+          { c: 'ruka', e: 'laugh', t: 'ひどーい！　……でも、カナデ。もう、ひとりで吹かなくていいからね。' },
+          { c: 'kanade', e: 'smile', t: '……知ってる。だから、もどったの。' },
+          { n: 'その日から、川原のロングトーンは、ふたつになった。' },
+        ],
+      },
+      {
+        id: 'm-souma', arc: 'member', no: 20, title: '祖父の竹', song: null, requiresCard: 'souma', requiresRead: 'y6',
+        summary: '尺八をゆずってくれたおじいさんに、ソウマはまだ一度も、今の音を聴かせていなかった。',
+        script: [
+          { bg: 'shrine' },
+          { place: '休日・宵宮神社の石段' },
+          { show: { souma: 'L', gou: 'R' } },
+          { c: 'gou', e: 'normal', t: '……ソウマ。今日は、どこへ。' },
+          { c: 'souma', e: 'smile', t: '祖父の家です。……宵ノ鈴に入ったこと、まだ話していなくて。' },
+          { c: 'souma', e: 'think', t: '祖父は、お祭りが止まってから、ずっと尺八を吹いていないんです。わたしの音を聴いたら、どう思うか……少し、こわくて。' },
+          { c: 'gou', e: 'think', t: '…………。' },
+          { c: 'gou', e: 'smile', t: '……いっしょに、行く。' },
+          { c: 'souma', e: 'surprised', t: 'えっ。' },
+          { c: 'gou', e: 'normal', t: '……太鼓があれば、息つぎのあいだも、リズムが止まらない。' },
+          { place: 'おじいさんの家・縁側' },
+          { n: '縁側に座ったおじいさんの前で、ソウマは尺八をかまえた。となりで、ゴウが小さな締太鼓をかまえる。' },
+          { n: '竹の音が、庭の空気をゆっくり満たしていく。その下で、太鼓が、とん、とん、と心臓みたいに鳴った。' },
+          { c: 'souma', e: 'shy', t: '……どう、でしたか。' },
+          { n: 'おじいさんは、しばらく目を閉じていた。それから、押し入れの奥から、もう一本の尺八を取りだした。' },
+          { c: 'souma', e: 'surprised', t: 'おじいちゃん……？' },
+          { n: '「来年の宵宮祭。……二本で、吹くか」' },
+          { c: 'souma', e: 'happy', t: '……はい！' },
+          { c: 'gou', e: 'laugh', t: '……ソイヤッ！！' },
+        ],
+      },
     ],
   };
 
   G.STORY.arcs = [
     { id: 'sorashido', title: 'ソラシド編', tab: 'ソラシド', en: 'SORASHIDO', lead: '屋上の鼻歌からはじまった、5人のバンド「ソラシド」の物語。', color: '#20C9B6' },
-    { id: 'stella', title: 'ステラリズム編', tab: 'ステラ', en: 'STELLARHYTHM', lead: 'となり町の夜の駅前で生まれた、3人のエレクトロユニット「ステラリズム」の物語。', color: '#7A3CFF' },
-    { id: 'brass', title: 'ブラス・ブーケ編', tab: 'ブラス', en: 'BRASS BOUQUET', lead: '部員が3人になった桜坂高校吹奏楽部。トランペット・サックス・パーカッションで鳴らす、音の花束の物語。', color: '#FF8A4C' },
-    { id: 'yoi', title: '宵ノ鈴編', tab: '宵ノ鈴', en: 'YOINOSUZU', lead: '五年前から止まったままの町の夏祭り。神社の娘と、三味線、和太鼓、篠笛の4人が、もう一度お祭りの鈴を鳴らす物語。', color: '#C8323C' },
-    { id: 'fes', title: '合同フェス編', tab: 'フェス', en: 'ALL STARS', lead: '4つのグループ、15人が集まった夏のフェス。グループをこえたシャッフルユニットで、新しい音をさがす物語。', color: '#20A8E0' },
+    { id: 'stella', title: 'ステラリズム編', tab: 'ステラ', en: 'STELLARHYTHM', lead: 'となり町の夜の駅前で生まれた、エレクトロユニット「ステラリズム」の物語。3人で始まり、第3部で新しい仲間がふたり加わって5人に。', color: '#7A3CFF' },
+    { id: 'brass', title: 'ブラス・ブーケ編', tab: 'ブラス', en: 'BRASS BOUQUET', lead: '部員が3人になった桜坂高校吹奏楽部。トランペット・サックス・パーカッションで鳴らす、音の花束の物語。第5話で、トロンボーンとクラリネットが加わって5人に。', color: '#FF8A4C' },
+    { id: 'yoi', title: '宵ノ鈴編', tab: '宵ノ鈴', en: 'YOINOSUZU', lead: '五年前から止まったままの町の夏祭り。神社の娘と、三味線、和太鼓、篠笛の4人が、もう一度お祭りの鈴を鳴らす物語。第6話で、尺八のソウマが加わって5人に。', color: '#C8323C' },
+    { id: 'fes', title: '合同フェス編', tab: 'フェス', en: 'ALL STARS', lead: '4つのグループ、15人が集まった夏のフェス。グループをこえたシャッフルユニットで、新しい音をさがす物語。（ステラリズム・ブラス・ブーケ・宵ノ鈴に新しいメンバーが加わる前のお話です）', color: '#20A8E0' },
     { id: 'member', title: 'メンバーエピソード', tab: 'メンバー', en: 'MEMBER', lead: 'メンバーひとりひとりの、ちょっと特別なお話。そのメンバーの★3以上のカードを手に入れると読めます。', color: '#FF7AA8' },
   ];
   // 部の見出し（ストーリー一覧で使う）
   G.STORY.parts = {
     sorashido: { 1: '第1部　はじまりの歌', 2: '第2部　つぎの音へ' },
-    stella: { 1: '第1部　星のリズム', 2: '第2部　昼と夜の合図' },
+    stella: { 1: '第1部　星のリズム', 2: '第2部　昼と夜の合図', 3: '第3部　五つの星座' },
   };
 
   G.chapterById = (id) => G.STORY.chapters.find((c) => c.id === id);
@@ -14034,7 +14613,7 @@ ${accessory(L, 'top')}
 <script>
 /*
  * ソラシド STAGE - カードデータ
- * メンバー15人 × ★2・★3・★4 の45枚。イラストはすべて SVG をコードで描いています（オリジナル）。
+ * メンバー20人 × ★2・★3・★4 の60枚（＋イベント限定カード）。イラストはすべて SVG をコードで描いています（オリジナル）。
  *   outfit: school=制服 / casual=私服 / stage=ステージ衣装
  *   skill : ライブ中に5秒間発動する効果
  *     score … その間のノーツのスコアが value% アップ
@@ -14071,6 +14650,12 @@ ${accessory(L, 'top')}
     C('ren', 2, '放送室の鍵', 'school', 'broadcast', 3190, { type: 'score', value: 20 }, 'normal'),
     C('ren', 3, '真夜中のループ', 'casual', 'station', 4790, { type: 'judge', value: 30 }, 'think'),
     C('ren', 4, 'フロアを揺らすビート', 'stage', 'livehouse', 7040, { type: 'score', value: 80 }, 'smile'),
+    C('sena', 2, 'ファインダーごしの夜', 'school', 'station', 3130, { type: 'score', value: 20 }, 'smile'),
+    C('sena', 3, 'プロジェクションの海', 'casual', 'seaside_eve', 4750, { type: 'judge', value: 30 }, 'wink'),
+    C('sena', 4, 'ひかりの演出家', 'stage', 'livehouse', 7000, { type: 'score', value: 80 }, 'happy'),
+    C('yuu', 2, 'レン先輩の弟子', 'school', 'broadcast', 3180, { type: 'heal', value: 10, heal: 100 }, 'happy'),
+    C('yuu', 3, 'うねる低音', 'casual', 'musicshop', 4770, { type: 'score', value: 40 }, 'laugh'),
+    C('yuu', 4, 'ベースドロップ', 'stage', 'fes', 7020, { type: 'score', value: 80 }, 'laugh'),
     C('ruka', 2, '昼休みのファンファーレ', 'school', 'courtyard', 3110, { type: 'score', value: 20 }, 'happy'),
     C('ruka', 3, 'さくら色のおでかけ', 'casual', 'sakura', 4740, { type: 'score', value: 40 }, 'wink'),
     C('ruka', 4, '満開のハイトーン', 'stage', 'gym', 6990, { type: 'score', value: 80 }, 'laugh'),
@@ -14080,6 +14665,12 @@ ${accessory(L, 'top')}
     C('haru', 2, 'なんでも打楽器', 'school', 'bandroom', 3140, { type: 'score', value: 20 }, 'laugh'),
     C('haru', 3, '商店街マーチ', 'casual', 'park', 4720, { type: 'score', value: 40 }, 'happy'),
     C('haru', 4, '大阪じこみのビート', 'stage', 'gym', 6970, { type: 'score', value: 80 }, 'laugh'),
+    C('chika', 2, 'のびーるスライド', 'school', 'bandroom_after', 3100, { type: 'heal', value: 10, heal: 100 }, 'smile'),
+    C('chika', 3, 'おやつと五線譜', 'casual', 'plaza', 4700, { type: 'heal', value: 30, heal: 150 }, 'happy'),
+    C('chika', 4, 'ゆるやかグリッサンド', 'stage', 'gym', 6950, { type: 'score', value: 80 }, 'laugh'),
+    C('kanade', 2, 'もどってきたクラリネット', 'school', 'courtyard', 3190, { type: 'judge', value: 10 }, 'normal'),
+    C('kanade', 3, 'さくら並木の練習曲', 'casual', 'sakura', 4780, { type: 'score', value: 40 }, 'shy'),
+    C('kanade', 4, 'まっすぐな一音', 'stage', 'gym', 7030, { type: 'judge', value: 70 }, 'smile'),
     C('suzu', 2, '鈴の音の朝', 'school', 'shrine', 3130, { type: 'score', value: 20 }, 'smile'),
     C('suzu', 3, '河原のロックンロール', 'casual', 'riverside', 4760, { type: 'judge', value: 30 }, 'wink'),
     C('suzu', 4, '宵宮の舞', 'stage', 'matsuri', 7000, { type: 'score', value: 80 }, 'happy'),
@@ -14092,6 +14683,9 @@ ${accessory(L, 'top')}
     C('shino', 2, '森のねこと篠笛', 'school', 'shrine', 3090, { type: 'score', value: 20 }, 'shy'),
     C('shino', 3, '風の音の楽譜', 'casual', 'riverside', 4700, { type: 'judge', value: 30 }, 'smile'),
     C('shino', 4, '月夜の笛の音', 'stage', 'matsuri', 6940, { type: 'heal', value: 70, heal: 200 }, 'smile'),
+    C('souma', 2, '竹林の尺八', 'school', 'shrine', 3150, { type: 'score', value: 20 }, 'normal'),
+    C('souma', 3, '川べりの息づかい', 'casual', 'riverside', 4740, { type: 'judge', value: 30 }, 'smile'),
+    C('souma', 4, '宵宮にひびく竹の音', 'stage', 'matsuri', 7010, { type: 'score', value: 80 }, 'smile'),
   ];
   G.cardById = (id) => G.CARDS.find((c) => c.id === id);
   G.RARITY = {
@@ -14133,6 +14727,44 @@ ${accessory(L, 'top')}
 
   /* ---------------- エリア会話 ---------------- */
   G.AREA_TALKS = [
+    /* ---------- 新しいメンバー（v2.24） ---------- */
+    {
+      id: 't-projector', area: 'station', chars: ['sena', 'yuu'], title: '駅前スクリーン計画',
+      script: [
+        { bg: 'station' }, { show: { sena: 'L', yuu: 'R' } },
+        { c: 'yuu', e: 'surprised', t: 'セナ先輩、なにを見上げてるんですか？' },
+        { c: 'sena', e: 'think', t: '駅ビルの壁。……あそこ、まっ白で、大きいでしょ。' },
+        { c: 'yuu', e: 'think', t: 'はい。……まさか。' },
+        { c: 'sena', e: 'smile', t: 'いつか、あそこに映したい。ステラリズムの光を、駅じゅうに。' },
+        { c: 'yuu', e: 'happy', t: 'じゃあ、ぼくは駅じゅうの床をゆらす低音を作ります！　……あ、怒られますかね！？' },
+        { c: 'sena', e: 'laugh', t: '……ふふ。そのときは、いっしょに怒られよう。' },
+      ],
+    },
+    {
+      id: 't-slide', area: 'courtyard', chars: ['chika', 'kanade'], title: 'のびーると、まっすぐ',
+      script: [
+        { bg: 'courtyard' }, { show: { kanade: 'L', chika: 'R' } },
+        { c: 'kanade', e: 'serious', t: 'チカ。今のグリッサンド、のびすぎ。次の小節に入ってたわ。' },
+        { c: 'chika', e: 'smile', t: 'えへへ〜、つい、のびーるってしちゃいました〜。' },
+        { c: 'kanade', e: 'think', t: '……でも、音色はいい。やわらかくて、あったかい。' },
+        { c: 'chika', e: 'surprised', t: 'わぁ、カナデ先輩にほめられた〜。' },
+        { c: 'kanade', e: 'shy', t: 'ほ、ほめてない。……事実を言っただけ。もう一回、ゆっくり合わせるわよ。' },
+        { c: 'chika', e: 'happy', t: 'は〜い。ゆっくりなら、まかせてください〜。' },
+      ],
+    },
+    {
+      id: 't-bamboo', area: 'shrine', chars: ['souma', 'gou'], title: '息と太鼓',
+      script: [
+        { bg: 'shrine' }, { show: { gou: 'L', souma: 'R' } },
+        { c: 'souma', e: 'smile', t: 'ゴウ先輩。境内のそうじ、手伝います。' },
+        { c: 'gou', e: 'normal', t: '……たすかる。' },
+        { n: 'ふたりは、だまって落ち葉をはきはじめた。ざっ、ざっ、と竹ぼうきの音がそろっていく。' },
+        { c: 'souma', e: 'think', t: '……ブン、ツ、ブブン、ツ。' },
+        { c: 'gou', e: 'smile', t: '……ドン、ドドン。' },
+        { c: 'souma', e: 'laugh', t: 'ふふ。そうじが、合奏になってしまいましたね。' },
+        { c: 'gou', e: 'laugh', t: '……ソイヤッ！！' },
+      ],
+    },
     /* ---------- そよかぜ公園 ---------- */
     {
       id: 't-bandshell', area: 'plaza', chars: ['mio', 'suzu'], title: '野外ステージの反響',
@@ -14437,6 +15069,11 @@ ${accessory(L, 'top')}
     suzu: ['宵宮のバーチャルライブ、ぜひ見にきてくださいね。', 'ライブの前は、深呼吸をひとつ。しゃらん。'],
     kaede: ['チャレンジ、受けて立つ！　あたしのカードで勝負して！', 'ほら、早くえらんで！　バチがうずうずしてる！'],
     gou: ['……ライブ、がんばれ。……応援してる。', '……太鼓の曲なら、まかせろ。'],
+    sena: ['MV、ちゃんと最後まで見てね。光の演出、ぜんぶ意味があるから。', 'バーチャルライブの映像、わたしが作ったの。……どう？'],
+    yuu: ['チャレンジライブ、ぼくのカードでも挑戦してください！', 'みんなでライブ、低音担当はおまかせください！'],
+    chika: ['ライブ、いっしょにのびーるってしよ〜。', 'おやつ休憩してから、もう一曲いく〜？'],
+    kanade: ['練習モードは、苦手なところだけ何度でも練習できるわ。', 'ライブの前に、チューニングは済ませた？'],
+    souma: ['バーチャルライブでは、尺八のソロもあるんですよ。', '……では、一曲。息を合わせて、まいりましょう。'],
     shino: ['……MV、見ると、新しいメロディが浮かぶんです。', 'あの……みんなでライブ、いっしょに出ても、いいですか……？'],
   };
 
@@ -14800,7 +15437,8 @@ ${accessory(L, 'top')}
  *   loop  … くり返すセクション（2つ以上）。つなぎ目が自然になるように、audio.js がくり返しの位置を決めます
  *
  *   title … タイトル（「ソ・ラ・シ・ド」とかけあがるテーマ）
- *   home  … ホーム・メンバー・ガチャなど（放課後の商店街をのんびり歩く感じ）
+ *   home  … ホーム・メンバーなど（放課後の商店街をのんびり歩く感じ）
+ *   gacha … ガチャ（きらきらのベルと、ドラムロールの「どきどき」。v2.24）
  *   cafe  … ことりカフェ（ボサノバ）
  *   event … イベント（ブラスのにぎやかなお祭り）
  *   live  … ライブメニュー・リザルトなど（これからライブ！のわくわく）
@@ -15059,6 +15697,65 @@ ${accessory(L, 'top')}
       },
     },
 
+    /* ---------------- ガチャ（きらきら・どきどき） ---------------- */
+    gacha: {
+      id: 'bgm-gacha', title: 'きらきらプレゼント・パレード（ガチャ）', bpm: 132, root: 64, scale: 'major', arpInst: 'chip',
+      intro: ['intro'], loop: ['a', 'b', 'c'],
+      sections: {
+        // 宝箱のふたが開くような、きらきらのかけあがり
+        intro: {
+          chords: ['1', '4', '5', '5'],
+          melInst: 'bell',
+          mel: ["5':2 1'':2 3'':2 5'':2 3'':2 1'':2 5':4", "4':2 6':2 1'':2 4'':2 1'':2 6':2 4':4", "5':2 7':2 2'':2 5'':2 2'':2 7':2 5':4", "5'':12 r:4"],
+          drums: 'build', bass: 'whole', pad: true, arp: 'sparkle', fill: 'riser',
+        },
+        // はずむメインテーマ（ベルのメロディと、ピコピコの分散和音）
+        a: {
+          chords: ['1', '5', '6', '4', '1', '5', '4', '5'],
+          melInst: 'bell',
+          mel: [
+            "1'':2 1'':2 3'':2 5'':4 3'':2 1'':4",
+            "7':2 7':2 2'':2 5'':4 2'':2 7':4",
+            "6':2 1'':2 3'':2 6'':4 5'':2 3'':4",
+            "4'':4 3'':2 1'':2 6':8",
+            "1'':2 1'':2 3'':2 5'':4 6'':2 5'':4",
+            "5'':2 4'':2 2'':2 7':4 2'':2 5'':4",
+            "6'':4 5'':2 4'':2 3'':4 1'':4",
+            "2'':6 r:2 5':2 6':2 7':4",
+          ],
+          drums: 'bounce', bass: 'octave', pad: true, arp: 'up16', fill: 'light',
+        },
+        // 「当たれ！」のサビ（明るいシンセのリード）
+        b: {
+          chords: ['4', '5', '3', '6', '4', '5', '1', '1'],
+          melInst: 'saw',
+          mel: [
+            "6':4 1'':4 4'':6 3'':2",
+            "2'':4 7':4 5':6 2'':2",
+            "3'':4 5'':4 3'':4 7':4",
+            "1'':12 r:4",
+            "6':4 1'':4 4'':4 6'':4",
+            "5'':4 4'':4 2'':4 7':4",
+            "1'':2 2'':2 3'':2 5'':10",
+            "5'':8 r:8",
+          ],
+          drums: 'four', bass: 'eighth', pad: true, pump: true, arp: 'trance16', crash: true, fill: 'normal',
+        },
+        // ドラムロールの「どきどき」→ はじめにもどる
+        c: {
+          chords: ['6', '4', '5', '5'],
+          melInst: 'bell',
+          mel: [
+            "3'':2 r:2 3'':2 r:2 1'':2 r:2 6':4",
+            "4'':2 r:2 4'':2 r:2 1'':2 r:2 6':4",
+            "5':2 6':2 7':2 1'':2 2'':2 3'':2 4'':2 5'':2",
+            "5'':2 r:2 5'':2 r:2 5'':8",
+          ],
+          drums: 'build', bass: 'quarter', pad: true, arp: 'up16', fill: 'snare16',
+        },
+      },
+    },
+
     /* ---------------- 和風（宵宮神社・お祭りの場面） ---------------- */
     wa: {
       id: 'bgm-wa', title: '宵宮の鈴（和風）', bpm: 96, root: 62, scale: 'phrygian', arpInst: 'bell',
@@ -15122,6 +15819,55 @@ ${accessory(L, 'top')}
   'use strict';
   const G = window.Game;
   G.NEWS = [
+    {
+      id: 'n-2026-11-v227', date: '2026-11-07', tag: 'update',
+      title: 'ライブの描画がなめらかになりました',
+      body: [
+        'ライブ中に毎回描きなおす量を減らして、ノーツがよりなめらかに流れるようにしました。',
+        '・レーンや判定ラインなど動かない部分は、最初に1回だけ描くようにしました',
+        '・COMBO の数字や PERFECT などの文字、光の演出は、作り置きの絵を使うようにしました',
+        '・背景のぼかしも、最初に1回だけ作るようにしました',
+        'それでも重いときは「設定 → 演出を軽くする」をオンにしてみてください。',
+      ],
+    },
+    {
+      id: 'n-2026-11-v226', date: '2026-11-07', tag: 'update',
+      title: 'ガチャに演出がつきました！',
+      body: [
+        'ガチャを引くと、ステージの上のレコードが回りだします。まわりの光の色に注目！　青 → ピンク → 虹色と変わったら……？',
+        '・裏向きのカードが並んで、1枚ずつめくれます。カードの裏のふちの色もヒントです',
+        '・★4 が出ると、メンバーの大きなカットインと、ひとことが見られます（20人ぶん）',
+        '・結果の画面から「もう10回引く」ですぐに次を引けます',
+        '・タップで先へ進み、右上の SKIP で結果まで飛ばせます',
+      ],
+      go: { label: 'ガチャへ', screen: 'gacha' },
+    },
+    {
+      id: 'n-2026-11-v225', date: '2026-11-07', tag: 'important', pin: true,
+      title: 'スコアのしくみが変わりました／マイ楽曲が動画に対応',
+      body: [
+        'スコアが「スコアの大きさ × 判定率」になり、編成の総合力でスコアが大きく変わるようになりました。',
+        '・スコアの大きさ ＝ 300,000 ＋ 総合力 × 13（総合力 50,000 で 950,000）',
+        '・ランクの基準: S 100万 ／ A 85万 ／ B 70万 ／ C 50万。総合力 50,000 の編成で、ほとんどミスなく遊んでやっと S に届くくらいです',
+        '・ボスラッシュは全曲の合計スコアで記録し、ランクは1曲あたりの平均で決まります。チャレンジライブの★の点数も新しいスコアに合わせました',
+        '・これまでのハイスコアとランクは、そのまま残ります',
+        'マイ楽曲で動画ファイル（MP4 / WebM など）を読み込めるようになりました。映像が入っていれば、選曲画面とライブの背景に、音楽とぴったり合わせて映像が流れます。',
+      ],
+      go: { label: '選曲へ', screen: 'select', params: {} },
+    },
+    {
+      id: 'n-2026-11-v224', date: '2026-11-07', tag: 'important',
+      title: 'すべてのグループが5人に！　新メンバー5人が登場',
+      body: [
+        'ステラリズム・ブラス・ブーケ・宵ノ鈴に、新しいメンバーが加わりました。4つのグループが、すべて5人になります。',
+        '・ステラリズム … 月島セナ（VJ・映像）、春風ユウ（シンセベース）',
+        '・ブラス・ブーケ … 花村チカ（トロンボーン）、相沢カナデ（クラリネット）',
+        '・宵ノ鈴 … 橘ソウマ（尺八）',
+        '加入のお話「五つの星座」（ステラリズム編 第7話）・「花束は五輪」（ブラス・ブーケ編 第5話）・「五つめの鈴」（宵ノ鈴編 第6話）を読むと、ホームやライブに出てくるようになります。新しいメンバーの★2〜★4カード（15枚）はガチャに追加され、メンバーエピソード5話とエリア会話3話も読めます。',
+        '・ガチャ画面に、ガチャ専用の BGM「きらきらプレゼント・パレード」が流れるようになりました',
+      ],
+      go: { label: 'ストーリーへ', screen: 'story', params: { arc: 'stella' } },
+    },
     {
       id: 'n-2026-11-v223', date: '2026-11-07', tag: 'update',
       title: 'ホームに新しいエリアが3つ！（街の動作も軽くなりました）',
@@ -15332,6 +16078,69 @@ ${accessory(L, 'top')}
       'あ……こんにちは。来てくれて、その……うれしい、です。',
       'こんばんは……。夜の音は、やわらかくて、好きです。',
     ],
+    sena: [
+      'おはよう。朝の光って、いちばん素直な色なんだよ。',
+      'こんにちは。……今の顔、いいね。一枚、撮らせて。',
+      'こんばんは。夜の街は、光がいちばんきれいに映るの。',
+    ],
+    yuu: [
+      'おはようございます！　朝イチの低音、ずーんと響かせます！',
+      'こんにちは！　今日も来てくれたんですね！　あ、早口になってたらすみません！',
+      'こんばんは！　レン先輩から、今週のビートが届いたんです！',
+    ],
+    chika: [
+      'おはよ〜。朝ごはんのあとのおやつ、もう食べちゃった〜。',
+      'こんにちは〜。今日も、のびーるって、いこうね〜。',
+      'こんばんは〜。夜のトロンボーンは、ちょっとだけ小さく吹くの〜。',
+    ],
+    kanade: [
+      'おはよう。朝の練習は、ロングトーンからよ。',
+      'こんにちは。……べつに、待ってたわけじゃないけど。来てくれてよかった。',
+      'こんばんは。今日の練習、ノートに書いた？',
+    ],
+    souma: [
+      'おはようございます。朝の竹林は、風の音がよく聴こえます。',
+      'こんにちは。……ブン、ツ。あ、失礼しました。ようこそ。',
+      'こんばんは。夜の尺八は、月まで届く気がするんです。',
+    ],
+  };
+})();
+
+</script>
+<script>
+/*
+ * ソラシド STAGE - data/gacha.js
+ * ガチャの演出（js/gachafx.js）で、★4 カードが出たときにメンバーが言うひとこと
+ * 文章はすべてオリジナルです。
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  G.GACHA_LINES = {
+    // ソラシド
+    hiyori: '見つけてくれて、ありがとう！　いちばん大きな声で歌うから、ちゃんと聴いててね！',
+    sota: '待たせたな！　ここからは、オレのギターが主役だぜ！',
+    kotone: 'じゃーん！　あたしのベース、最前列までひびかせちゃいます！',
+    riku: '……来たか。……ビートは、まかせろ。',
+    yuine: 'ここからは、わたしの鍵盤で夜明けを連れてくるわね。',
+    // ステラリズム
+    tsubasa: 'わたしを引き当てるなんて、見る目あるじゃない。……少しだけ、ほめてあげる。',
+    mio: 'くるりんっ！　ミオのステージ、いちばん前で見ててね！',
+    ren: '……フロアの準備はできてる。さあ、始めようか。',
+    sena: 'いい光。……今日のステージ、きっと最高の一枚になるよ。',
+    yuu: 'ぼ、ぼくでいいんですか！？　低音、ずーんと響かせます！',
+    // ブラス・ブーケ
+    ruka: 'パッパラパー！　おめでとうのファンファーレ、あなたのために吹きます！',
+    itsuki: 'お迎えいただき、光栄です。とびきりの音色をお届けしますね。',
+    haru: 'おおきに！　リズムはまかしとき、いっしょにお祭りにしよか！',
+    chika: 'わ〜い、呼んでくれた〜。トロンボーン、のびーるって吹くね〜。',
+    kanade: '……べつに、うれしくなんか。……ううん、ありがとう。練習の成果、見せてあげる。',
+    // 宵ノ鈴
+    suzu: 'しゃらん。……ご縁がつながりましたね。精いっぱい、舞わせていただきます。',
+    kaede: 'やっと来たわね！　あたしの速弾き、しっかりついてきなさいよ！',
+    gou: '……よく呼んでくれた。……どん、と響かせる。',
+    shino: 'あ、あの……わたしで、いいんですか……？　笛の音、届けます……！',
+    souma: 'お招きありがとうございます。竹の音で、月まで届けてみせます。',
   };
 })();
 
@@ -18085,6 +18894,94 @@ ${accessory(L, 'top')}
 
   /* ---------- ノーツの音 ---------- */
   // ベルの音（金ノーツ・ランクアップ）: 基音と、少しずれた高い倍音
+  /* ---------- ガチャの演出の効果音（v2.26。js/gachafx.js） ---------- */
+  // 針を落とす: 低い「ボン」＋「プツッ」＋ レコードのパチパチ
+  function makeGDrop(ctx) {
+    return stereoBuffer(ctx, 0.7, 0.7, (L, R, sr, rnd) => {
+      const n = L.length;
+      const thump = addTone(new Float32Array(n), sr, 0, 72, 13, 1, 1.4);
+      const click = biquad(noise(n, sr, rnd, (t) => Math.exp(-t * 170)), 'hp', 1600, 0.7, sr);
+      const crackle = new Float32Array(n);
+      for (let i = 0; i < n; i++) if (rnd() > 0.997) crackle[i] = rnd() * Math.exp((-i / sr) * 2.5);
+      biquad(crackle, 'hp', 2400, 0.7, sr);
+      mixIn(L, R, thump, 0, 0.9);
+      mixIn(L, R, click, 0, 0.45);
+      mixIn(L, R, crackle, -0.3, 0.5);
+    });
+  }
+  // レコードが回りだす: 上がっていく風の音（左右）＋ ふるえながら上がる音
+  function makeGRise(ctx) {
+    return stereoBuffer(ctx, 1.6, 0.5, (L, R, sr, rnd) => {
+      const n = L.length;
+      const env = (t) => Math.min(1, t * 1.4) * (t < 1.35 ? 1 : Math.max(0, 1 - (t - 1.35) / 0.25));
+      const fAt = (t) => 380 * Math.pow(12, Math.min(1, t / 1.45));
+      mixIn(L, R, sweepBP(noise(n, sr, rnd, env), fAt, 3, sr), -0.55, 0.6);
+      mixIn(L, R, sweepBP(noise(n, sr, rnd, env), (t) => fAt(t) * 1.07, 3, sr), 0.55, 0.6);
+      const s = new Float32Array(n);
+      let ph = 0;
+      for (let i = 0; i < n; i++) {
+        const t = i / sr;
+        ph += (TAU * 220 * Math.pow(4, Math.min(1, t / 1.45))) / sr;
+        s[i] = (Math.sin(ph) + 0.3 * Math.sin(2 * ph)) * env(t) * (0.6 + 0.4 * Math.sin(TAU * 9 * t));
+      }
+      mixIn(L, R, s, 0, 0.16);
+    });
+  }
+  // 光の色が変わる: ソ・シ・レ・ソ・シとかけあがるベル ＋ きらきら
+  function makeGUp(ctx) {
+    return stereoBuffer(ctx, 1.1, 0.7, (L, R, sr, rnd) => {
+      const n = L.length;
+      [783.99, 987.77, 1174.66, 1567.98, 1975.53].forEach((f, k) => {
+        const x = new Float32Array(n);
+        addTone(x, sr, k * 0.045, f, 6, 1);
+        addTone(x, sr, k * 0.045, f * 2.76, 16, 0.25);
+        mixIn(L, R, x, -0.6 + (1.2 * k) / 4, 0.3);
+      });
+      const tw = (t) => Math.exp(-t * 4) * Math.min(1, t * 40) * (0.55 + 0.45 * Math.sin(TAU * 24 * t));
+      mixIn(L, R, biquad(noise(n, sr, rnd, tw), 'hp', 8000, 0.7, sr), -0.8, 0.18);
+      mixIn(L, R, biquad(noise(n, sr, rnd, (t) => tw(t + 0.011)), 'hp', 8000, 0.7, sr), 0.8, 0.18);
+    });
+  }
+  // カードをめくる: 「シュパッ」＋ 小さな「チン」
+  function makeGFlip(ctx) {
+    return stereoBuffer(ctx, 0.22, 0.5, (L, R, sr, rnd) => {
+      const n = L.length;
+      const sw = sweepBP(noise(n, sr, rnd, (t) => Math.min(1, t * 220) * Math.exp(-t * 28)), (t) => 2600 * Math.pow(2.2, Math.min(1, t / 0.08)), 2, sr);
+      mixIn(L, R, sw, 0, 0.8);
+      mixIn(L, R, addTone(new Float32Array(n), sr, 0.025, 1760, 48, 1), 0, 0.22);
+    });
+  }
+  // ★4: 低い「ドーン」＋ ぱーっと広がる和音（ド・ミ・ソ・シ・レ・ソ）＋ かけあがるベル ＋ 風
+  function makeGStar(ctx) {
+    return stereoBuffer(ctx, 2.1, 0.82, (L, R, sr, rnd) => {
+      const n = L.length;
+      mixIn(L, R, addTone(new Float32Array(n), sr, 0, 55, 3.6, 1, 1.6), 0, 0.7);
+      // 和音: 左右に少しずらした2つずつ。sin(2x)・sin(3x) は sin と cos から作って軽くする
+      const env = new Float32Array(n);
+      for (let i = 0; i < n; i++) env[i] = Math.min(1, (i / sr) * 30) * Math.exp((-i / sr) * 1.5) * 0.085;
+      [523.25, 659.25, 783.99, 987.77, 1174.66, 1567.98].forEach((f) => {
+        for (const det of [-1, 1]) {
+          const out = det < 0 ? L : R, other = det < 0 ? R : L;
+          const w = (TAU * f * (1 + det * 0.003)) / sr;
+          for (let i = 0; i < n; i++) {
+            const ph = w * i, sn = Math.sin(ph), cs = Math.cos(ph);
+            const v = (sn + 0.7 * sn * cs + 0.12 * (3 * sn - 4 * sn * sn * sn)) * env[i];
+            out[i] += v;
+            other[i] += v * 0.5;
+          }
+        }
+      });
+      [2093, 2637.02, 3135.96, 3951.07, 4186.01].forEach((f, k) => {
+        mixIn(L, R, addTone(new Float32Array(n), sr, 0.08 + k * 0.07, f, 5, 1), -0.7 + 0.35 * k, 0.12);
+      });
+      const sw = sweepBP(noise(n, sr, rnd, (t) => Math.min(1, t * 40) * Math.exp(-t * 3.2)), (t) => 700 * Math.pow(10, Math.min(1, t / 0.5)), 1.5, sr);
+      mixIn(L, R, sw, 0, 0.38);
+      const tw = (t) => (t < 0.15 ? 0 : Math.exp(-(t - 0.15) * 2.2) * (0.5 + 0.5 * Math.sin(TAU * 21 * t)));
+      mixIn(L, R, biquad(noise(n, sr, rnd, tw), 'hp', 8500, 0.7, sr), -0.9, 0.16);
+      mixIn(L, R, biquad(noise(n, sr, rnd, (t) => tw(t + 0.013)), 'hp', 8500, 0.7, sr), 0.9, 0.16);
+    });
+  }
+
   const bell = (t, f, d) => (t < d ? 0 : Math.sin(TAU * f * (t - d)) * Math.exp(-(t - d) * 7) + 0.35 * Math.sin(TAU * f * 2.76 * (t - d)) * Math.exp(-(t - d) * 16));
 
   // 旧: v2.20 までの音（ピッと短い電子音）
@@ -18282,7 +19179,7 @@ ${accessory(L, 'top')}
         return lead * 0.1 + (bell(t, 2093, 0.3) + bell(t, 2637, 0.38) + bell(t, 3136, 0.46)) * 0.07 + (t > 0.255 ? r() * 0.05 * Math.exp(-(t - 0.255) * 3.5) * (0.5 + 0.5 * Math.sin(TAU * 27 * t)) : 0);
       });
       // 場面の効果音（歓声・ドア・足音）もその場で合成する（少し重いので、あとで手のあいたときに作る）
-      this.lazySE = { cheer: makeCheer, door: makeDoor, steps: makeSteps };
+      this.lazySE = { cheer: makeCheer, door: makeDoor, steps: makeSteps, gDrop: makeGDrop, gRise: makeGRise, gUp: makeGUp, gFlip: makeGFlip, gStar: makeGStar };
       setTimeout(() => this.warmSE(), 3000);
       BGM.onReady();
       return ctx;
@@ -18301,6 +19198,14 @@ ${accessory(L, 'top')}
       this.music.gain.value = Math.pow(s.musicVol / 100, 1.6);
       this.se.gain.value = Math.pow(s.seVol / 100, 1.6) * 0.9;
       BGM.applyVolume();
+    },
+    // 指定した効果音を、手のあいたときに少しずつ作っておく（ガチャ画面に入ったときなど）
+    warm(names) {
+      if (!this.ctx || !this.lazySE) return;
+      const left = names.filter((k) => !this.seBuf[k] && this.lazySE[k]);
+      if (!left.length) return;
+      this.seBuf[left[0]] = this.lazySE[left[0]](this.ctx);
+      if (left.length > 1) setTimeout(() => this.warm(left.slice(1)), 60);
     },
     warmSE() {
       const left = Object.keys(this.lazySE || {}).filter((k) => !this.seBuf[k]);
@@ -18466,7 +19371,7 @@ ${accessory(L, 'top')}
 
   /*
    * BGM: data/bgm.js の曲を、楽曲と同じシンセでその場で合成して、くり返し流す（音声ファイルは使わない）
-   *   name … 'title' | 'home' | 'cafe' | 'event' | 'live' | 'wa' | null（止める）
+   *   name … 'title' | 'home' | 'cafe' | 'event' | 'live' | 'wa' | 'gacha' | null（止める）
    * つなぎ目: intro → loop を1回 → loop の最初のセクションをもう1回、の順で合成して、
    *   「loop の2つ目のセクションのはじまり」から「最後まで」をくり返す。
    *   こうすると、くり返しのはじめにも、前の小節の音の残り（リバーブなど）がちゃんと入る。
@@ -18576,7 +19481,7 @@ ${accessory(L, 'top')}
     // よく使う次の BGM を、手のあいたときに先に作っておく（タイトル → ホーム、ホーム → ライブ）
     prefetch(name) {
       clearTimeout(this.prefetchT);
-      const next = { title: 'home', home: 'live', cafe: 'live', wa: 'live', live: 'home', event: 'live' }[name];
+      const next = { title: 'home', home: 'live', cafe: 'live', wa: 'live', live: 'home', event: 'live', gacha: 'home' }[name];
       if (!next || this.cache.has(next)) return;
       this.prefetchT = setTimeout(() => {
         if (G.UI && G.UI.cur === 'live') return;
@@ -18602,8 +19507,17 @@ ${accessory(L, 'top')}
       this.fadeCur(sec != null ? sec : 0.5);
     },
     applyVolume() {
-      if (this.bus) this.bus.gain.value = this.vol();
+      if (this.bus) this.bus.gain.value = this.vol() * (this.ducked ? 0.3 : 1);
       if (this.vol() > 0 && this.want && !this.cur && A.ctx) this.onReady();
+    },
+    // ガチャの演出などのあいだ、BGM を小さくする（on: true で小さく / false でもとにもどす）
+    duck(on) {
+      this.ducked = !!on;
+      if (!this.bus || !A.ctx) return;
+      const g = this.bus.gain, now = A.ctx.currentTime;
+      g.cancelScheduledValues(now);
+      g.setValueAtTime(g.value, now);
+      g.setTargetAtTime(this.vol() * (on ? 0.3 : 1), now, 0.18);
     },
   };
   A.bgm = BGM;
@@ -18625,9 +19539,10 @@ ${accessory(L, 'top')}
 <script>
 /*
  * ソラシド STAGE - local.js
- * 「マイ楽曲」: 遊ぶ人が自分の手元の音声ファイルを読み込んで遊べる機能。
+ * 「マイ楽曲」: 遊ぶ人が自分の手元の音声ファイル（または動画ファイル）を読み込んで遊べる機能。
  *
- * - 音声ファイルはこのブラウザの中（IndexedDB）だけに保存され、外部には送られません。
+ * - ファイルはこのブラウザの中（IndexedDB）だけに保存され、外部には送られません。
+ * - 動画ファイル（MP4 / WebM など）に映像が入っていれば、ライブの背景と選曲画面のジャケットに、その映像を流します（v2.25）。
  * - ゲーム本体（GitHub で公開するファイル）には、他人の楽曲は一切含まれません。
  * - 読み込んだ曲は、テンポ（BPM）・拍・小節の頭・音の立ち上がりを解析して、
  *   ほかの曲と同じしくみ（chart.js）で 4 難易度の譜面を自動で作ります。
@@ -18641,6 +19556,34 @@ ${accessory(L, 'top')}
   const STORE = 'songs';
   const ANALYSIS_VER = 1;
   const MAX_BYTES = 60 * 1024 * 1024;
+  const MAX_VIDEO_BYTES = 200 * 1024 * 1024; // 動画は少し大きくてもよい
+  const VIDEO_EXT = /\.(mp4|m4v|mov|webm|mkv|ogv)$/i;
+  const looksVideo = (type, name) => /^video\//.test(type || '') || VIDEO_EXT.test(name || '');
+  const videoType = (rec) => (/^video\//.test(rec.type || '') ? rec.type
+    : /\.webm$/i.test(rec.name) ? 'video/webm' : /\.mov$/i.test(rec.name) ? 'video/quicktime' : /\.ogv$/i.test(rec.name) ? 'video/ogg' : 'video/mp4');
+  // 動画に映像が入っているか（音だけの MP4 もあるので、実際に読んでみる）
+  function probeVideo(url) {
+    return new Promise((resolve) => {
+      const v = document.createElement('video');
+      v.muted = true;
+      v.preload = 'metadata';
+      let t = 0;
+      const done = (ok) => {
+        clearTimeout(t);
+        v.onloadedmetadata = v.onerror = null;
+        v.removeAttribute('src');
+        try {
+          v.load();
+        } catch (e) {}
+        resolve(ok);
+      };
+      v.onloadedmetadata = () => done(v.videoWidth > 0 && v.videoHeight > 0);
+      v.onerror = () => done(false);
+      t = setTimeout(() => done(false), 8000);
+      v.src = url;
+    });
+  }
+  const videoUrls = new Map();
 
   /* ---------------- IndexedDB（使えなければメモリだけ） ---------------- */
   let dbp = null;
@@ -19141,7 +20084,9 @@ ${accessory(L, 'top')}
       sections: {},
       order: [],
       soflan: a.soflan && a.soflan.length ? a.soflan : null,
+      video: !!rec.video, // 映像つき（ライブの背景に流す）
     };
+    if (rec.video) song.desc += '映像つきの動画なので、ライブの背景に映像が流れます。';
     song.C = buildC(song, a);
     return song;
   }
@@ -19185,7 +20130,8 @@ ${accessory(L, 'top')}
     // 音声ファイルを読み込んで解析し、曲として追加する
     async importFile(file, onProgress) {
       if (!file) throw new Error('ファイルがありません');
-      if (file.size > MAX_BYTES) throw new Error('ファイルが大きすぎます（60MBまで）');
+      const isVideo = looksVideo(file.type, file.name);
+      if (file.size > (isVideo ? MAX_VIDEO_BYTES : MAX_BYTES)) throw new Error(isVideo ? 'ファイルが大きすぎます（動画は200MBまで）' : 'ファイルが大きすぎます（60MBまで）');
       await G.Audio.resume();
       const ctx = G.Audio.ctx;
       if (!ctx) throw new Error('このブラウザでは音声を扱えません');
@@ -19196,13 +20142,20 @@ ${accessory(L, 'top')}
       try {
         buffer = await ctx.decodeAudioData(bytes.slice(0));
       } catch (e) {
-        throw new Error('この形式の音声は読み込めませんでした（MP3 / WAV / OGG / M4A などを使ってください）');
+        throw new Error(isVideo
+          ? 'この動画の音声は読み込めませんでした（MP4（H.264 / AAC）や WebM の動画がおすすめです）'
+          : 'この形式の音声は読み込めませんでした（MP3 / WAV / OGG / M4A などを使ってください）');
       }
       if (buffer.duration < 15) throw new Error('曲が短すぎます（15秒以上の音声を使ってください）');
       if (buffer.duration > 600) throw new Error('曲が長すぎます（10分までの音声を使ってください）');
       const analysis = await analyze(buffer, onProgress);
       const old = this.records.get(id);
       const rec = { id, name: file.name, title: old ? old.title : titleFromName(file.name), size: file.size, type: file.type, data: bytes, analysis, created: old ? old.created : Date.now() };
+      // 動画なら、映像が入っているかを調べておく
+      if (isVideo) {
+        if (onProgress) onProgress(0.99, '映像を確認しています');
+        rec.video = await probeVideo(this.videoURL(id, rec));
+      } else rec.video = false;
       this.records.set(id, rec);
       try {
         await store('readwrite', (os) => os.put(rec));
@@ -19221,6 +20174,33 @@ ${accessory(L, 'top')}
       await G.Audio.resume();
       return G.Audio.ctx.decodeAudioData(rec.data.slice(0));
     },
+    // 映像の URL（このブラウザの中だけの blob: URL）
+    videoURL(id, recIn) {
+      if (videoUrls.has(id)) return videoUrls.get(id);
+      const rec = recIn || this.records.get(id) || mem.get(id);
+      if (!rec || !rec.data) return null;
+      const url = URL.createObjectURL(new Blob([rec.data], { type: videoType(rec) }));
+      videoUrls.set(id, url);
+      return url;
+    },
+    // 映像つきか（前のバージョンで読み込んだ動画は、はじめて遊ぶときに調べて覚えておく）
+    async hasVideo(id) {
+      const rec = this.records.get(id) || mem.get(id);
+      if (!rec) return false;
+      if (typeof rec.video === 'boolean') return rec.video;
+      if (!looksVideo(rec.type, rec.name)) {
+        rec.video = false;
+        return false;
+      }
+      const ok = await probeVideo(this.videoURL(id));
+      rec.video = ok;
+      const song = G.songById(id);
+      if (song) song.video = ok;
+      try {
+        await store('readwrite', (os) => os.put(rec));
+      } catch (e) {}
+      return ok;
+    },
     async rename(id, title) {
       const rec = this.records.get(id);
       if (!rec) return;
@@ -19233,6 +20213,10 @@ ${accessory(L, 'top')}
     },
     async remove(id) {
       this.records.delete(id);
+      if (videoUrls.has(id)) {
+        URL.revokeObjectURL(videoUrls.get(id));
+        videoUrls.delete(id);
+      }
       mem.delete(id);
       try {
         await store('readwrite', (os) => os.delete(id));
@@ -19629,7 +20613,8 @@ ${accessory(L, 'top')}
   /* ---------------- チャレンジライブ（ひとりのメンバーのカードだけで挑戦） ---------------- */
   const Challenge = {
     daily: 100, // 1日1回のジュエル
-    milestones: [[600000, 50], [800000, 100], [1000000, 150], [1100000, 200], [1200000, 300]],
+    // v2.25: スコアが総合力で決まるようになったので、ひとりぶんのカードで届くくらいに
+    milestones: [[400000, 50], [550000, 100], [700000, 150], [800000, 200], [900000, 300]],
     teamOf(char) {
       // そのメンバーの持っているカード（強い順）。1枚もなければ★2をおためしで使う
       const own = G.CARDS.filter((c) => c.char === char && D().cards[c.id]).sort((a, b) => Cards.power(b.id) - Cards.power(a.id)).map((c) => c.id);
@@ -19722,7 +20707,7 @@ ${accessory(L, 'top')}
     { id: 'm-story10', title: 'ストーリーを10話読もう', goal: 10, reward: 800, value: readCount },
     { id: 'm-story20', title: 'ストーリーを20話読もう', goal: 20, reward: 1500, value: readCount },
     { id: 'm-episode1', title: 'メンバーエピソードを読もう', goal: 1, reward: 300, value: () => D().read.filter((id) => id.startsWith('m-')).length },
-    { id: 'm-episode8', title: 'メンバーエピソードを8話ぜんぶ読もう', goal: 8, reward: 1500, value: () => D().read.filter((id) => id.startsWith('m-')).length },
+    { id: 'm-episode8', title: 'メンバーエピソードを8話読もう', goal: 8, reward: 1500, value: () => D().read.filter((id) => id.startsWith('m-')).length },
     { id: 'm-part2', title: 'ソラシド編 第2部を読みおえよう', goal: 1, reward: 1000, value: () => (D().read.includes('ch9') ? 1 : 0) },
     { id: 'm-shop1', title: '曲ショップで曲を買おう', goal: 1, reward: 300, value: () => D().shop.length },
     { id: 'm-practice', title: '練習モードで練習しよう', goal: 1, reward: 200, value: () => D().stats.practice || 0 },
@@ -20526,7 +21511,8 @@ ${accessory(L, 'top')}
         <g fill="#5A4E66" opacity=".85">${Array.from({ length: 16 }, (_, i) => `<circle cx="${60 + i * 100}" cy="${800 + (i % 2) * 14}" r="26"/><rect x="${28 + i * 100}" y="${822 + (i % 2) * 14}" width="64" height="90" rx="22"/>`).join('')}</g>`);
     },
     // 吹奏楽部の部室
-    bandroom() {
+    // after: 桜坂祭のあと（部員がふえてから）の黒板
+    bandroom(after) {
       const g = id();
       const stand = (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})" fill="#3A3F58"><rect x="-4" y="0" width="8" height="160"/><path d="M-40,0 L40,0 L32,-56 L-32,-56 Z"/><path d="M-30,160 L30,160 L0,140 Z"/></g>`;
       const chair = (x, y) => `<g transform="translate(${x},${y})" fill="#6A5A70"><rect x="-34" y="0" width="68" height="12" rx="4"/><rect x="-30" y="-70" width="60" height="60" rx="10"/><rect x="-30" y="12" width="6" height="60"/><rect x="24" y="12" width="6" height="60"/></g>`;
@@ -20537,8 +21523,8 @@ ${accessory(L, 'top')}
         <rect x="1060" y="90" width="420" height="380" fill="url(#${g}w)" stroke="#F8F2E8" stroke-width="14"/>
         <line x1="1270" y1="90" x2="1270" y2="470" stroke="#F8F2E8" stroke-width="8"/>
         <rect x="80" y="110" width="520" height="320" rx="10" fill="#2F5D50" stroke="#8B6A4A" stroke-width="14"/>
-        <text x="340" y="200" text-anchor="middle" font-family="M PLUS Rounded 1c, sans-serif" font-weight="800" font-size="40" fill="#fff" opacity=".9">部員ぼしゅう中！</text>
-        <text x="340" y="270" text-anchor="middle" font-family="M PLUS Rounded 1c, sans-serif" font-weight="800" font-size="30" fill="#FFE27A" opacity=".9">吹奏楽部　いま3人</text>
+        <text x="340" y="200" text-anchor="middle" font-family="M PLUS Rounded 1c, sans-serif" font-weight="800" font-size="40" fill="#fff" opacity=".9">${after ? '合奏練習　16:00〜' : '部員ぼしゅう中！'}</text>
+        <text x="340" y="270" text-anchor="middle" font-family="M PLUS Rounded 1c, sans-serif" font-weight="800" font-size="30" fill="#FFE27A" opacity=".9">${after ? '吹奏楽部　いま14人♪' : '吹奏楽部　いま3人'}</text>
         <g fill="#C9A646"><rect x="700" y="200" width="60" height="90" rx="6"/><rect x="790" y="180" width="70" height="110" rx="6"/><rect x="890" y="210" width="56" height="80" rx="6"/></g>
         <rect x="680" y="290" width="290" height="16" fill="#8B6A4A"/>
         ${stand(420, 560, 1)}${stand(800, 540, 0.9)}${chair(300, 640)}${chair(560, 660)}${chair(980, 650)}
@@ -21139,6 +22125,7 @@ ${accessory(L, 'top')}
         case 'sakura': return BG.sakura();
         case 'gym': return BG.gym();
         case 'bandroom': return BG.bandroom();
+        case 'bandroom_after': return BG.bandroom(true);
         case 'shrine': return BG.shrine(false);
         case 'shrine_night': return BG.shrine(true);
         case 'matsuri': return BG.matsuri();
@@ -22520,6 +23507,74 @@ ${accessory(L, 'top')}
       c.fill();
     });
   }
+  // 画面の拡大率（dpr）に合わせて作る、作り置きの絵（キャンバス）。c は CSS ピクセルで描けるようにしてある
+  function layerCanvas(w, h, dpr) {
+    const cv = document.createElement('canvas');
+    cv.width = Math.max(1, Math.ceil(w * dpr));
+    cv.height = Math.max(1, Math.ceil(h * dpr));
+    const c = cv.getContext('2d');
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return [cv, c];
+  }
+  // 光の柱（判定ラインから上にのびる光）の絵。色ごとに1回だけ作る
+  const PILLAR = new Map();
+  function pillarSprite(color) {
+    let cv = PILLAR.get(color);
+    if (cv) return cv;
+    cv = sprite(16, 128, (c, w, h) => {
+      const g = c.createLinearGradient(0, 0, 0, h);
+      g.addColorStop(0, 'rgba(255,255,255,0)');
+      g.addColorStop(1, hexA(color, 0.55));
+      c.fillStyle = g;
+      c.fillRect(0, 0, w, h);
+    });
+    PILLAR.set(color, cv);
+    return cv;
+  }
+  const numAsc = (a, b) => a - b;
+  /*
+   * 背景のジャケットを、ぼかした小さな絵にして1回だけ描いておく。
+   * CSS の blur() のままだと、ノーツを描くたびに（毎フレーム）大きなぼかしを合成しなおすことになり、
+   * iPad などで重くなるため。小さくしてから大きくもどすと、なめらかにぼける。失敗したら CSS の blur のまま。
+   */
+  function bakeBlurredJacket(svg, done) {
+    try {
+      const src = svg.replace('<svg ', '<svg width="512" height="512" ');
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const step = (from, size) => {
+            const cv = document.createElement('canvas');
+            cv.width = cv.height = size;
+            const c = cv.getContext('2d');
+            c.imageSmoothingEnabled = true;
+            c.imageSmoothingQuality = 'high';
+            c.drawImage(from, 0, 0, size, size);
+            return cv;
+          };
+          let cur = step(img, 256);
+          for (const sz of [128, 64, 32]) cur = step(cur, sz);
+          for (const sz of [64, 128]) cur = step(cur, sz);
+          // 最後に、CSS のときと同じように少しあざやかにする（ctx.filter が使えるブラウザだけ）
+          const out = document.createElement('canvas');
+          out.width = out.height = 256;
+          const oc = out.getContext('2d');
+          if ('filter' in oc) oc.filter = 'saturate(1.2)';
+          oc.imageSmoothingEnabled = true;
+          oc.imageSmoothingQuality = 'high';
+          oc.drawImage(cur, 0, 0, 256, 256);
+          done(out);
+        } catch (e) {
+          done(null);
+        }
+      };
+      img.onerror = () => done(null);
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(src);
+    } catch (e) {
+      done(null);
+    }
+  }
+
   let SPR = null;
   function buildSprites() {
     if (SPR) return SPR;
@@ -22627,6 +23682,14 @@ ${accessory(L, 'top')}
       this.practice = this.opts.practice || null; // 練習モード（記録・報酬なし、スキルなし）
       this.team = G.Team && !this.practice && !this.opts.custom ? (this.opts.teamIds ? G.Team.calcIds(this.opts.teamIds, song) : G.Team.calc(song)) : { ids: [], cards: [], bonus: 0 };
       this.teamBonus = this.team.bonus || 0;
+      // スコアの大きさは総合力で決まる（練習モードなど編成なしのときも、いまの編成の総合力で計算）
+      {
+        const tp = this.team.ids && this.team.ids.length ? this.team : G.Team ? G.Team.calc(song) : null;
+        this.power = tp ? tp.boosted || tp.power || 0 : 0;
+      }
+      this.scale = G.scoreScale(this.power);
+      // ボスラッシュ: 前の曲までの合計スコア（画面のスコアは、合計で表示する）
+      this.scoreOffset = (this.opts.carry && this.opts.carry.scoreTotal) || 0;
       this.posNow = 0;
       this.offsetSec = (this.S.offset || 0) / 1000;
       this.state = 'loading';
@@ -22707,8 +23770,34 @@ ${accessory(L, 'top')}
       this.el.style.setProperty('--theme1', song.theme[0]);
       this.el.style.setProperty('--theme2', song.theme[1]);
       this.el.style.setProperty('--diff', this.diff.color);
-      const bg = h('div', { class: 'live-bg' }, h('div', { class: 'live-bg-art', html: G.Art.jacket(song) }), h('div', { class: 'live-bg-grad' }));
+      const bgArt = h('div', { class: 'live-bg-art', html: G.Art.jacket(song) });
+      const bg = h('div', { class: 'live-bg' }, bgArt, h('div', { class: 'live-bg-grad' }));
+      if (!this.S.lowFx) {
+        bakeBlurredJacket(G.Art.jacket(song), (cv) => {
+          if (!cv || this.destroyed) return;
+          cv.className = 'live-bg-baked';
+          bgArt.innerHTML = '';
+          bgArt.appendChild(cv);
+          bgArt.classList.add('baked');
+        });
+      }
       bg.appendChild(h('div', { class: 'live-bg-dim', style: { opacity: String(this.S.bgDim) } }));
+      // マイ楽曲の動画: 映像があれば、ジャケットのかわりに背景に流す（音は曲のほうから鳴らすので、映像は音なし）
+      if (song.local && G.Local && !this.practice) {
+        G.Local.hasVideo(song.id).then((ok) => {
+          if (!ok || this.destroyed) return;
+          const v = h('video', { class: 'live-bg-video', muted: '', playsinline: '', preload: 'auto', 'aria-hidden': 'true' });
+          v.muted = true;
+          v.playsInline = true;
+          v.src = G.Local.videoURL(song.id);
+          bg.insertBefore(v, bg.children[1]);
+          bg.classList.add('has-video');
+          this.video = v;
+        }).catch(() => {});
+      }
+      // レーン・判定ラインなど動かない部分は、下のキャンバスに1回だけ描く（画面の大きさが変わったときなどに描きなおす）
+      this.laneCanvas = h('canvas', { class: 'live-lane-canvas', 'aria-hidden': 'true' });
+      this.lctx = this.laneCanvas.getContext('2d');
       this.canvas = h('canvas', { class: 'live-canvas' });
       this.ctx = this.canvas.getContext('2d');
 
@@ -22717,7 +23806,7 @@ ${accessory(L, 'top')}
       this.hudScore = h('div', { class: 'hud-digits' }, this.hudZeros, this.hudNum);
       this.hudRank = h('div', { class: 'hud-rank rank-D' }, h('span', null, 'D'));
       this.hudGauge = h('i', { class: 'fill' });
-      const marks = G.RANKS.slice(0, 4).map((r) => h('b', { style: { left: (r.min / 1e4) + '%' } }, r.r));
+      const marks = G.RANKS.slice(0, 4).map((r) => h('b', { style: { left: ((r.min / G.RANK_BAR_MAX) * 100).toFixed(1) + '%' } }, r.r));
       this.hudLifeNum = h('span', { class: 'hud-life-num' }, '1000');
       this.hudLifeBar = h('i');
       this.pauseBtn = h('button', { class: 'hud-pause', 'aria-label': '一時停止', title: '一時停止 (Esc)' }, h('span'), h('span'));
@@ -22726,7 +23815,7 @@ ${accessory(L, 'top')}
         h('div', { class: 'hud-score' },
           this.hudRank,
           h('div', { class: 'hud-score-body' },
-            h('div', { class: 'hud-gauge' }, h('small', null, 'SCORE'), this.hudGauge, marks),
+            h('div', { class: 'hud-gauge' }, h('small', null, this.scoreOffset || this.opts.rush ? 'TOTAL' : 'SCORE'), this.hudGauge, marks),
             this.hudScore)),
         h('div', { class: 'hud-title' },
           h('span', { class: 'hud-diff' }, this.diff.name + ' ' + (this.practice ? G.Chart.get(G.songById(song.baseId) || song, this.diffIndex).level : this.chart.level)),
@@ -22743,7 +23832,7 @@ ${accessory(L, 'top')}
           this.pauseBtn));
       this.overlay = h('div', { class: 'live-overlay' });
       // ライフ0のときに画面のふちを黒くくもらせる霧
-      this.el.append(bg, this.canvas, h('div', { class: 'lz-fog', 'aria-hidden': 'true' }, h('i'), h('i'), h('i')), hud, this.overlay);
+      this.el.append(bg, this.laneCanvas, this.canvas, h('div', { class: 'lz-fog', 'aria-hidden': 'true' }, h('i'), h('i'), h('i')), hud, this.overlay);
       this.root.appendChild(this.el);
 
       this.on(this.pauseBtn, 'click', () => this.pause());
@@ -22780,10 +23869,12 @@ ${accessory(L, 'top')}
       this.W = W;
       this.H = H;
       this.dpr = dpr;
-      this.canvas.width = Math.round(W * dpr);
-      this.canvas.height = Math.round(H * dpr);
-      this.canvas.style.width = W + 'px';
-      this.canvas.style.height = H + 'px';
+      for (const cv of [this.canvas, this.laneCanvas]) {
+        cv.width = Math.round(W * dpr);
+        cv.height = Math.round(H * dpr);
+        cv.style.width = W + 'px';
+        cv.style.height = H + 'px';
+      }
       const portrait = H > W;
       this.laneW = Math.min(W * (portrait ? 0.98 : 0.9), H * 1.3, 1180);
       this.jy = H * (portrait ? 0.83 : 0.855);
@@ -22793,6 +23884,9 @@ ${accessory(L, 'top')}
       this.halfW = this.laneW / 2;
       this.unit = this.laneW / 6;
       this.flickPx = U.clamp(this.unit * 0.22, 12, 28); // フリックと判定する指の移動量（少し短めで反応）
+      this.judgeCache = new Map();
+      this._comboKey = null;
+      this.drawStatic();
       if (this.state !== 'loading') this.draw(this.now);
     }
 
@@ -22898,6 +23992,32 @@ ${accessory(L, 'top')}
       }
     }
 
+    // 背景の映像を、曲の時間に合わせる（少しのずれは再生速度で、大きなずれは位置を飛ばして直す）
+    syncVideo() {
+      const v = this.video;
+      if (!v || v.readyState < 1) return;
+      const t = this.now;
+      const playing = (this.state === 'playing' || this.state === 'ending') && t >= 0 && t < (v.duration || Infinity);
+      if (!playing) {
+        if (!v.paused) v.pause();
+        if (t < 0 && v.currentTime > 0.05 && this.state !== 'paused') v.currentTime = 0;
+        return;
+      }
+      if (v.paused) {
+        if (Math.abs(v.currentTime - t) > 0.05) v.currentTime = t;
+        v.play().catch(() => {});
+        return;
+      }
+      const drift = v.currentTime - t;
+      if (Math.abs(drift) > 0.3) {
+        v.currentTime = t;
+        v.playbackRate = 1;
+      } else {
+        const rate = drift > 0.04 ? 0.96 : drift < -0.04 ? 1.04 : 1;
+        if (v.playbackRate !== rate) v.playbackRate = rate;
+      }
+    }
+
     songTimeAt(perf) {
       return this.clock.at(perf) - this.when - this.offsetSec;
     }
@@ -22915,6 +24035,7 @@ ${accessory(L, 'top')}
           if (t >= this.endTime || (this.allDone() && t >= this.chart.lastTime + 1.2 && (this.opts.endEarly || t >= this.C.songEnd - 0.2))) this.finish(false);
         }
       }
+      if (this.video) this.syncVideo();
       for (let i = 0; i < 6; i++) this.laneFlash[i] = Math.max(0, this.laneFlash[i] - dt * 5);
       this.comboPulse = Math.max(0, this.comboPulse - dt * 6);
       this.updateHud(dt);
@@ -23110,7 +24231,7 @@ ${accessory(L, 'top')}
       const sk = this.activeSkill && this.now <= this.activeSkill.until ? this.activeSkill : null;
       if (sk && sk.type === 'judge' && grade === 'great') grade = 'perfect'; // 判定強化スキル
       const g = GRADE[grade];
-      // 金ノーツはスコアが2倍（ランクの基準になる基本スコアは変わらない）
+      // 金ノーツはスコアが2倍
       this.noteBoosted += g.w * (gold ? 2 : 1) * (1 + (sk ? sk.value / 100 : 0));
       if (gold && g.w > 0) this.goldHits = (this.goldHits || 0) + 1;
       this.counts[grade]++;
@@ -23130,9 +24251,9 @@ ${accessory(L, 'top')}
       this.life = U.clamp(this.life + dl, 0, 1000);
       if (this.life <= 0 && !this.lifeZero) this.toLifeZero();
       const total = Math.max(1, this.total);
-      // 基本スコア（最大1,000,000）と、スキル・チームボーナスを足した最終スコア
+      // 基本スコア（判定だけ・最大1,000,000。コインの計算に使う）と、スコア（スコアの大きさ × 判定率。ランクはこれで決まる）
       this.baseScore = Math.floor(1e6 * (0.95 * (this.acc / total) + 0.05 * (this.maxCombo / total)) + 1e-6);
-      this.score = Math.floor((1e6 * (0.95 * (this.noteBoosted / total) + 0.05 * (this.maxCombo / total))) * (1 + this.teamBonus / 100) + 1e-6);
+      this.score = Math.floor(this.scale * (0.95 * (this.noteBoosted / total) + 0.05 * (this.maxCombo / total)) + 1e-6);
       if (grade !== 'perfect' && grade !== 'miss') {
         if (dt < 0) this.fast++;
         else if (dt > 0) this.slow++;
@@ -23225,7 +24346,10 @@ ${accessory(L, 'top')}
     }
     onPointerDown(e) {
       if (this.state !== 'playing' || this.auto) return;
-      if (e.pointerType === 'touch') this.touchUsed = true;
+      if (e.pointerType === 'touch' && !this.touchUsed) {
+        this.touchUsed = true;
+        this.drawStatic(); // キーの表示を消す
+      }
       else {
         // マウス・ペンはドラッグが画面の外に出ても追いかけられるように（タッチは自動でそうなる）
         try {
@@ -23312,16 +24436,21 @@ ${accessory(L, 'top')}
 
     /* ---------------- HUD ---------------- */
     updateHud(dt) {
-      if (this.dispScore !== this.score) {
-        this.dispScore += (this.score - this.dispScore) * Math.min(1, dt * 12);
-        if (Math.abs(this.score - this.dispScore) < 1) this.dispScore = this.score;
+      const shown = this.scoreOffset + this.score; // ボスラッシュは前の曲までの合計もふくめる
+      if (this.dispScore !== shown) {
+        this.dispScore += (shown - this.dispScore) * Math.min(1, dt * 12);
+        if (Math.abs(shown - this.dispScore) < 1) this.dispScore = shown;
         const v = Math.round(this.dispScore);
         const str = String(v);
         this.hudNum.textContent = v ? str : '0';
         this.hudZeros.textContent = '0'.repeat(Math.max(0, 8 - str.length));
-        // ランクとゲージは基本スコア（ボーナス抜き）で判定
-        this.hudGauge.style.width = Math.min(100, this.baseScore / 1e4) + '%';
-        const r = G.rankOf(this.baseScore);
+        // ランクとゲージは、この曲のスコアで判定
+        const gw = Math.round(Math.min(100, (this.score / G.RANK_BAR_MAX) * 100) * 5) / 5; // 0.2% きざみ（細かすぎる書きかえをしない）
+        if (gw !== this._gw) {
+          this._gw = gw;
+          this.hudGauge.style.width = gw + '%';
+        }
+        const r = G.rankOf(this.score);
         if (this.hudRank.textContent !== r) {
           this.hudRank.firstChild.textContent = r;
           this.hudRank.className = 'hud-rank rank-' + r;
@@ -23360,8 +24489,14 @@ ${accessory(L, 'top')}
       this.drawJudge();
     }
 
-    drawLanes(now) {
-      const c = this.ctx;
+    // 動かない部分（レーン・区切り線・光るふち・判定ライン・判定パッド・キーの表示）を下のキャンバスに描く。
+    // 光の影（shadowBlur）は重いので、毎フレームではなく、ここで1回だけ使う
+    drawStatic() {
+      const c = this.lctx;
+      if (!c || !this.W) return;
+      const W = this.W, H = this.H, dpr = this.dpr;
+      c.setTransform(dpr, 0, 0, dpr, 0, 0);
+      c.clearRect(0, 0, W, H);
       const dBottom = -0.12;
       const [x0, y0] = this.px(0, 1);
       const [x1] = this.px(6, 1);
@@ -23381,33 +24516,6 @@ ${accessory(L, 'top')}
       g.addColorStop(1, `rgba(12,10,30,${op})`);
       c.fillStyle = g;
       c.fill();
-
-      // 押しているレーンの光
-      const held = new Set(this.heldLanesKeys());
-      this.pointers.forEach((p) => {
-        const l = Math.floor(p.lf);
-        if (l >= 0 && l <= 5) held.add(l);
-      });
-      for (let i = 0; i < 6; i++) {
-        const v = Math.max(this.laneFlash[i], held.has(i) ? 0.35 : 0);
-        if (v <= 0.01) continue;
-        const [ax, ay] = this.px(i, 0.55);
-        const [bx] = this.px(i + 1, 0.55);
-        const [cx2, cy] = this.px(i + 1, 0);
-        const [dx] = this.px(i, 0);
-        c.beginPath();
-        c.moveTo(ax, ay);
-        c.lineTo(bx, ay);
-        c.lineTo(cx2, cy);
-        c.lineTo(dx, cy);
-        c.closePath();
-        const lg = c.createLinearGradient(0, ay, 0, cy);
-        lg.addColorStop(0, 'rgba(120,230,255,0)');
-        lg.addColorStop(1, `rgba(150,240,255,${0.38 * v})`);
-        c.fillStyle = lg;
-        c.fill();
-      }
-
       // 区切り線
       c.lineWidth = 1.5;
       for (let i = 1; i < 6; i++) {
@@ -23446,20 +24554,18 @@ ${accessory(L, 'top')}
       c.shadowBlur = 0;
       c.fillStyle = 'rgba(160,240,255,.18)';
       c.fillRect(jl, jy - 12, jr - jl, 24);
-      // レーンごとの判定パッド（押すと光る）
+      // レーンごとの判定パッド（光っていないとき）
       const padH = U.clamp(this.unit * 0.17, 9, 20);
       for (let i = 0; i < 6; i++) {
         const pl = this.px(i + 0.07, 0)[0];
         const pr = this.px(i + 0.93, 0)[0];
-        const v = Math.max(this.laneFlash[i], held.has(i) ? 0.6 : 0);
         roundRectPath(c, pl, jy - padH / 2, pr - pl, padH, padH * 0.35);
-        c.fillStyle = v > 0.01 ? `rgba(190,250,255,${0.25 + 0.6 * v})` : 'rgba(30,24,70,.55)';
+        c.fillStyle = 'rgba(30,24,70,.55)';
         c.fill();
         c.lineWidth = 2;
-        c.strokeStyle = v > 0.01 ? '#FFFFFF' : 'rgba(150,235,255,.75)';
+        c.strokeStyle = 'rgba(150,235,255,.75)';
         c.stroke();
       }
-
       // キーの表示（キーボード用）
       if (!this.touchUsed && !this.auto) {
         const k = this.S.keys;
@@ -23468,15 +24574,82 @@ ${accessory(L, 'top')}
         const ky = Math.min(this.jy + U.clamp(this.unit * 0.2, 20, 32), this.H - 34);
         for (let i = 0; i < 6; i++) {
           const x = this.px(i + 0.5, 0)[0];
-          const y = ky;
           c.font = `800 ${Math.round(U.clamp(this.unit * 0.17, 11, 20))}px "Exo 2", "M PLUS Rounded 1c", sans-serif`;
           c.fillStyle = 'rgba(255,255,255,.55)';
-          c.fillText(U.keyLabel(k.tap[i]), x, y);
+          c.fillText(U.keyLabel(k.tap[i]), x, ky);
           c.font = `700 ${Math.round(U.clamp(this.unit * 0.11, 9, 13))}px "Exo 2", sans-serif`;
           c.fillStyle = 'rgba(255,140,200,.6)';
-          c.fillText('↑' + U.keyLabel(k.flick[i]), x, y + U.clamp(this.unit * 0.17, 13, 22));
+          c.fillText('↑' + U.keyLabel(k.flick[i]), x, ky + U.clamp(this.unit * 0.17, 13, 22));
         }
       }
+      // 押したときの光（レーンの光・光った判定パッド）は、ここで絵にしておいて、ライブ中は濃さを変えて重ねるだけにする
+      this.laneSpr = [];
+      this.padSpr = [];
+      for (let i = 0; i < 6; i++) {
+        const [ax, ay] = this.px(i, 0.55);
+        const [bx] = this.px(i + 1, 0.55);
+        const [cx2, cy] = this.px(i + 1, 0);
+        const [dx] = this.px(i, 0);
+        const lx = Math.floor(Math.min(ax, dx)) - 1, ly = Math.floor(ay) - 1;
+        const lw = Math.ceil(Math.max(bx, cx2)) + 1 - lx, lh = Math.ceil(cy) + 1 - ly;
+        const [lcv, lc] = layerCanvas(lw, lh, dpr);
+        lc.translate(-lx, -ly);
+        lc.beginPath();
+        lc.moveTo(ax, ay);
+        lc.lineTo(bx, ay);
+        lc.lineTo(cx2, cy);
+        lc.lineTo(dx, cy);
+        lc.closePath();
+        const lg = lc.createLinearGradient(0, ay, 0, cy);
+        lg.addColorStop(0, 'rgba(120,230,255,0)');
+        lg.addColorStop(1, 'rgba(150,240,255,0.38)');
+        lc.fillStyle = lg;
+        lc.fill();
+        this.laneSpr.push({ cv: lcv, x: lx, y: ly, w: lw, h: lh });
+        const pl = this.px(i + 0.07, 0)[0];
+        const pr = this.px(i + 0.93, 0)[0];
+        const px0 = Math.floor(pl) - 2, py0 = Math.floor(jy - padH / 2) - 2;
+        const pw = Math.ceil(pr) + 2 - px0, ph = Math.ceil(jy + padH / 2) + 2 - py0;
+        const [pcv, pc] = layerCanvas(pw, ph, dpr);
+        pc.translate(-px0, -py0);
+        roundRectPath(pc, pl, jy - padH / 2, pr - pl, padH, padH * 0.35);
+        pc.fillStyle = 'rgba(190,250,255,.85)';
+        pc.fill();
+        pc.lineWidth = 2;
+        pc.strokeStyle = '#FFFFFF';
+        pc.stroke();
+        this.padSpr.push({ cv: pcv, x: px0, y: py0, w: pw, h: ph });
+      }
+    }
+
+    // 毎フレーム: 押しているレーンと判定パッドの光だけを重ねる（作り置きの絵を使うので軽い）
+    drawLanes() {
+      const c = this.ctx;
+      if (!this.laneSpr) return;
+      let held = 0;
+      this.keysHeld.forEach((lane) => {
+        held |= 1 << lane;
+      });
+      this.pointers.forEach((p) => {
+        const l = Math.floor(p.lf);
+        if (l >= 0 && l <= 5) held |= 1 << l;
+      });
+      for (let i = 0; i < 6; i++) {
+        const on = held & (1 << i);
+        const v = Math.max(this.laneFlash[i], on ? 0.35 : 0);
+        if (v > 0.01) {
+          const sp = this.laneSpr[i];
+          c.globalAlpha = Math.min(1, v);
+          c.drawImage(sp.cv, sp.x, sp.y, sp.w, sp.h);
+        }
+        const pv = Math.max(this.laneFlash[i], on ? 0.6 : 0);
+        if (pv > 0.01) {
+          const sp = this.padSpr[i];
+          c.globalAlpha = Math.min(1, 0.3 + 0.7 * pv);
+          c.drawImage(sp.cv, sp.x, sp.y, sp.w, sp.h);
+        }
+      }
+      c.globalAlpha = 1;
     }
 
     /* ---------------- ソフラン ---------------- */
@@ -23565,34 +24738,47 @@ ${accessory(L, 'top')}
         if (tb <= ta) continue;
         const N = U.clamp(Math.ceil((tb - ta) / 0.025), 2, 64);
         // 等間隔の点に、折れ目（中継点）の時刻も足す。同じ時刻の2点はカクッと横にずれる段差になる
-        const ts = [];
+        // （配列は毎フレーム作りなおさず、使いまわす。ゴミが出ないので、ときどきのカクつきが減る）
+        const ts = this._ts || (this._ts = []);
+        ts.length = 0;
         for (let i = 0; i <= N; i++) ts.push(ta + ((tb - ta) * i) / N);
         for (const nd of s.nodes) if (nd.t > ta && nd.t < tb) ts.push(nd.t - 1e-4, nd.t + 1e-4);
         // 色が変わるところ（tint）でも区切る
         if (s.tint) for (const [tt] of s.tint) if (tt > ta && tt < tb) ts.push(tt);
-        ts.sort((a, b) => a - b);
-        const left = [], right = [], cols = [];
-        for (const t of ts) {
+        ts.sort(numAsc);
+        const M = ts.length;
+        if (!this._lx || this._lx.length < M) {
+          const cap = Math.max(256, M * 2);
+          this._lx = new Float64Array(cap);
+          this._rx = new Float64Array(cap);
+          this._ly = new Float64Array(cap);
+          this._cols = new Array(cap);
+        }
+        const LX = this._lx, RX = this._rx, LY = this._ly, cols = this._cols;
+        const cx = this.cx, hw = this.halfW, vy = this.vy, dy = this.jy - this.vy;
+        for (let k = 0; k < M; k++) {
+          const t = ts[k];
           const pos = G.Chart.slidePosAt(s.nodes, t);
-          const d = this.dOf(t);
+          const sc = 1 / (1 + K * this.dOf(t));
           const ww = Math.max(0.2, WAT(s, t));
           const inset = Math.min(0.06, ww * 0.15);
-          left.push(this.px(pos + inset, d));
-          right.push(this.px(pos + ww - inset, d));
-          cols.push(slideCol(s, t + 1e-5));
+          LX[k] = cx + ((pos + inset) / 3 - 1) * hw * sc;
+          RX[k] = cx + ((pos + ww - inset) / 3 - 1) * hw * sc;
+          LY[k] = vy + dy * sc;
+          cols[k] = slideCol(s, t + 1e-5);
         }
-        const yTop = left[left.length - 1][1];
-        const yBot = left[0][1];
+        const yTop = LY[M - 1];
+        const yBot = LY[0];
         const a = s.holding ? 0.78 : 0.5;
         // 同じ色の区間ごとに帯を描く（ふつうのスライドは1つ）
-        for (let i0 = 0; i0 < ts.length - 1; ) {
+        for (let i0 = 0; i0 < M - 1; ) {
           let i1 = i0 + 1;
-          while (i1 < ts.length - 1 && cols[i1] === cols[i0]) i1++;
+          while (i1 < M - 1 && cols[i1] === cols[i0]) i1++;
           const col = SCOL[cols[i0]] || SCOL.green;
           c.beginPath();
-          c.moveTo(left[i0][0], left[i0][1]);
-          for (let i = i0 + 1; i <= i1; i++) c.lineTo(left[i][0], left[i][1]);
-          for (let i = i1; i >= i0; i--) c.lineTo(right[i][0], right[i][1]);
+          c.moveTo(LX[i0], LY[i0]);
+          for (let i = i0 + 1; i <= i1; i++) c.lineTo(LX[i], LY[i]);
+          for (let i = i1; i >= i0; i--) c.lineTo(RX[i], LY[i]);
           c.closePath();
           const g = c.createLinearGradient(0, yTop, 0, yBot);
           const ga = cols[i0] === 'green' ? a : Math.min(0.9, a + 0.1);
@@ -23603,21 +24789,21 @@ ${accessory(L, 'top')}
           c.lineWidth = 2;
           c.strokeStyle = `rgba(${col.line},${s.holding ? 0.9 : 0.5})`;
           c.beginPath();
-          c.moveTo(left[i0][0], left[i0][1]);
-          for (let i = i0 + 1; i <= i1; i++) c.lineTo(left[i][0], left[i][1]);
+          c.moveTo(LX[i0], LY[i0]);
+          for (let i = i0 + 1; i <= i1; i++) c.lineTo(LX[i], LY[i]);
           c.stroke();
           c.beginPath();
-          c.moveTo(right[i0][0], right[i0][1]);
-          for (let i = i0 + 1; i <= i1; i++) c.lineTo(right[i][0], right[i][1]);
+          c.moveTo(RX[i0], LY[i0]);
+          for (let i = i0 + 1; i <= i1; i++) c.lineTo(RX[i], LY[i]);
           c.stroke();
           i0 = i1;
         }
         // 金のスライドは、帯の上を光がのぼっていく
         if (s.gold && !this.S.lowFx) {
           const k = (performance.now() / 700) % 1;
-          const i = Math.min(ts.length - 1, Math.floor(k * ts.length));
-          const x = (left[i][0] + right[i][0]) / 2, y = left[i][1];
-          const sz = Math.abs(right[i][0] - left[i][0]) * 0.9 + 8;
+          const i = Math.min(M - 1, Math.floor(k * M));
+          const x = (LX[i] + RX[i]) / 2, y = LY[i];
+          const sz = Math.abs(RX[i] - LX[i]) * 0.9 + 8;
           c.globalCompositeOperation = 'lighter';
           c.globalAlpha = 0.55;
           c.drawImage(SPR.glow, x - sz / 2, y - sz / 4, sz, sz / 2);
@@ -23665,25 +24851,28 @@ ${accessory(L, 'top')}
     drawNotes(now) {
       const c = this.ctx;
       const tLimit = this.timeAtD(1.02, now);
-      const vis = [];
-      for (let i = this.head; i < this.notes.length; i++) {
-        const n = this.notes[i];
-        if (n.time > tLimit) break;
-        vis.push(n);
-      }
+      const notes = this.notes, head = this.head;
+      let end = head; // 見えているノーツは notes[head] 〜 notes[end - 1]（配列は作らない）
+      while (end < notes.length && notes[end].time <= tLimit) end++;
       // 同時押しライン
-      const shown = new Set();
-      for (const n of vis) {
-        if (n.type === 'slide' ? n.startDone : n.done) continue;
-        shown.add(n.id);
-      }
-      for (const sim of this.chart.sims) {
-        if (sim.time < now - 0.2) continue;
+      const sims = this.chart.sims;
+      let si = this._simHead || 0;
+      while (si < sims.length && sims[si].time < now - 0.2) si++;
+      this._simHead = si;
+      for (; si < sims.length; si++) {
+        const sim = sims[si];
         if (sim.time > tLimit) break;
-        const ids = sim.ids.filter((id) => shown.has(id));
-        if (ids.length < 2) continue;
-        const lanes = ids.map((id) => L0(this.notes[id]) + (NW(this.notes[id]) - 1) / 2);
-        const lo = Math.min(...lanes), hi = Math.max(...lanes);
+        let cnt = 0, lo = 99, hi = -99;
+        for (const id of sim.ids) {
+          if (id < head || id >= end) continue;
+          const n = notes[id];
+          if (n.type === 'slide' ? n.startDone : n.done) continue;
+          const ln = L0(n) + (NW(n) - 1) / 2;
+          cnt++;
+          if (ln < lo) lo = ln;
+          if (ln > hi) hi = ln;
+        }
+        if (cnt < 2) continue;
         const d = this.dOf(sim.time);
         const [xa, y, s] = this.px(lo + 0.5, d);
         const [xb] = this.px(hi + 0.5, d);
@@ -23716,8 +24905,8 @@ ${accessory(L, 'top')}
       }
       // ノーツ（奥から手前へ）
       const bob = Math.sin(performance.now() / 110) * 0.5 + 0.5;
-      for (let i = vis.length - 1; i >= 0; i--) {
-        const n = vis[i];
+      for (let i = end - 1; i >= head; i--) {
+        const n = notes[i];
         if (n.type === 'slide') {
           if (n.startDone || n.art) continue; // 絵スライドは始点のノーツも描かない（帯の下のはしが始点）
         } else if (n.done) continue;
@@ -23776,11 +24965,9 @@ ${accessory(L, 'top')}
           // 光の柱
           const ph = this.H * 0.32 * (1 - p * 0.3);
           const pw = u * 0.95 * (1 - p * 0.4);
-          const g = c.createLinearGradient(0, y - ph, 0, y);
-          g.addColorStop(0, 'rgba(255,255,255,0)');
-          g.addColorStop(1, hexA(e.color, 0.55 * (1 - p)));
-          c.fillStyle = g;
-          c.fillRect(x - pw / 2, y - ph, pw, ph);
+          c.globalAlpha = 1 - p;
+          c.drawImage(pillarSprite(e.color), x - pw / 2, y - ph, pw, ph);
+          c.globalAlpha = 1;
           // リング
           c.strokeStyle = hexA(e.grade === 'perfect' ? '#FFF3B0' : e.color, 1 - p);
           c.lineWidth = 4 * (1 - p) + 1;
@@ -23826,6 +25013,7 @@ ${accessory(L, 'top')}
       c.globalCompositeOperation = 'source-over';
     }
 
+    // コンボの数字: 数字や色が変わったときだけ作り置きの絵に描いて、毎フレームはその絵を拡大して重ねるだけ
     drawCombo() {
       if (this.combo < 2) return;
       const c = this.ctx;
@@ -23833,72 +25021,117 @@ ${accessory(L, 'top')}
       const side = this.W > this.H * 1.15;
       const x = side ? this.cx + this.halfW * 0.8 : this.px(3, 0)[0];
       const y = side ? Math.max(this.H * 0.4, 130) : this.vy + (this.jy - this.vy) * 0.5;
-      const size = U.clamp(this.unit * (side ? 0.52 : 0.58), 34, 92) * (1 + this.comboPulse * 0.12);
-      c.save();
-      c.globalAlpha = 0.92;
-      c.textAlign = 'center';
-      c.textBaseline = 'alphabetic';
-      c.font = `italic 800 ${Math.round(size * 0.28)}px "Exo 2", sans-serif`;
-      c.fillStyle = 'rgba(255,255,255,.9)';
-      c.shadowColor = 'rgba(0,0,0,.45)';
-      c.shadowBlur = 6;
-      c.fillText('COMBO', x, y - size * 0.95);
-      c.shadowBlur = 0;
-      c.font = `italic 900 ${Math.round(size)}px "Exo 2", sans-serif`;
-      const g = c.createLinearGradient(0, y - size, 0, y);
+      const size = Math.round(U.clamp(this.unit * (side ? 0.52 : 0.58), 34, 92));
       const fc = this.counts.good + this.counts.bad + this.counts.miss === 0;
       const ap = fc && this.counts.great === 0;
-      if (ap) {
-        g.addColorStop(0, '#FFF7C2');
-        g.addColorStop(1, '#FF9BD6');
-      } else if (fc) {
-        g.addColorStop(0, '#FFFFFF');
-        g.addColorStop(1, '#8FF0FF');
-      } else {
-        g.addColorStop(0, '#FFFFFF');
-        g.addColorStop(1, '#D9DCF0');
+      const key = this.combo + '|' + (ap ? 2 : fc ? 1 : 0) + '|' + size;
+      if (this._comboKey !== key) {
+        this._comboKey = key;
+        this._comboImg = this.renderCombo(size, ap, fc);
       }
-      c.lineWidth = 6;
-      c.strokeStyle = 'rgba(30,20,70,.55)';
-      c.lineJoin = 'round';
-      c.strokeText(String(this.combo), x, y);
-      c.fillStyle = g;
-      c.fillText(String(this.combo), x, y);
-      c.restore();
+      const im = this._comboImg;
+      const k = 1 + this.comboPulse * 0.12;
+      c.globalAlpha = 0.92;
+      c.drawImage(im.cv, x - im.ax * k, y - im.ay * k, im.w * k, im.h * k);
+      c.globalAlpha = 1;
+    }
+    renderCombo(size, ap, fc) {
+      const s1 = Math.round(size * 0.28);
+      const f1 = `italic 800 ${s1}px "Exo 2", sans-serif`;
+      const f2 = `italic 900 ${size}px "Exo 2", sans-serif`;
+      const txt = String(this.combo);
+      const m = this.measureCtx || (this.measureCtx = document.createElement('canvas').getContext('2d'));
+      m.font = f2;
+      const w2 = m.measureText(txt).width;
+      m.font = f1;
+      const w1 = m.measureText('COMBO').width;
+      const w = Math.ceil(Math.max(w1, w2) * 1.12 + 28), ay = Math.ceil(size * 0.95 + s1 + 12), h = ay + 14, ax = w / 2;
+      const [cv, g] = layerCanvas(w, h, this.dpr);
+      g.textAlign = 'center';
+      g.textBaseline = 'alphabetic';
+      g.font = f1;
+      g.fillStyle = 'rgba(255,255,255,.9)';
+      g.shadowColor = 'rgba(0,0,0,.45)';
+      g.shadowBlur = 6;
+      g.fillText('COMBO', ax, ay - size * 0.95);
+      g.shadowBlur = 0;
+      g.font = f2;
+      const gr = g.createLinearGradient(0, ay - size, 0, ay);
+      if (ap) {
+        gr.addColorStop(0, '#FFF7C2');
+        gr.addColorStop(1, '#FF9BD6');
+      } else if (fc) {
+        gr.addColorStop(0, '#FFFFFF');
+        gr.addColorStop(1, '#8FF0FF');
+      } else {
+        gr.addColorStop(0, '#FFFFFF');
+        gr.addColorStop(1, '#D9DCF0');
+      }
+      g.lineWidth = 6;
+      g.strokeStyle = 'rgba(30,20,70,.55)';
+      g.lineJoin = 'round';
+      g.strokeText(txt, ax, ay);
+      g.fillStyle = gr;
+      g.fillText(txt, ax, ay);
+      return { cv, w, h, ax, ay };
     }
 
+    // 判定の文字（PERFECT など）: 判定ごとに1回だけ絵にしておく（少し大きめに作って、縮めて使う）
     drawJudge() {
       const jd = this.judgeDisp;
       if (!jd) return;
       const p = U.clamp((performance.now() - jd.t0) / 450, 0, 1);
       if (p >= 1) return;
       const c = this.ctx;
-      const g = GRADE[jd.grade];
+      const base = Math.round(U.clamp(this.unit * 0.32, 24, 52));
+      const key = jd.grade + '|' + (jd.fs || '') + '|' + base;
+      let im = this.judgeCache.get(key);
+      if (!im) {
+        im = this.renderJudge(jd.grade, jd.fs, base * 1.25);
+        this.judgeCache.set(key, im);
+      }
       const [x] = this.px(3, 0);
       const y = this.vy + (this.jy - this.vy) * 0.76;
-      const pop = p < 0.12 ? 1.25 - p * 2 : 1;
-      const size = U.clamp(this.unit * 0.32, 24, 52) * pop;
-      c.save();
+      const k = (p < 0.12 ? 1.25 - p * 2 : 1) / 1.25;
       c.globalAlpha = p > 0.7 ? (1 - p) / 0.3 : 1;
+      c.drawImage(im.cv, x - im.ax * k, y - im.ay * k, im.w * k, im.h * k);
+      c.globalAlpha = 1;
+    }
+    renderJudge(grade, fs, size) {
+      const g = GRADE[grade];
+      const fMain = `italic 900 ${Math.round(size)}px "Exo 2", sans-serif`;
+      const fSub = `italic 800 ${Math.round(size * 0.45)}px "Exo 2", sans-serif`;
+      const m = this.measureCtx || (this.measureCtx = document.createElement('canvas').getContext('2d'));
+      m.font = fMain;
+      let tw = m.measureText(g.label).width;
+      if (fs) {
+        m.font = fSub;
+        tw = Math.max(tw, m.measureText(fs).width);
+      }
+      const w = Math.ceil(tw * 1.1 + 24);
+      const ay = Math.ceil(size / 2 + 10);
+      const h = Math.ceil(ay + (fs ? size * 0.72 + size * 0.3 : size / 2) + 10);
+      const ax = w / 2;
+      const [cv, c] = layerCanvas(w, h, this.dpr);
       c.textAlign = 'center';
       c.textBaseline = 'middle';
-      c.font = `italic 900 ${Math.round(size)}px "Exo 2", sans-serif`;
-      const gr = c.createLinearGradient(0, y - size / 2, 0, y + size / 2);
+      c.font = fMain;
+      const gr = c.createLinearGradient(0, ay - size / 2, 0, ay + size / 2);
       gr.addColorStop(0, g.c1);
       gr.addColorStop(1, g.c2);
       c.lineWidth = 5;
       c.lineJoin = 'round';
       c.strokeStyle = 'rgba(20,14,50,.7)';
-      c.strokeText(g.label, x, y);
+      c.strokeText(g.label, ax, ay);
       c.fillStyle = gr;
-      c.fillText(g.label, x, y);
-      if (jd.fs) {
-        c.font = `italic 800 ${Math.round(size * 0.45)}px "Exo 2", sans-serif`;
-        c.fillStyle = jd.fs === 'FAST' ? '#7FD3FF' : '#FF9F6B';
-        c.strokeText(jd.fs, x, y + size * 0.72);
-        c.fillText(jd.fs, x, y + size * 0.72);
+      c.fillText(g.label, ax, ay);
+      if (fs) {
+        c.font = fSub;
+        c.fillStyle = fs === 'FAST' ? '#7FD3FF' : '#FF9F6B';
+        c.strokeText(fs, ax, ay + size * 0.72);
+        c.fillText(fs, ax, ay + size * 0.72);
       }
-      c.restore();
+      return { cv, w, h, ax, ay };
     }
 
     /* ---------------- 一時停止 ---------------- */
@@ -23926,6 +25159,7 @@ ${accessory(L, 'top')}
       if (this.state !== 'paused') return;
       this.state = 'resuming';
       this.el.classList.remove('paused');
+      this.drawStatic(); // 一時停止中に設定が変わっていてもいいように、動かない部分を描きなおす
       if (this.pauseEl) this.pauseEl.remove();
       const h = U.h;
       const cd = h('div', { class: 'live-countdown' }, '3');
@@ -23974,10 +25208,10 @@ ${accessory(L, 'top')}
       return {
         baseScore: this.baseScore, teamBonus: this.teamBonus, team: (this.team.ids || []).slice(),
         songId: this.song.id, diffIndex: this.diffIndex, diffId: this.diff.id, level: this.chart.level,
-        score, rank: G.rankOf(this.baseScore), counts: Object.assign({}, this.counts), maxCombo: this.maxCombo, total: this.total,
+        score, rank: G.rankOf(score), power: this.power, scale: this.scale, counts: Object.assign({}, this.counts), maxCombo: this.maxCombo, total: this.total,
         fast: this.fast, slow: this.slow, failed: !!failed, clear: !failed && !this.lifeZero, fc, ap, auto: this.auto,
         lifeZero: !!this.lifeZero && !this.auto, // ライフ0のまま最後までプレイした（スコアは記録しない）
-        carry: { combo: this.combo, life: this.life, lifeZero: !!this.lifeZero }, // ボスラッシュで次の曲へ引きつぐ
+        carry: { combo: this.combo, life: this.life, lifeZero: !!this.lifeZero, scoreTotal: this.scoreOffset + score }, // ボスラッシュで次の曲へ引きつぐ
       };
     }
     finish(failed) {
@@ -24036,6 +25270,11 @@ ${accessory(L, 'top')}
     destroy() {
       this.destroyed = true;
       cancelAnimationFrame(this.raf);
+      if (this.video) {
+        try {
+          this.video.pause();
+        } catch (e) {}
+      }
       for (const tm of this.timers) clearTimeout(tm);
       for (const [t, type, fn, opt] of this.handlers) t.removeEventListener(type, fn, opt);
       this.handlers = [];
@@ -24418,6 +25657,11 @@ ${accessory(L, 'top')}
     gou: { ap: ['……オールパーフェクト。ソイヤッ！！'], fc: ['……フルコンボ。いい太鼓だった。'], clear: ['……クリアだ。腹から、音が出ていたな。'], fail: ['……急がなくていい。太鼓も、一打ずつだ。'] },
     shino: { ap: ['オール、パーフェクト……！　楽譜に、残しておきます……！'], fc: ['フルコンボ、です。……風みたいに、なめらかでした。'], clear: ['クリア、おめでとうございます。……えへへ。'], fail: ['……練習モードで、ゆっくり聴いてみると、いいかもしれません。'] },
     haru: { ap: ['オールパーフェクト！？　なんでやねん、すごすぎるやろ！'], fc: ['フルコンボや！　ズンチャッ、ズンチャッ、完ぺきや！'], clear: ['クリアや！　ほな、もういっちょいこか！'], fail: ['ドンマイドンマイ！　リズムは体で覚えるもんや！'] },
+    sena: { ap: ['オールパーフェクト。……今の、いちばんいい画が撮れた。'], fc: ['フルコンボ。光と音が、ぴったり重なってた。'], clear: ['クリア。……次は、もっと明るい色で映すね。'], fail: ['……ピントがずれたね。練習モードで、合わせなおそう。'] },
+    yuu: { ap: ['オ、オールパーフェクト！？　レン先輩に報告します！　今すぐ！'], fc: ['フルコンボです！　低音、最後までうねってました！'], clear: ['クリアです！　床、ちゃんとゆれてましたよ！'], fail: ['だ、大丈夫です！　ぼくも最初はぜんぜんでした！'] },
+    chika: { ap: ['オールパーフェクト〜！？　すごすぎて、おやつ落としちゃった〜。'], fc: ['フルコンボ〜。のびーるって、最後まで届いたね〜。'], clear: ['クリア〜。おつかれさま、飴ちゃんどうぞ〜。'], fail: ['ゆっくりでいいんだよ〜。もう一回、のびーる、だよ〜。'] },
+    kanade: { ap: ['……オールパーフェクト。音程も、リズムも、文句なしね。'], fc: ['フルコンボ。……まあ、及第点以上ね。'], clear: ['クリア。でも、まだ高くなれるわ。'], fail: ['……今日のぶん、練習ノートに書いておきなさい。'] },
+    souma: { ap: ['オールパーフェクト……。竹が、よろこんで鳴っています。'], fc: ['フルコンボです。……ブン、ツ、ブブン、ツ。いいリズムでした。'], clear: ['クリアです。息が、最後までつづいていましたね。'], fail: ['……息つぎの場所を、見つけましょう。練習モードがおすすめです。'] },
   };
 
   /* ---------------- 共通 ---------------- */
@@ -24442,6 +25686,7 @@ ${accessory(L, 'top')}
       }
       this.cleanup = null;
       this.root.innerHTML = '';
+      if (G.GachaFx) G.GachaFx.closeAll();
       document.querySelectorAll('body > .modal').forEach((m) => m.remove());
       this.cur = name;
       Screens[name](params || {});
@@ -24456,6 +25701,7 @@ ${accessory(L, 'top')}
       if (name === 'title' || name === 'terms' || name === 'splash') return G.Audio.bgm.play('title');
       if (BGM_KEEP.has(name)) return; // ストーリーは背景に合わせて story.js が切りかえる
       if (name === 'event') return G.Audio.bgm.play('event');
+      if (name === 'gacha') return G.Audio.bgm.play('gacha');
       if (BGM_LIVE.has(name)) return G.Audio.bgm.play('live');
       const area = G.Progress.data && G.Progress.data.area;
       G.Audio.bgm.play(name === 'home' && (area === 'cafe' || area === 'musicshop') ? 'cafe' : name === 'home' && area === 'shrine' ? 'wa' : 'home');
@@ -24741,7 +25987,7 @@ ${accessory(L, 'top')}
     const levelOf = (song, k) => G.Chart.get(song, k).level;
     const groupIcon = { all: 'music', band: 'members', member: 'star', stella: 'spark', brass: 'flower', yoi: 'bell', special: 'crown', local: 'upload', fav: 'heart' };
     // マイ楽曲の読み込み（音声ファイルはこのブラウザの中だけで扱う）
-    const fileInput = h('input', { type: 'file', accept: 'audio/*,.mp3,.wav,.ogg,.m4a,.aac,.flac', style: { display: 'none' } });
+    const fileInput = h('input', { type: 'file', accept: 'audio/*,video/*,.mp3,.wav,.ogg,.m4a,.aac,.flac,.mp4,.m4v,.mov,.webm', style: { display: 'none' } });
     fileInput.addEventListener('change', () => {
       const f = fileInput.files && fileInput.files[0];
       fileInput.value = '';
@@ -24758,7 +26004,7 @@ ${accessory(L, 'top')}
       let close;
       const card = h('div', { class: 'modal-card' },
         h('div', { class: 'modal-title' }, '曲を解析しています'),
-        h('p', { class: 'modal-text' }, '「' + file.name + '」のテンポと音の立ち上がりを調べて、譜面を作っています。音声はこのブラウザの外には送られません。'),
+        h('p', { class: 'modal-text' }, '「' + file.name + '」のテンポと音の立ち上がりを調べて、譜面を作っています。ファイルはこのブラウザの外には送られません。'),
         h('div', { class: 'import-bar' }, bar),
         h('div', { class: 'import-status' }, msg, pct));
       close = UI.modal(card, { sticky: true });
@@ -24774,7 +26020,7 @@ ${accessory(L, 'top')}
         curId = song.id;
         renderTabs();
         renderList();
-        UI.toast('『' + song.title + '』を追加しました（BPM ' + song.bpm + '）' + (G.Local.persistent ? '' : '　※このブラウザでは保存できないため、閉じると消えます'));
+        UI.toast('『' + song.title + '』を追加しました（BPM ' + song.bpm + (song.video ? '・映像つき' : '') + '）' + (G.Local.persistent ? '' : '　※このブラウザでは保存できないため、閉じると消えます'));
       }).catch((e) => {
         console.error(e);
         close();
@@ -24790,8 +26036,8 @@ ${accessory(L, 'top')}
       return h('button', { class: 'sel-row add-row', onclick: pickFile },
         h('span', { class: 'add-ic', html: IC.upload }),
         h('span', { class: 'row-text' },
-          h('span', { class: 'row-title' }, '＋ 音声ファイルを読み込む'),
-          h('span', { class: 'row-sub' }, 'MP3 / WAV / OGG / M4A ・ このブラウザの中だけに保存されます')));
+          h('span', { class: 'row-title' }, '＋ 音声・動画ファイルを読み込む'),
+          h('span', { class: 'row-sub' }, 'MP3 / WAV / OGG / M4A / MP4 / WebM ・ 映像つきなら背景に流れます ・ このブラウザの中だけに保存されます')));
     }
 
     function inGroup(song, g) {
@@ -24904,6 +26150,24 @@ ${accessory(L, 'top')}
         h('span', { class: 'ic', html: IC.sort }), SORTS.find((s) => s.id === sortMode).label);
       const menuBtn = h('button', { class: 'tool-btn sq', 'aria-label': 'ライブ設定', title: 'ライブ設定', onclick: openMenu, html: IC.menu });
       const jacket = h('div', { class: 'big-jacket', html: G.Art.jacket(song) });
+      // マイ楽曲の動画: ジャケットのところで、試聴の部分の映像を音なしでくり返す
+      if (song.local && G.Local) {
+        G.Local.hasVideo(song.id).then((ok) => {
+          if (!ok || !jacket.isConnected || curId !== song.id) return;
+          const v = h('video', { class: 'big-jacket-video', muted: '', playsinline: '', preload: 'auto', 'aria-hidden': 'true' });
+          v.muted = true;
+          v.playsInline = true;
+          const a = C.previewStart || 0, b = a + (C.previewLen || 15);
+          v.addEventListener('loadedmetadata', () => {
+            v.currentTime = Math.min(a, Math.max(0, v.duration - 1));
+            v.play().catch(() => {});
+          });
+          v.addEventListener('timeupdate', () => { if (v.currentTime > b) v.currentTime = a; });
+          v.src = G.Local.videoURL(song.id);
+          jacket.appendChild(v);
+          jacket.appendChild(h('span', { class: 'big-jacket-badge' }, '▶ 映像つき'));
+        });
+      }
       if (!unlocked) {
         if (song.shop) {
           jacket.appendChild(h('div', { class: 'big-lock' }, h('span', { html: IC.shop }),
@@ -24962,9 +26226,9 @@ ${accessory(L, 'top')}
         S.auto ? h('span', { class: 'auto-on' }, 'AUTO') : null);
       const tm = G.Team.calc(song);
       const leader = tm.ids[0] && G.cardById(tm.ids[0]);
-      const teamChip = h('button', { class: 'team-chip', 'aria-label': '編成を変える（チームボーナス +' + tm.bonus + '%）', title: '編成を変える', onclick: () => { UI.se(); UI.go('members', { tab: 'team', back: { songId: song.id, diff: di } }); } },
+      const teamChip = h('button', { class: 'team-chip', 'aria-label': '編成を変える（総合力 ' + tm.boosted.toLocaleString('en-US') + '）', title: '編成を変える', onclick: () => { UI.se(); UI.go('members', { tab: 'team', back: { songId: song.id, diff: di } }); } },
         leader ? h('span', { class: 'tc-face', html: G.portrait(leader.char, 'smile', leader.outfit) }) : h('span', { class: 'tc-face empty' }, '＋'),
-        h('span', { class: 'tc-txt' }, h('small', null, '編成'), h('b', null, '+' + tm.bonus.toFixed(1) + '%')),
+        h('span', { class: 'tc-txt' }, h('small', null, '総合力'), h('b', null, tm.boosted.toLocaleString('en-US'))),
         tm.match ? h('i', { class: 'tc-match', title: 'この曲のグループのメンバーが3人以上' }, '♪') : null);
       const start = h('button', { class: 'start-btn', disabled: !unlocked, onclick: startLive },
         h('b', null, 'ライブ開始'), h('small', null, 'LIVE START'));
@@ -25502,7 +26766,7 @@ ${accessory(L, 'top')}
         h('b', null, song.title),
         h('span', { class: 'res-diff', style: { '--c': d.color } }, d.name, h('i', null, 'Lv.' + res.level))),
       h('div', { class: 'res-gauge' },
-        h('div', { class: 'rg-bar' }, fill, G.RANKS.slice(0, 4).map((r) => h('b', { style: { left: r.min / 1e4 + '%' } }, r.r)))),
+        h('div', { class: 'rg-bar' }, fill, G.RANKS.slice(0, 4).map((r) => h('b', { style: { left: ((r.min / G.RANK_BAR_MAX) * 100).toFixed(1) + '%' } }, r.r)))),
       h('div', { class: 'res-medal', html: medalSvg(res.rank), role: 'img', 'aria-label': 'ランク ' + res.rank }));
 
     const scoreBlock = h('section', { class: 'res-block', style: { '--d': '0.1s' } },
@@ -25511,10 +26775,13 @@ ${accessory(L, 'top')}
         h('div', { class: 'res-score-main' }, scoreEl),
         h('div', { class: 'res-best' }, h('span', null, 'ハイスコア'), digits(best, 8)),
         res.lifeZero ? h('div', { class: 'res-lz' }, 'ライフが0になったので、このライブのスコアは記録されません') : null,
-        res.teamBonus ? h('div', { class: 'res-break' },
-          h('span', null, '基本 ' + (res.baseScore || 0).toLocaleString('en-US')),
-          h('span', null, 'スキル・編成ボーナス ', h('b', null, '+' + Math.max(0, res.score - (res.baseScore || 0)).toLocaleString('en-US'))),
-          h('span', { class: 'rb-team' }, '編成 +' + res.teamBonus + '%')) : null),
+        // スコアの内訳: 総合力（スコアの大きさ）× 判定率。S まであといくつか
+        res.scale ? h('div', { class: 'res-break' },
+          h('span', null, '総合力 ', h('b', null, Math.round(res.power || 0).toLocaleString('en-US'))),
+          h('span', null, '判定率 ', h('b', null, ((res.score / res.scale) * 100).toFixed(1) + '%')),
+          res.score < G.RANKS[0].min && !res.auto
+            ? h('span', { class: 'rb-team' }, 'S まで あと ' + (G.RANKS[0].min - res.score).toLocaleString('en-US'))
+            : h('span', { class: 'rb-team' }, 'スコアの大きさ ' + res.scale.toLocaleString('en-US'))) : null),
       reward.total || reward.coins || newMissions.length || exp || chal || growth || evr ? h('div', { class: 'res-reward' },
         evr ? h('button', { class: 'rr-event', onclick: () => { UI.se(); UI.openEventPoints(evr); } }, h('span', { html: IC.flag }), 'イベントP +' + evr.points.toLocaleString('en-US'), evr.pct ? h('small', null, '+' + evr.pct + '%') : null) : null,
         reward.coins ? h('button', { class: 'rr-coin', title: reward.coinItems.map((x) => x[0] + ' +' + x[1]).join('\n'), onclick: () => {
@@ -25568,7 +26835,7 @@ ${accessory(L, 'top')}
       const e = ease(p);
       setDigits(scoreEl, res.score * e, 8);
       comboEl.textContent = String(Math.round(res.maxCombo * e));
-      fill.style.width = Math.min(100, ((res.baseScore == null ? res.score : res.baseScore) * e) / 1e4) + '%';
+      fill.style.width = Math.min(100, ((res.score * e) / G.RANK_BAR_MAX) * 100) + '%';
       if (p < 1) raf = requestAnimationFrame(count);
       else el.classList.add('done');
     };
@@ -25896,8 +27163,8 @@ ${accessory(L, 'top')}
       }));
       body.append(
         h('div', { class: 'team-summary' },
-          h('div', { class: 'tsum-main' }, h('small', null, '総合力'), h('b', null, t.power.toLocaleString('en-US'))),
-          h('div', { class: 'tsum-main bonus' }, h('small', null, 'チームボーナス'), h('b', null, '+' + t.bonus.toFixed(1) + '%')),
+          h('div', { class: 'tsum-main' }, h('small', null, '総合力'), h('b', null, t.boosted.toLocaleString('en-US'))),
+          h('div', { class: 'tsum-main bonus' }, h('small', null, 'スコアの大きさ'), h('b', null, G.scoreScale(t.boosted).toLocaleString('en-US'))),
           h('div', { class: 'tsum-notes' },
             h('span', { class: 'chip' + (t.unit ? ' on' : '') }, '同じグループ5人：総合力+10%'),
             h('span', { class: 'chip' }, '曲のグループのメンバーが3人以上：+5%（ライブ時）')),
@@ -25905,7 +27172,7 @@ ${accessory(L, 'top')}
             h('button', { class: 'btn btn-primary btn-small', onclick: () => { G.Team.auto(); UI.se(); UI.toast('総合力が高くなるように編成しました'); render(); } }, 'おまかせ編成'),
             back ? h('button', { class: 'btn btn-small', onclick: () => { UI.se(); UI.go('select', back); } }, '選曲にもどる') : null)),
         slots,
-        h('p', { class: 'list-lead' }, 'ライブ中、5人のスキルが順番に発動して、5秒間スコアが上がります（リーダーは最後にもう1回）。チームボーナスはライブの最終スコアにそのまま加算されます。'));
+        h('p', { class: 'list-lead' }, 'ライブ中、5人のスキルが順番に発動して、5秒間スコアが上がります（リーダーは最後にもう1回）。総合力が高いほど、ライブのスコアの大きさ（300,000 ＋ 総合力 × 13）が大きくなります。'));
     }
     function renderCards() {
       const owned = G.Cards.list().length;
@@ -25974,6 +27241,8 @@ ${accessory(L, 'top')}
   /* ---------- ガチャ ---------- */
   Screens.gacha = function () {
     let bi = UI.gachaBanner || 0;
+    // ガチャの演出の効果音を、先に作っておく
+    setTimeout(() => G.Audio.warm && G.Audio.warm(['gFlip', 'gDrop', 'gUp', 'gRise', 'gStar']), 300);
     const area = h('div', { class: 'gacha-main' });
     const pillWrap = h('span');
     function render() {
@@ -26005,9 +27274,15 @@ ${accessory(L, 'top')}
         return;
       }
       UI.se();
-      showResults(res);
       render();
+      // 演出（js/gachafx.js）→ 結果。「もう1回引く」で同じ回数をもう一度
+      G.GachaFx.play(res, {
+        banner: G.Gacha.banners[bi],
+        again: { n, cost: n === 10 ? G.Gacha.cost10 : G.Gacha.cost1 * n, run: () => pull(n) },
+        onClose: () => { if (UI.cur === 'gacha') render(); },
+      });
     }
+    // 演出なしの結果（いまは使っていません。G.GachaFx がないときだけ）
     function showResults(res) {
       const best = Math.max(...res.map((r) => r.card.rarity));
       const grid = h('div', { class: 'gres-grid n' + res.length });
@@ -26036,8 +27311,9 @@ ${accessory(L, 'top')}
           const r = G.Gacha.exchange(card.id);
           close();
           if (r) {
-            showResults([r]);
             render();
+            if (G.GachaFx) G.GachaFx.play([r], { banner: G.Gacha.banners[bi], direct: true, onClose: () => { if (UI.cur === 'gacha') render(); } });
+            else showResults([r]);
           }
         } }, cardThumb(Object.assign({}, card), { noText: true }), h('small', null, G.CHARS[card.char].short)))),
         h('div', { class: 'modal-actions' }, h('button', { class: 'btn', onclick: () => close() }, 'やめる')));
@@ -26444,7 +27720,10 @@ ${accessory(L, 'top')}
             'キーボードでは、帯の真下かそのとなりのキーを押していればOK。帯が動いたら、次のキーを押してから前のキーを離すとスムーズです。'),
           card('金ノーツ', h('div', { class: 'note-img' }, img(spr.goldTap), img(spr.goldFlick), img(spr.slides.gold)),
             '金色にきらきら光るタップ・フリック・スライド。操作はふつうのノーツと同じで、うまく叩くとそのノーツのスコアが2倍になります（スライドは中継点・終点も2倍）。サビに入る1拍目や、曲の最後、曲ごとの見せ場に出てきます。',
-            'ランクの基準になる基本スコアは変わりません。ふえるのは最終スコアだけです。'),
+            'スキルが発動しているあいだに金ノーツを叩くと、さらにたくさんスコアが入ります。'),
+          card('スコアとランク', h('div', { class: 'note-img how-ranks' }, G.RANKS.slice(0, 4).map((r) => h('span', { class: 'hud-rank rank-' + r.r }, h('span', null, r.r)))),
+            'スコア ＝ スコアの大きさ × 判定率。スコアの大きさは、編成の総合力で決まります（300,000 ＋ 総合力 × 13）。判定率は、PERFECT・GREAT などの判定と最大コンボで決まり、スキル中のノーツや金ノーツはそのぶん多く入ります。',
+            'ランクはスコアで決まります: S（100万）／A（85万）／B（70万）／C（50万）。総合力 50,000 くらいで、うまく遊べばやっと S に届きます。カードを育てて、総合力を上げよう！'),
           card('ソフラン（変速）', h('div', { class: 'note-img' }, h('span', { class: 'hud-speed on', style: { opacity: 1 } }, 'SPEED ×0.50'), h('span', { class: 'hud-speed on up', style: { opacity: 1 } }, 'SPEED ×1.50'), h('span', { class: 'hud-speed on', style: { opacity: 1 } }, 'STOP')),
             '一部の難しい譜面（KING Lv.34以上・MEGA Lv.29以上・HARD Lv.23以上）では、曲の途中でノーツの流れる速さが変わります。遅くなる・速くなる・一瞬止まる、などの変化があります。',
             '速さが変わっても、判定のタイミングは音楽どおりです。目より耳を信じて叩きましょう。選曲画面に「ソフランあり」と表示されます。'),
@@ -27921,7 +29200,7 @@ ${accessory(L, 'top')}
       const card = h('div', { class: 'modal-card ch-card', style: { '--c': c.color } },
         h('div', { class: 'modal-title' }, c.short + 'でチャレンジ'),
         h('div', { class: 'ch-cards' }, ids.map((cid) => UI.cardThumb(G.cardById(cid), { small: true }))),
-        h('p', { class: 'modal-text' }, (rental ? 'カードを持っていないので、★2をおためしで使います。' : c.short + 'のカード' + ids.length + '枚で挑戦します。') + '　総合力 ' + fmt(team.power) + '（編成ボーナス +' + team.bonus + '%）'),
+        h('p', { class: 'modal-text' }, (rental ? 'カードを持っていないので、★2をおためしで使います。' : c.short + 'のカード' + ids.length + '枚で挑戦します。') + '　総合力 ' + fmt(team.boosted) + '（スコアの大きさ ' + fmt(G.scoreScale(team.boosted)) + '）'),
         h('p', { class: 'modal-text', style: { fontSize: '13px' } }, 'ベスト ' + (best ? fmt(best) : 'なし') + (next ? '　次のステージ報酬：' + fmt(next[0]) + '点でジュエル×' + next[1] : '　ステージ報酬はすべて達成！')),
         h('div', { class: 'modal-actions' },
           h('button', { class: 'btn', onclick: () => close() }, 'やめる'),
@@ -27972,7 +29251,8 @@ ${accessory(L, 'top')}
     });
     const n = Math.max(1, notes.length);
     const base = Math.floor(1e6 * (0.95 * (acc / n) + 0.05 * (max / n)));
-    return { seq, comboAt, maxCombo: max, base, score: Math.floor(base * (1 + p.bonus)) };
+    // スコアは総合力で決まる（あなたと同じ計算。p.bonus はスキルの強さのかわり）
+    return { seq, comboAt, maxCombo: max, base, score: Math.floor((base / 1e6) * (1 + p.bonus * 0.4) * G.scoreScale(p.power)) };
   }
 
   // ライブ中: ほかのメンバーのコンボを表示
@@ -31185,8 +32465,8 @@ ${accessory(L, 'top')}
     if (!st || !st.stages || !st.stages.length) return UI.go('bossRush');
     const S = st.stages;
     const total = S.reduce((s, x) => s + x.score, 0);
-    const base = S.reduce((s, x) => s + (x.base == null ? x.score : x.base), 0) / S.length;
-    const rank = G.rankOf(base);
+    // スコアは7曲の合計。ランクは1曲あたりの平均スコアで決める
+    const rank = G.rankOf(total / S.length);
     const lifeZero = S.some((x) => x.lifeZero);
     const fc = S.every((x) => x.fc), ap = S.every((x) => x.ap);
     const maxCombo = Math.max(...S.map((x) => x.maxCombo));
@@ -31814,6 +33094,478 @@ ${accessory(L, 'top')}
   }
 
   UI.rankUp = rankUp;
+})();
+
+</script>
+<script>
+/*
+ * ソラシド STAGE - gachafx.js
+ * ガチャを引いたときの演出（v2.26）
+ *
+ *   1. レコード … 夜のステージの上に、ピックアップの色のレーベルのレコード。
+ *                 レコードをタップすると針が落ちて回りだし、音符が飛び出す。
+ *                 まわりの光の色で、いちばんいいカードのレアリティがわかる
+ *                 （青 ★2 → ピンク ★3 → 虹色 ★4 と、とちゅうで色が変わっていく）
+ *   2. カード   … 光のあと、裏向きのカードが飛び出して並ぶ（裏のふちの色もレアリティの色）。
+ *                 1枚ずつ自動でめくれる。★4 はふるえて光ってからめくれ、
+ *                 メンバーの大きなカットイン（★・カード名・名前・ひとこと）が出る
+ *   3. 結果     … NEW / MR UP / MAX のしるしと、「カードを見る」「もう1回引く」「OK」
+ *
+ *   画面のどこかをタップすると先へ進みます（回っているレコードはすぐ光り、カードは次の★4まで一気にめくれる）。
+ *   右上の「SKIP」で結果まで飛ばせます。キーボードは Enter / Space がタップ、Esc が SKIP（結果ではとじる）。
+ *   「演出を軽くする」がオンなら、音符や光のつぶを少なくして、画面のゆれもなくします。
+ *   レコード・カードの裏の絵、効果音（js/audio.js の gDrop / gRise / gUp / gFlip / gStar）はすべてオリジナルです。
+ *
+ *   G.GachaFx.play(res, { banner, direct, again, onClose })
+ *     res    … G.Gacha.draw() の結果（[{ card, isNew, rankUp }]）
+ *     banner … ガチャのバナー（レコードのレーベルの色と名前）
+ *     direct … true だとレコードを飛ばしてカードから（ポイント交換）
+ *     again  … { n, cost, run } があれば「もう n 回引く」ボタンを出す
+ *   G.GachaFx.state … 'ready' | 'spin' | 'deal' | 'flip' | 'charge' | 'cut' | 'result' | null（テスト用）
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  const U = G.U;
+  const UI = G.UI;
+  const h = U.h;
+
+  const TIER_C = { 2: '#7CC8FF', 3: '#FF7AB8', 4: '#FFD54A' };
+  const NOTES = ['♪', '♫', '♬', '♩'];
+  let uid = 0;
+  let active = null;
+
+  const se = (name, vol) => G.Audio.playSE(name, vol == null ? 1 : vol);
+
+  // レコード（回る部分）。レーベルはバナーの色
+  function recordSVG(color) {
+    const g = 'gfxr' + ++uid;
+    let grooves = '';
+    for (let r = 36; r <= 82; r += 2.6) grooves += `<circle r="${r.toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${(0.03 + (Math.round(r * 7) % 5) * 0.013).toFixed(3)}" stroke-width=".7"/>`;
+    return `<svg viewBox="-100 -100 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="${g}v"><stop offset="0" stop-color="#2B2840"/><stop offset=".55" stop-color="#16131F"/><stop offset="1" stop-color="#07060C"/></radialGradient>
+        <radialGradient id="${g}l" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      </defs>
+      <circle r="84" fill="url(#${g}v)"/>${grooves}
+      <path d="M0,-84 A84,84 0 0 1 59.4,-59.4 L25.5,-25.5 A36,36 0 0 0 0,-36 Z" fill="#fff" opacity=".05"/>
+      <circle r="31" fill="${color}"/><circle r="31" fill="url(#${g}l)"/>
+      <circle r="26" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1" stroke-dasharray="2 3"/>
+      <text y="-10" text-anchor="middle" font-family="Exo 2, sans-serif" font-weight="900" font-style="italic" font-size="8.5" fill="#fff" letter-spacing=".4">SORASHIDO</text>
+      <text y="17" text-anchor="middle" font-family="Exo 2, sans-serif" font-weight="800" font-size="5" fill="#fff" opacity=".92" letter-spacing=".6">STAGE RECORDS</text>
+      <circle r="3.4" fill="#E9E6F5"/><circle r="1.5" fill="#4A4660"/>
+    </svg>`;
+  }
+  // トーンアーム（針）。右上の軸のまわりで回る
+  const ARM = `<svg viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="93" cy="8" r="6.2" fill="#B9B4D6" stroke="#fff" stroke-width="1.2"/><circle cx="93" cy="8" r="2.4" fill="#5B5680"/>
+    <path d="M93,8 L90,58 L73,75" fill="none" stroke="#E4E1F3" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="65" y="71" width="12" height="7" rx="1.6" transform="rotate(-45 71 74.5)" fill="#FF6FA8" stroke="#fff" stroke-width=".9"/>
+  </svg>`;
+
+  function cardFace(r) {
+    const own = G.Cards.owned(r.card.id);
+    return G.Art.card(r.card, { rank: own ? own.rank : 0 });
+  }
+
+  function play(res, opts) {
+    opts = opts || {};
+    if (active) active.close(true);
+    const low = !!(G.Settings.data && G.Settings.data.lowFx);
+    const best = Math.max(...res.map((r) => r.card.rarity));
+    const banner = opts.banner || G.Gacha.banners[0];
+    const timers = new Set();
+    let state = 'ready';
+    let raf = 0;
+    let closed = false;
+    const setState = (s) => {
+      state = s;
+      Fx.state = s;
+    };
+
+    const later = (fn, ms) => {
+      const t = setTimeout(() => {
+        timers.delete(t);
+        if (!closed && el.isConnected) fn();
+      }, ms);
+      timers.add(t);
+      return t;
+    };
+    const clearAll = () => {
+      timers.forEach(clearTimeout);
+      timers.clear();
+      cancelAnimationFrame(raf);
+    };
+
+    /* ---------- 画面の骨組み ---------- */
+    const stars = [];
+    for (let i = 0; i < (low ? 10 : 26); i++) {
+      stars.push(h('i', { class: 'gfx-star', style: { left: ((i * 37 + 11) % 100) + '%', top: ((i * 53 + 7) % 62) + '%', '--d': ((i * 0.37) % 2.4).toFixed(2) + 's', '--s': (0.5 + ((i * 7) % 5) / 5).toFixed(2) } }));
+    }
+    const bg = h('div', { class: 'gfx-bg' }, stars, h('i', { class: 'gfx-spot l' }), h('i', { class: 'gfx-spot r' }), h('i', { class: 'gfx-floor' }));
+    const title = h('span', { class: 'gfx-chip', style: { '--c': banner.color } }, banner.name);
+    const skipBtn = h('button', { class: 'gfx-skip', 'aria-label': '演出をスキップ', onclick: (e) => { e.stopPropagation(); skip(); } }, 'SKIP', h('i', { 'aria-hidden': 'true' }, '▶▶'));
+    const top = h('div', { class: 'gfx-top' }, title, h('span', { class: 'gfx-count' }, res.length + '回'), skipBtn);
+    const stage = h('div', { class: 'gfx-stage' });
+    const foot = h('div', { class: 'gfx-foot' });
+    const flash = h('div', { class: 'gfx-flash' });
+    const el = h('div', { class: 'gfx' + (low ? ' low' : ''), role: 'dialog', 'aria-modal': 'true', 'aria-label': 'ガチャの演出', onclick: () => tap() }, bg, top, stage, foot, flash);
+
+    /* ---------- 1. レコード ---------- */
+    const glow = h('div', { class: 'gfx-glow' });
+    const ring = h('div', { class: 'gfx-ring' });
+    const disc = h('div', { class: 'gfx-disc', html: recordSVG(banner.color) });
+    const plate = h('div', { class: 'gfx-plate' }, disc, h('div', { class: 'gfx-sheen' }));
+    const arm = h('div', { class: 'gfx-arm', html: ARM });
+    const notes = h('div', { class: 'gfx-notes' });
+    const deck = h('div', { class: 'gfx-deck' }, glow, ring, plate, arm, notes);
+    const hint = h('div', { class: 'gfx-hint' }, h('b', null, 'レコードをタップ！'), h('small', null, 'TAP TO PLAY'));
+
+    let angle = 0, speed = 0, target = 0, lastT = 0, noteAt = 0, tier = 0;
+    function spinLoop(t) {
+      if (closed) return;
+      const dt = lastT ? Math.min(0.05, (t - lastT) / 1000) : 0;
+      lastT = t;
+      speed += (target - speed) * Math.min(1, dt * 2.2);
+      angle = (angle + speed * dt) % 360;
+      disc.style.transform = 'rotate(' + angle.toFixed(2) + 'deg)';
+      if (tier && t - noteAt > (low ? 320 : 110)) {
+        noteAt = t;
+        emitNote();
+      }
+      raf = requestAnimationFrame(spinLoop);
+    }
+    function emitNote() {
+      const a = Math.random() * Math.PI * 2;
+      const d = 0.55 + Math.random() * 0.4;
+      const n = h('i', { class: 'gfx-note', style: { '--x': (Math.cos(a) * d).toFixed(3), '--y': (Math.sin(a) * d).toFixed(3), '--r': ((Math.random() - 0.5) * 70).toFixed(0) + 'deg', '--c': tier === 4 ? ['#FFD54A', '#FF8FC8', '#7CF0D8', '#9DB7FF'][(Math.random() * 4) | 0] : TIER_C[tier] } }, NOTES[(Math.random() * NOTES.length) | 0]);
+      n.addEventListener('animationend', () => n.remove());
+      notes.appendChild(n);
+    }
+    function setTier(t) {
+      tier = t;
+      el.classList.remove('t2', 't3', 't4');
+      el.classList.add('t' + t);
+      el.style.setProperty('--gc', TIER_C[t]);
+      if (t > 2) {
+        se('gUp', t === 4 ? 1 : 0.8);
+        const pop = h('i', { class: 'gfx-pop' });
+        pop.addEventListener('animationend', () => pop.remove());
+        deck.appendChild(pop);
+      }
+      if (t === 4) {
+        se('gold', 0.7);
+        if (!low) {
+          deck.classList.remove('shake');
+          void deck.offsetWidth;
+          deck.classList.add('shake');
+        }
+      }
+    }
+
+    function showDeck() {
+      setState('ready');
+      stage.innerHTML = '';
+      stage.append(deck);
+      foot.innerHTML = '';
+      foot.append(hint);
+      lastT = 0;
+      target = 18;
+      raf = requestAnimationFrame(spinLoop);
+    }
+
+    // 針を落として回す。光は ★2 → ★3 → ★4 の順に、いちばんいいカードの色まで変わっていく
+    const steps = [2].concat(best >= 3 ? [3] : [], best >= 4 ? [4] : []);
+    function startSpin() {
+      setState('spin');
+      hint.classList.add('out');
+      el.classList.add('playing');
+      G.Audio.bgm && G.Audio.bgm.duck && G.Audio.bgm.duck(true);
+      se('gDrop');
+      later(() => {
+        target = 900;
+        se('gRise', 0.8);
+        setTier(2);
+      }, 480);
+      steps.slice(1).forEach((t, i) => later(() => setTier(t), 1280 + i * 820));
+      later(toFlash, 1280 + (steps.length - 1) * 820 + (best === 4 ? 950 : 700));
+    }
+    // タップされたら、すぐにいちばんの色にして光る
+    function hurrySpin() {
+      clearAll();
+      raf = requestAnimationFrame(spinLoop);
+      target = 900;
+      if (tier !== best) setTier(best);
+      later(toFlash, best === 4 ? 520 : 260);
+    }
+    function toFlash() {
+      setState('deal');
+      flash.classList.remove('on');
+      void flash.offsetWidth;
+      flash.classList.add('on');
+      se('gFlip', 0.9);
+      later(() => {
+        cancelAnimationFrame(raf);
+        showCards(true);
+      }, 220);
+    }
+
+    /* ---------- 2. カード ---------- */
+    let cards = [];
+    let grid = null;
+    let fi = 0;
+    let fast = false;
+    let nextT = 0;
+    function layout() {
+      if (!grid) return;
+      const cs = getComputedStyle(stage);
+      const W = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const H = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const n = res.length;
+      const gap = W < 560 || H < 360 ? 8 : 12;
+      let bestW = 0, bestCols = 1;
+      for (const cols of n === 1 ? [1] : [5, 4, 3, 2]) {
+        const rows = Math.ceil(n / cols);
+        const cw = Math.min((W - gap * (cols - 1)) / cols, (H - gap * (rows - 1)) / rows / 1.4);
+        if (cw > bestW + 0.5) {
+          bestW = cw;
+          bestCols = cols;
+        }
+      }
+      const cw = Math.max(40, Math.floor(Math.min(bestW, n === 1 ? 260 : 190)));
+      grid.style.setProperty('--cw', cw + 'px');
+      grid.style.setProperty('--gap', gap + 'px');
+      grid.style.width = bestCols * cw + (bestCols - 1) * gap + 'px';
+    }
+    function showCards(animate) {
+      stage.innerHTML = '';
+      foot.innerHTML = '';
+      el.classList.add('cards');
+      grid = h('div', { class: 'gfx-grid' });
+      cards = res.map((r, i) => {
+        const flip = h('div', { class: 'gfx-flip' },
+          h('div', { class: 'gfx-face gfx-back' }, h('i', { class: 'gfx-back-staff' }), h('b', { class: 'gfx-back-note' }, '♪'), h('small', null, 'SORASHIDO')),
+          h('div', { class: 'gfx-face gfx-front', html: cardFace(r) }));
+        const tag = r.isNew ? ['new', 'NEW'] : r.rankUp ? ['up', 'MR UP'] : ['', 'MAX'];
+        const c = h('div', { class: 'gfx-card r' + r.card.rarity, style: { '--i': i } }, flip, h('span', { class: 'gfx-tag ' + tag[0] }, tag[1]));
+        c.addEventListener('animationend', (e) => {
+          if (e.animationName === 'gfxDeal') c.classList.remove('deal');
+        });
+        return c;
+      });
+      grid.append(...cards);
+      stage.append(grid);
+      foot.append(h('div', { class: 'gfx-hint small' }, h('small', null, 'タップで一気にめくる')));
+      layout();
+      if (!animate) return;
+      // レコードのあった真ん中から、それぞれの場所へ飛んでいく
+      const sr = stage.getBoundingClientRect();
+      const cx = sr.left + sr.width / 2, cy = sr.top + sr.height / 2;
+      cards.forEach((c, i) => {
+        const b = c.getBoundingClientRect();
+        c.style.setProperty('--fx', (cx - (b.left + b.width / 2)).toFixed(0) + 'px');
+        c.style.setProperty('--fy', (cy - (b.top + b.height / 2)).toFixed(0) + 'px');
+        c.style.setProperty('--fr', ((i % 2 ? 1 : -1) * (12 + ((i * 7) % 14))) + 'deg');
+        c.classList.add('deal');
+      });
+      setState('flip');
+      fi = 0;
+      fast = false;
+      nextT = later(flipNext, 520 + cards.length * 50);
+    }
+    function openCard(i, sound) {
+      const c = cards[i];
+      if (!c || c.classList.contains('open')) return;
+      c.classList.add('open');
+      if (sound) {
+        se('gFlip', 0.6);
+        if (res[i].card.rarity === 3) se('gold', 0.3);
+      }
+    }
+    function flipNext() {
+      if (fi >= cards.length) {
+        nextT = later(showResult, 450);
+        return;
+      }
+      const r = res[fi];
+      if (r.card.rarity === 4) {
+        fast = false;
+        setState('charge');
+        const c = cards[fi];
+        c.classList.remove('deal');
+        c.classList.add('charge');
+        se('gUp', 0.9);
+        later(() => {
+          openCard(fi, false);
+          c.classList.remove('charge');
+          c.classList.add('burst');
+          se('gStar', 0.85);
+          later(() => showCut(r, () => {
+            fi++;
+            setState('flip');
+            nextT = later(flipNext, 260);
+          }), low ? 420 : 720);
+        }, low ? 380 : 760);
+        return;
+      }
+      openCard(fi, true);
+      fi++;
+      nextT = later(flipNext, 150);
+    }
+    // タップ: 次の★4の手前まで一気にめくる
+    function hurryFlip() {
+      if (fast) return;
+      fast = true;
+      clearTimeout(nextT);
+      timers.delete(nextT);
+      let any = false;
+      while (fi < cards.length && res[fi].card.rarity !== 4) {
+        openCard(fi, false);
+        any = true;
+        fi++;
+      }
+      if (any) se('gFlip', 0.7);
+      nextT = later(flipNext, 180);
+    }
+
+    /* ---------- ★4 のカットイン ---------- */
+    let cut = null;
+    let cutReady = 0;
+    let cutNext = null;
+    function showCut(r, next) {
+      setState('cut');
+      const ch = G.CHARS[r.card.char];
+      const grp = (G.CHAR_GROUPS || []).find((g) => g.id === ch.group);
+      const line = (G.GACHA_LINES && G.GACHA_LINES[r.card.char]) || '';
+      const conf = [];
+      for (let i = 0; i < (low ? 0 : 16); i++) {
+        conf.push(h('i', { class: 'gfx-cf', style: { left: ((i * 41 + 5) % 100) + '%', '--c': ['#FFD54A', '#FF8FC8', '#7CF0D8', '#9DB7FF', '#fff', ch.color][i % 6], '--d': ((i * 0.13) % 1.2).toFixed(2) + 's', '--r': ((i * 47) % 360) + 'deg' } }));
+      }
+      cut = h('div', { class: 'gfx-cut', style: { '--cc': ch.color } },
+        h('div', { class: 'gfx-cut-rays' }),
+        conf,
+        h('div', { class: 'gfx-cut-band' }),
+        h('div', { class: 'gfx-cut-art', html: G.Art.card(r.card, { noText: true }) }),
+        h('div', { class: 'gfx-cut-info' },
+          h('div', { class: 'gfx-cut-stars', 'aria-label': '★4' }, [0, 1, 2, 3].map((i) => h('i', { style: { '--i': i } }, '★'))),
+          h('div', { class: 'gfx-cut-tags' },
+            grp ? h('span', { class: 'gfx-cut-grp', style: { '--g': grp.color } }, grp.name) : null,
+            r.isNew ? h('span', { class: 'gfx-cut-new' }, 'NEW!') : h('span', { class: 'gfx-cut-new up' }, r.rankUp ? 'MASTER RANK UP' : 'MASTER RANK MAX')),
+          h('b', { class: 'gfx-cut-title' }, r.card.title),
+          h('span', { class: 'gfx-cut-name' }, ch.name),
+          line ? h('p', { class: 'gfx-cut-line' }, line) : null),
+        h('div', { class: 'gfx-cut-hint' }, 'タップで次へ'));
+      el.appendChild(cut);
+      cutReady = performance.now() + 900;
+      cutNext = next;
+    }
+    function closeCut() {
+      if (!cut || performance.now() < cutReady) return;
+      const c = cut;
+      cut = null;
+      c.classList.add('out');
+      later(() => c.remove(), 240);
+      const n = cutNext;
+      cutNext = null;
+      if (n) n();
+    }
+
+    /* ---------- 3. 結果 ---------- */
+    function showResult() {
+      setState('result');
+      clearAll();
+      el.classList.add('done');
+      G.Audio.bgm && G.Audio.bgm.duck && G.Audio.bgm.duck(false);
+      cards.forEach((c, i) => {
+        c.classList.add('open', 'tagged');
+        c.style.setProperty('--ti', (i * 0.04).toFixed(2) + 's');
+      });
+      title.textContent = best === 4 ? '★4 が出ました！' : 'ガチャ結果';
+      title.classList.add('res');
+      const again = opts.again;
+      const can = again && G.Jewels.get() >= again.cost;
+      foot.innerHTML = '';
+      foot.append(h('div', { class: 'gfx-actions' },
+        h('button', { class: 'btn', onclick: (e) => { e.stopPropagation(); close(); UI.go('members', { tab: 'cards' }); } }, 'カードを見る'),
+        again ? h('button', { class: 'btn btn-pink gfx-again', disabled: !can, onclick: (e) => { e.stopPropagation(); if (!can) return; close(); again.run(); } },
+          'もう' + again.n + '回引く', h('span', { class: 'gfx-cost' }, h('i', { html: UI.IC.gem }), again.cost.toLocaleString('en-US'))) : null,
+        h('button', { class: 'btn btn-primary gfx-ok', onclick: (e) => { e.stopPropagation(); close(); } }, 'OK')));
+    }
+
+    /* ---------- 操作 ---------- */
+    function tap() {
+      if (closed) return;
+      if (state === 'ready') startSpin();
+      else if (state === 'spin') hurrySpin();
+      else if (state === 'flip') hurryFlip();
+      else if (state === 'cut') closeCut();
+    }
+    function skip() {
+      if (closed || state === 'result') return;
+      clearAll();
+      if (cut) {
+        cut.remove();
+        cut = null;
+      }
+      flash.classList.remove('on');
+      if (!grid) showCards(false);
+      else cards.forEach((c) => c.classList.remove('deal', 'charge'));
+      se('gFlip', 0.7);
+      showResult();
+    }
+    function onKey(e) {
+      if (closed) return;
+      if (!el.isConnected) return close(true);
+      if (e.code === 'Enter' || e.code === 'Space' || e.code === 'NumpadEnter') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (state === 'result') close();
+        else tap();
+      } else if (e.code === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (state === 'result') close();
+        else skip();
+      }
+    }
+    function onResize() {
+      layout();
+    }
+    function close(silent) {
+      if (closed) return;
+      closed = true;
+      clearAll();
+      window.removeEventListener('keydown', onKey, true);
+      window.removeEventListener('resize', onResize);
+      G.Audio.bgm && G.Audio.bgm.duck && G.Audio.bgm.duck(false);
+      el.remove();
+      if (active && active.el === el) active = null;
+      Fx.state = null;
+      if (!silent && opts.onClose) opts.onClose();
+    }
+
+    window.addEventListener('keydown', onKey, true);
+    window.addEventListener('resize', onResize);
+    document.body.appendChild(el);
+    active = { el, close };
+    if (opts.direct) {
+      G.Audio.bgm && G.Audio.bgm.duck && G.Audio.bgm.duck(true);
+      el.classList.add('t' + best, 'playing');
+      el.style.setProperty('--gc', TIER_C[best]);
+      showCards(true);
+    } else showDeck();
+    return close;
+  }
+
+  const Fx = {
+    state: null,
+    play,
+    // 画面を切りかえるときに、出ている演出をとじる（ui.js の UI.go から）
+    closeAll() {
+      if (active) active.close(true);
+    },
+  };
+  G.GachaFx = Fx;
 })();
 
 </script>
@@ -33168,6 +34920,11 @@ ${accessory(L, 'top')}
     kaede: 'バチさばき、ばあちゃんにも負けないくらいになった！',
     gou: '……ソイヤッ！！　……腹の底から、音が出る。',
     shino: '……新しいメロディ、たくさん浮かびました……！',
+    sena: 'ピント、ばっちり。……今なら、音の形まで映せる。',
+    yuu: '低音のうねり、レン先輩にも負けないくらいになりました！',
+    chika: 'スライド、もっと遠くまでのびるようになったよ〜。',
+    kanade: '……ブランクは、もう取りもどしたわ。',
+    souma: '息が、竹のおくまで通るようになりました。',
   };
 
   UI.openTrain = openTrain;
