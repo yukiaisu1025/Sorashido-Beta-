@@ -7,6 +7,10 @@
 <meta name="description" content="放課後のバンド「ソラシド」と一緒に歌う、ブラウザで遊べるオリジナル音楽ゲーム。">
 <meta name="author" content="YUKIGROUP">
 <title>ソラシド STAGE</title>
+<!-- サイトのアイコン（ソ・ラ・シ・ドの4色のタイルが階段のように上がっていく。元の絵は icon.svg） -->
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,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">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9Ii4zIiBjeT0iLjc1IiByPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNGRkY2RkIiLz48c3RvcCBvZmZzZXQ9Ii41NSIgc3RvcC1jb2xvcj0iI0ZGRDNFNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0M5RThGRiIvPjwvcmFkaWFsR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjEuNSIgeT0iMS41IiB3aWR0aD0iNjEiIGhlaWdodD0iNjEiIHJ4PSIxNSIgZmlsbD0idXJsKCNiZykiLz48Y2xpcFBhdGggaWQ9ImMiPjxyZWN0IHg9IjEuNSIgeT0iMS41IiB3aWR0aD0iNjEiIGhlaWdodD0iNjEiIHJ4PSIxNSIvPjwvY2xpcFBhdGg+PGcgY2xpcC1wYXRoPSJ1cmwoI2MpIj48cGF0aCBkPSJNMzIgNDAgTDk2IDQwIEw5NC43NyA1Mi40OVogTTMyIDQwIEw5MS4xMyA2NC40OSBMODUuMjEgNzUuNTZaIE0zMiA0MCBMNzcuMjUgODUuMjUgTDY3LjU2IDkzLjIxWiBNMzIgNDAgTDU2LjQ5IDk5LjEzIEw0NC40OSAxMDIuNzdaIE0zMiA0MCBMMzIgMTA0IEwxOS41MSAxMDIuNzdaIE0zMiA0MCBMNy41MSA5OS4xMyBMLTMuNTYgOTMuMjFaIE0zMiA0MCBMLTEzLjI1IDg1LjI1IEwtMjEuMjEgNzUuNTZaIE0zMiA0MCBMLTI3LjEzIDY0LjQ5IEwtMzAuNzcgNTIuNDlaIE0zMiA0MCBMLTMyIDQwIEwtMzAuNzcgMjcuNTFaIE0zMiA0MCBMLTI3LjEzIDE1LjUxIEwtMjEuMjEgNC40NFogTTMyIDQwIEwtMTMuMjUgLTUuMjUgTC0zLjU2IC0xMy4yMVogTTMyIDQwIEw3LjUxIC0xOS4xMyBMMTkuNTEgLTIyLjc3WiBNMzIgNDAgTDMyIC0yNCBMNDQuNDkgLTIyLjc3WiBNMzIgNDAgTDU2LjQ5IC0xOS4xMyBMNjcuNTYgLTEzLjIxWiBNMzIgNDAgTDc3LjI1IC01LjI1IEw4NS4yMSA0LjQ0WiBNMzIgNDAgTDkxLjEzIDE1LjUxIEw5NC43NyAyNy41MVoiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNTUiLz48L2c+PGcgdHJhbnNmb3JtPSJyb3RhdGUoLTYgMTIuMTUgNDkuMjUpIj48cmVjdCB4PSI1LjIiIHk9IjQyLjMiIHdpZHRoPSIxNy41IiBoZWlnaHQ9IjE3LjUiIHJ4PSI0LjYiIGZpbGw9IiMyNzJCNTIiLz48cmVjdCB4PSIzLjQiIHk9IjQwLjUiIHdpZHRoPSIxNy41IiBoZWlnaHQ9IjE3LjUiIHJ4PSI0LjYiIGZpbGw9IiM0NUI0RjIiIHN0cm9rZT0iIzI3MkI1MiIgc3Ryb2tlLXdpZHRoPSIyLjQiLz48cmVjdCB4PSI2LjQiIHk9IjQzLjIiIHdpZHRoPSI5IiBoZWlnaHQ9IjIuOCIgcng9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iLjYiLz48L2c+PGcgdHJhbnNmb3JtPSJyb3RhdGUoNCAyNC41NSAzOS42NSkiPjxyZWN0IHg9IjE3LjYiIHk9IjMyLjY5IiB3aWR0aD0iMTcuNSIgaGVpZ2h0PSIxNy41IiByeD0iNC42IiBmaWxsPSIjMjcyQjUyIi8+PHJlY3QgeD0iMTUuOCIgeT0iMzAuOSIgd2lkdGg9IjE3LjUiIGhlaWdodD0iMTcuNSIgcng9IjQuNiIgZmlsbD0iIzIwQzlCNiIgc3Ryb2tlPSIjMjcyQjUyIiBzdHJva2Utd2lkdGg9IjIuNCIvPjxyZWN0IHg9IjE4LjgiIHk9IjMzLjYiIHdpZHRoPSI5IiBoZWlnaHQ9IjIuOCIgcng9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iLjYiLz48L2c+PGcgdHJhbnNmb3JtPSJyb3RhdGUoLTQgMzYuOTUgMzAuMDUpIj48cmVjdCB4PSIzMCIgeT0iMjMuMSIgd2lkdGg9IjE3LjUiIGhlaWdodD0iMTcuNSIgcng9IjQuNiIgZmlsbD0iIzI3MkI1MiIvPjxyZWN0IHg9IjI4LjIiIHk9IjIxLjMiIHdpZHRoPSIxNy41IiBoZWlnaHQ9IjE3LjUiIHJ4PSI0LjYiIGZpbGw9IiNGRjVFOUMiIHN0cm9rZT0iIzI3MkI1MiIgc3Ryb2tlLXdpZHRoPSIyLjQiLz48cmVjdCB4PSIzMS4yIiB5PSIyNCIgd2lkdGg9IjkiIGhlaWdodD0iMi44IiByeD0iMS40IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIuNiIvPjwvZz48ZyB0cmFuc2Zvcm09InJvdGF0ZSg2IDQ5LjM1IDIwLjQ1KSI+PHJlY3QgeD0iNDIuNCIgeT0iMTMuNTAiIHdpZHRoPSIxNy41IiBoZWlnaHQ9IjE3LjUiIHJ4PSI0LjYiIGZpbGw9IiMyNzJCNTIiLz48cmVjdCB4PSI0MC42IiB5PSIxMS43MCIgd2lkdGg9IjE3LjUiIGhlaWdodD0iMTcuNSIgcng9IjQuNiIgZmlsbD0iI0ZGQzIzRCIgc3Ryb2tlPSIjMjcyQjUyIiBzdHJva2Utd2lkdGg9IjIuNCIvPjxyZWN0IHg9IjQzLjYiIHk9IjE0LjQwIiB3aWR0aD0iOSIgaGVpZ2h0PSIyLjgiIHJ4PSIxLjQiIGZpbGw9IiNmZmYiIG9wYWNpdHk9Ii42Ii8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEzLjUgMTUuNSkgcm90YXRlKC0xMikgc2NhbGUoMC44MikiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEuNiAxLjYpIiBmaWxsPSIjMjcyQjUyIiBzdHJva2U9IiMyNzJCNTIiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGVsbGlwc2UgY3g9IjAiIGN5PSI5IiByeD0iNSIgcnk9IjMuOCIgdHJhbnNmb3JtPSJyb3RhdGUoLTI0IDAgOSkiLz48cmVjdCB4PSIyLjYiIHk9Ii05IiB3aWR0aD0iMi45IiBoZWlnaHQ9IjE4IiByeD0iMSIvPjxwYXRoIGQ9Ik0yLjYgLTEwIEM2IC0xMCA3IC03IDEwIC01IEMxMyAtMyAxMy41IDEgMTIgNCBDMTEuNCAwLjUgOSAtMS41IDUgLTIuNiBaIi8+PC9nPjxnIGZpbGw9IiMyNzJCNTIiIHN0cm9rZT0iIzI3MkI1MiIgc3Ryb2tlLXdpZHRoPSIzLjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxlbGxpcHNlIGN4PSIwIiBjeT0iOSIgcng9IjUiIHJ5PSIzLjgiIHRyYW5zZm9ybT0icm90YXRlKC0yNCAwIDkpIi8+PHJlY3QgeD0iMi42IiB5PSItOSIgd2lkdGg9IjIuOSIgaGVpZ2h0PSIxOCIgcng9IjEiLz48cGF0aCBkPSJNMi42IC0xMCBDNiAtMTAgNyAtNyAxMCAtNSBDMTMgLTMgMTMuNSAxIDEyIDQgQzExLjQgMC41IDkgLTEuNSA1IC0yLjYgWiIvPjwvZz48ZyBmaWxsPSIjZmZmIj48ZWxsaXBzZSBjeD0iMCIgY3k9IjkiIHJ4PSI1IiByeT0iMy44IiB0cmFuc2Zvcm09InJvdGF0ZSgtMjQgMCA5KSIvPjxyZWN0IHg9IjIuNiIgeT0iLTkiIHdpZHRoPSIyLjkiIGhlaWdodD0iMTgiIHJ4PSIxIi8+PHBhdGggZD0iTTIuNiAtMTAgQzYgLTEwIDcgLTcgMTAgLTUgQzEzIC0zIDEzLjUgMSAxMiA0IEMxMS40IDAuNSA5IC0xLjUgNSAtMi42IFoiLz48L2c+PC9nPjxwYXRoIGQ9Ik01MiA0NyBRNTIuNjcgNTIuMzIgNTggNTMgUTUyLjY3IDUzLjY3IDUyIDU5IFE1MS4zMiA1My42NyA0NiA1MyBRNTEuMzIgNTIuMzIgNTIgNDdaIiBmaWxsPSIjRkZFMTREIiBzdHJva2U9IiMyNzJCNTIiIHN0cm9rZS13aWR0aD0iMi4yIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHJlY3QgeD0iMS41IiB5PSIxLjUiIHdpZHRoPSI2MSIgaGVpZ2h0PSI2MSIgcng9IjE1IiBmaWxsPSJub25lIiBzdHJva2U9IiMyNzJCNTIiIHN0cm9rZS13aWR0aD0iMyIvPjwvc3ZnPg==">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Exo+2:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=M+PLUS+Rounded+1c:wght@500;700;800;900&display=swap">
@@ -1484,6 +1488,11 @@ button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focu
 .set-label small { font-size: 12px; color: var(--ink-soft); font-weight: 600; line-height: 1.5; }
 .set-ctrl { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .slider { display: flex; align-items: center; gap: 10px; }
+.set-seg { display: inline-flex; padding: 3px; gap: 3px; border-radius: 14px; background: var(--panel-soft); box-shadow: inset 0 0 0 1px var(--line); }
+.set-seg-btn { min-width: 92px; min-height: 44px; padding: 5px 12px; border: 0; border-radius: 11px; background: transparent; color: var(--ink-soft); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.set-seg-btn b { font-size: 15px; font-weight: 800; line-height: 1.1; }
+.set-seg-btn small { font-size: 11px; font-weight: 700; }
+.set-seg-btn.on { background: var(--mint); color: var(--white); box-shadow: 0 2px 6px rgba(17, 168, 151, 0.35); }
 .slider input[type='range'] { width: min(220px, 50vw); accent-color: var(--mint); }
 .slider output { min-width: 56px; text-align: right; font-family: var(--f-num); font-weight: 800; font-size: 16px; font-variant-numeric: tabular-nums; }
 .keymap { width: 100%; display: flex; flex-direction: column; gap: 10px; padding: 6px 0 4px; }
@@ -1672,9 +1681,6 @@ button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focu
 .jewel-pill b { font-family: var(--f-num); font-size: 16px; font-variant-numeric: tabular-nums; }
 .gear-btn { width: 42px; height: 42px; border-radius: 50%; border: 0; background: var(--white); box-shadow: var(--shadow); color: var(--ink-soft); display: grid; place-items: center; }
 .gear-btn svg { width: 24px; height: 24px; }
-.login-card { text-align: center; }
-.login-gem { width: 70px; height: 70px; margin: 0 auto; color: #36C3F2; animation: gemSpin 1.4s ease both; }
-.login-gem svg { width: 100%; height: 100%; }
 @keyframes gemSpin { from { transform: rotateY(0) scale(0.4); } to { transform: rotateY(720deg) scale(1); } }
 
 /* ---------- カード ---------- */
@@ -1888,8 +1894,6 @@ button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focu
 .coin-pill .jw-ic { color: inherit; }
 .coin-pill .jw-ic svg { width: 18px; height: 18px; }
 .rr-coin { background: linear-gradient(90deg, #FFB22E, #FF8A4C); font-family: var(--f-num); }
-.login-gems { display: flex; justify-content: center; gap: 14px; }
-.login-gems .login-gem.coin { color: inherit; }
 .big-lock .lock-go { margin-top: 8px; pointer-events: auto; }
 .shop-list { display: flex; flex-direction: column; gap: 12px; }
 .shop-item { display: grid; grid-template-columns: 112px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); border: 2px solid transparent; }
@@ -2040,9 +2044,10 @@ button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focu
 .town-stage { position: absolute; }
 .town-bg, .town-bg svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .town-chars { position: absolute; inset: 0; }
-.tchar { position: absolute; aspect-ratio: 400 / 530; transform: translate(-50%, -97%); cursor: pointer; outline-offset: -4px; }
+/* 位置は JS が transform で決める（left/top は 0 のまま）。影は .tchar-shadow だけにして、重いフィルターは使わない */
+.tchar { position: absolute; left: 0; top: 0; aspect-ratio: 400 / 530; transform: translate(-50%, -97%); cursor: pointer; outline-offset: -4px; will-change: transform; }
 .tchar-body { position: absolute; inset: 0; transform: scaleX(var(--face, 1)); transition: transform 0.25s; }
-.tchar-body svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 3px 2px rgba(70, 40, 40, 0.16)); }
+.tchar-body svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .tchar-shadow { position: absolute; left: 26%; right: 26%; bottom: 1%; height: 5%; border-radius: 50%; background: rgba(80, 50, 40, 0.22); }
 .chibi-svg .cb-legL, .chibi-svg .cb-legR, .chibi-svg .cb-armL, .chibi-svg .cb-armR { transform-box: fill-box; transform-origin: 50% 4%; }
 .tchar.walk .tchar-body svg { animation: tc-bob 0.38s ease-in-out infinite alternate; }
@@ -4150,6 +4155,371 @@ body.low-fx .br-fw { display: none; }
   .yg-line { width: clamp(160px, 34vmin, 280px); }
 }
 
+/* ================= タイトル: ログイン・ライセンス ================= */
+.title-corner { position: absolute; top: calc(12px + var(--sat)); right: var(--gutter-r); z-index: 5; display: flex; gap: 8px; }
+.title-cbtn { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 4px 14px 4px 10px; border-radius: 999px; border: 2px solid rgba(61, 53, 102, 0.12); background: rgba(255, 255, 255, 0.9); color: var(--ink); font: inherit; font-weight: 900; font-size: 13px; box-shadow: 0 3px 10px rgba(40, 30, 90, 0.12); cursor: pointer; }
+.title-cbtn > span:first-child { display: inline-flex; width: 20px; height: 20px; color: var(--sky-deep, #2A8FD6); }
+.title-cbtn svg { width: 100%; height: 100%; }
+.title-cbtn.on { border-color: #2BC48A; }
+.title-cbtn.on > span:first-child { color: #2BC48A; }
+.tc-t { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; font-size: 12px; }
+.tc-t small { font-size: 9.5px; color: #2BC48A; }
+@media (max-width: 520px) { .title-cbtn { padding: 4px 10px 4px 8px; font-size: 12px; } }
+
+/* ================= ライセンス ================= */
+.lic-card { width: min(620px, 100%); }
+.lic-body { display: flex; flex-direction: column; gap: 14px; max-height: min(62vh, 520px); overflow-y: auto; padding: 2px 4px; }
+.lic-body h4 { margin: 0 0 6px; font-size: 14px; font-weight: 900; color: var(--ink); border-left: 4px solid var(--sky, #36B5F0); padding-left: 8px; }
+.lic-body p { margin: 0 0 4px; font-size: 13px; line-height: 1.6; color: var(--ink-soft); }
+.lic-body p.lic-strong { color: var(--ink); font-weight: 900; }
+.lic-pre { margin: 0; padding: 10px 12px; border-radius: 10px; background: #F4F2FB; color: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+.lic-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.lic-list li { display: flex; flex-direction: column; padding: 8px 12px; border-radius: 10px; background: #F7F6FC; }
+.lic-list b { font-size: 13px; }
+.lic-list span { font-size: 12px; color: var(--ink-soft); font-weight: 700; }
+.lic-list small { font-size: 11px; color: var(--ink-soft); }
+
+/* ================= お知らせ ================= */
+.nw-card { width: min(860px, 100%); height: min(620px, 100%); padding-bottom: 14px; }
+.nw-head { display: flex; align-items: baseline; gap: 10px; }
+.nw-head b { font-family: var(--f-display); font-weight: 400; font-size: 22px; }
+.nw-head i { font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: 12px; letter-spacing: 0.24em; color: var(--sky, #36B5F0); }
+.nw-head small { margin-left: auto; font-family: var(--f-num); font-weight: 800; font-size: 11px; letter-spacing: 0.18em; color: var(--ink-soft); }
+.nw-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; flex: none; }
+.nw-tab { position: relative; flex: none; padding: 6px 14px; border-radius: 999px; border: 2px solid rgba(61, 53, 102, 0.12); background: #fff; color: var(--ink-soft); font: inherit; font-weight: 900; font-size: 13px; cursor: pointer; }
+.nw-tab.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.nw-dot { position: absolute; top: 2px; right: 4px; width: 8px; height: 8px; border-radius: 50%; background: #FF4F8B; }
+.nw-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr); gap: 14px; }
+.nw-list { min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 2px; }
+.nw-item { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 14px; border: 2px solid transparent; border-left: 6px solid var(--t); background: #F7F6FC; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.nw-item.on { border-color: var(--t); background: #fff; box-shadow: 0 4px 12px rgba(40, 30, 90, 0.1); }
+.nw-item b { font-weight: 900; font-size: 14px; line-height: 1.4; }
+.nw-meta, .nw-dmeta { display: flex; align-items: center; gap: 8px; }
+.nw-meta em, .nw-dmeta em { padding: 1px 8px; border-radius: 6px; background: var(--t); color: #fff; font-style: normal; font-weight: 900; font-size: 11px; }
+.nw-item .nw-meta em { background: var(--t); }
+.nw-meta time, .nw-dmeta time { font-family: var(--f-num); font-weight: 800; font-size: 12px; color: var(--ink-soft); }
+.nw-new { margin-left: auto; padding: 0 6px; border-radius: 6px; background: #FF4F8B; color: #fff; font-style: normal; font-weight: 900; font-size: 10px; line-height: 16px; }
+.nw-detail { min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 16px; background: #fff; border: 2px solid rgba(61, 53, 102, 0.08); }
+.nw-back { display: none; align-self: flex-start; border: none; background: none; padding: 2px 0; color: var(--ink-soft); font: inherit; font-weight: 900; font-size: 13px; cursor: pointer; }
+.nw-title { margin: 0; font-size: 18px; font-weight: 900; line-height: 1.45; }
+.nw-jackets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.nw-jackets figure { margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.nw-jk { display: block; aspect-ratio: 1; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(40, 30, 90, 0.18); }
+.nw-jk svg { width: 100%; height: 100%; display: block; }
+.nw-jackets figcaption { font-size: 11px; font-weight: 800; text-align: center; color: var(--ink-soft); line-height: 1.3; }
+.nw-art { aspect-ratio: 16 / 7; border-radius: 12px; overflow: hidden; }
+.nw-art svg { width: 100%; height: 100%; display: block; }
+.nw-text p { margin: 0 0 8px; font-size: 14px; line-height: 1.7; }
+.nw-text p.li { position: relative; padding-left: 16px; margin-bottom: 4px; }
+.nw-text p.li::before { content: ''; position: absolute; left: 3px; top: 0.72em; width: 6px; height: 6px; border-radius: 50%; background: var(--sky, #36B5F0); }
+.nw-go { align-self: flex-start; }
+.nw-detail:empty { display: none; }
+@media (max-width: 680px), (max-aspect-ratio: 1/1) {
+  .nw-card { height: 100%; }
+  .nw-body { grid-template-columns: minmax(0, 1fr); }
+  .nw-card .nw-detail { display: none; }
+  .nw-card.reading .nw-detail { display: flex; }
+  .nw-card.reading .nw-list { display: none; }
+  .nw-back { display: block; }
+}
+
+/* ================= ログイン・アカウント ================= */
+.ol-card { width: min(440px, 100%); }
+.ol-card.wide { width: min(640px, 100%); }
+.ol-soon { padding: 14px 16px; border-radius: 14px; background: #F7F6FC; }
+.ol-soon b { display: block; margin-bottom: 4px; font-size: 16px; }
+.ol-soon p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--ink-soft); }
+.ol-tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; border-radius: 14px; background: #F1EFF9; }
+.ol-tab { padding: 8px; border-radius: 10px; border: none; background: none; color: var(--ink-soft); font: inherit; font-weight: 900; font-size: 14px; cursor: pointer; }
+.ol-tab.on { background: #fff; color: var(--ink); box-shadow: 0 2px 6px rgba(40, 30, 90, 0.12); }
+.ol-form { display: flex; flex-direction: column; gap: 10px; }
+.ol-row[hidden] { display: none; }
+.ol-input { width: 100%; box-sizing: border-box; min-height: 46px; padding: 0 14px; border-radius: 12px; border: 2px solid rgba(61, 53, 102, 0.16); background: #fff; color: var(--ink); font: inherit; font-size: 16px; }
+.ol-input:focus { outline: none; border-color: var(--sky, #36B5F0); box-shadow: 0 0 0 3px rgba(54, 181, 240, 0.2); }
+.ol-show { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; color: var(--ink-soft); }
+.ol-msg { margin: 0; min-height: 0; font-size: 13px; font-weight: 800; line-height: 1.5; }
+.ol-msg:empty { display: none; }
+.ol-msg.ng { color: #E2387F; }
+.ol-msg.ok { color: #1E9E6A; }
+.ol-submit { min-height: 48px; }
+.ol-link { align-self: center; border: none; background: none; color: var(--ink-soft); font: inherit; font-weight: 800; font-size: 13px; text-decoration: underline; cursor: pointer; }
+.ol-link[hidden] { display: none; }
+.ol-note { margin: 0; font-size: 12px; line-height: 1.6; color: var(--ink-soft); }
+.ol-info { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; padding: 12px 14px; border-radius: 14px; background: #F7F6FC; font-size: 13px; }
+.ol-info dt { font-weight: 800; color: var(--ink-soft); }
+.ol-info dd { margin: 0; font-weight: 900; word-break: break-all; }
+.ol-btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.ol-btns.sub .btn { min-height: 38px; font-size: 13px; }
+.ol-danger { color: #E2387F; border-color: rgba(226, 56, 127, 0.4); }
+.ol-datas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ol-data { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 14px; border: 2px solid rgba(61, 53, 102, 0.1); background: #fff; }
+.ol-data.cloud { border-color: rgba(54, 181, 240, 0.5); }
+.ol-data b { font-size: 15px; }
+.ol-data dl { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 0; font-size: 13px; }
+.ol-data dt { color: var(--ink-soft); font-weight: 800; }
+.ol-data dd { margin: 0; font-weight: 900; }
+.ol-data .btn { margin-top: auto; font-size: 13px; }
+.ol-warn { margin: 0; font-size: 12px; font-weight: 800; color: #E2387F; text-align: center; }
+@media (max-width: 560px) { .ol-datas { grid-template-columns: 1fr; } }
+
+/* ---------- バッテリーの警告 ---------- */
+.batt-pill {
+  position: fixed;
+  left: 50%;
+  top: calc(80px + var(--sat)); /* ライブのスコア・ライフ・曲名の表示の下 */
+  z-index: 230;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px 7px 12px;
+  border-radius: 999px;
+  background: rgba(21, 18, 44, 0.82);
+  color: #FFD15C;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  animation: battIn 0.35s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  transition: opacity 0.5s, transform 0.5s;
+  white-space: nowrap;
+}
+.batt-pill.red { color: #FF8A8A; }
+.batt-pill.out { opacity: 0; transform: translate(-50%, -12px); }
+.batt-ic { display: inline-flex; width: 26px; height: 14px; }
+.batt-ic svg, .batt-big svg { width: 100%; height: 100%; display: block; }
+@keyframes battIn { from { opacity: 0; transform: translate(-50%, -14px) scale(0.9); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+.batt-card { width: min(460px, 100%); text-align: center; }
+.batt-head { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 4px 0 2px; color: #F2A100; }
+.batt-card.red .batt-head { color: #F0475E; }
+.batt-big { width: 64px; height: 35px; animation: battBlink 1.4s ease-in-out infinite; }
+.batt-pct { font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: 44px; line-height: 1; }
+.batt-pct small { font-size: 22px; margin-left: 2px; }
+.batt-card .modal-text { text-align: left; }
+.batt-card .modal-title { font-size: clamp(17px, 4.9vw, 21px); }
+.batt-card .modal-actions .btn { white-space: nowrap; padding-left: 14px; padding-right: 14px; }
+.batt-card .batt-tip { font-weight: 800; color: var(--ink); text-align: center; }
+.batt-card .batt-note { font-size: 12px; color: var(--mint-deep); text-align: center; }
+@keyframes battBlink { 50% { opacity: 0.45; } }
+@media (prefers-reduced-motion: reduce) { .batt-big, .batt-pill { animation: none; } }
+body.low-fx .batt-big { animation: none; }
+
+/* ================= ログインボーナス（スタンプカード） ================= */
+.lb {
+  position: fixed; inset: 0; z-index: 150; overflow: hidden; cursor: pointer;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: clamp(4px, 1.4vh, 14px);
+  padding: calc(10px + var(--sat)) var(--gutter-r) calc(10px + var(--sab)) var(--gutter-l);
+  font-family: var(--f-body); color: var(--ink);
+  background: linear-gradient(160deg, #E4F4FF 0%, #F6F2FF 45%, #FFEAF3 100%);
+  animation: fadeIn 0.25s ease both;
+}
+.lb.out { animation: rkuOut 0.26s ease both; }
+.lb-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.lb-stripe { position: absolute; inset: -20%; background: repeating-linear-gradient(-32deg, rgba(255, 255, 255, 0.6) 0 22px, rgba(255, 255, 255, 0) 22px 52px); animation: lbSlide 16s linear infinite; }
+@keyframes lbSlide { to { transform: translateX(61px); } }
+.lb-notes i { position: absolute; bottom: -40px; font-style: normal; font-weight: 900; font-size: var(--s); color: var(--c); opacity: 0; animation: lbFloat var(--t) var(--d) ease-in infinite; }
+@keyframes lbFloat { 0% { transform: translateY(0) rotate(-10deg); opacity: 0; } 12% { opacity: 0.55; } 100% { transform: translateY(-115vh) rotate(16deg); opacity: 0; } }
+
+.lb-head { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 12px; }
+.lb-ribbon {
+  position: relative; display: flex; flex-direction: column; align-items: center; padding: 6px 40px 7px;
+  background: linear-gradient(180deg, #FF7DB2, #FF4F8B); color: #fff;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 50%, 100% 100%, 0 100%, 16px 50%);
+  filter: drop-shadow(0 4px 0 rgba(200, 40, 100, 0.25));
+  animation: lbDrop 0.55s 0.05s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+.lb-ribbon b { font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: clamp(20px, 3.4vw, 34px); letter-spacing: 0.08em; line-height: 1; text-shadow: 0 2px 0 rgba(160, 20, 80, 0.35); }
+.lb-ribbon small { font-size: clamp(10px, 1.3vw, 12px); font-weight: 800; letter-spacing: 0.3em; margin-top: 2px; }
+.lb-total { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; align-items: baseline; gap: 4px; padding: 6px 14px; border-radius: 999px; background: #fff; box-shadow: 0 4px 12px rgba(40, 44, 100, 0.12); font-weight: 900; animation: rkuFade 0.4s 0.4s both; }
+.lb-total small { font-size: 11px; color: var(--ink-soft); }
+.lb-total b { font-family: var(--f-num); font-style: italic; font-size: 22px; line-height: 1; color: #FF4F8B; }
+@keyframes lbDrop { from { transform: translateY(-60px) scale(0.8); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.lb-body { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.75fr); align-items: center; gap: clamp(8px, 2vw, 24px); min-height: 0; }
+.lb-char { position: relative; align-self: end; justify-self: center; height: min(74vh, 600px); margin-bottom: -14px; animation: rkuChar 0.6s 0.2s cubic-bezier(.2, 1.2, .4, 1) both; }
+.lb-art { height: 100%; aspect-ratio: 400 / 520; filter: drop-shadow(0 10px 22px rgba(80, 60, 140, 0.22)); }
+.lb-art svg { display: block; width: 100%; height: 100%; }
+.lb-bubble {
+  position: absolute; left: 50%; top: 2%; width: min(250px, 108%); transform: translateX(-38%);
+  padding: 9px 13px; border-radius: 16px; background: #fff; box-shadow: 0 6px 16px rgba(40, 44, 100, 0.16);
+  font-size: clamp(11px, 1.3vw, 14px); font-weight: 700; line-height: 1.55; animation: rkuUp 0.45s 0.55s cubic-bezier(.2, 1.3, .4, 1) both;
+}
+.lb-bubble::after { content: ''; position: absolute; left: 34%; bottom: -9px; border: 9px solid transparent; border-bottom: 0; border-top-color: #fff; }
+.lb-bubble b { display: inline-block; margin-right: 6px; padding: 0 9px; border-radius: 999px; background: var(--c); color: #fff; font-size: 0.85em; }
+
+.lb-card {
+  position: relative; display: flex; flex-direction: column; gap: clamp(6px, 1.3vh, 12px); min-width: 0;
+  padding: clamp(10px, 1.8vh, 18px) clamp(12px, 1.8vw, 22px); border-radius: 24px; background: #fff;
+  box-shadow: 0 10px 0 #F2D9E7, 0 14px 30px rgba(120, 60, 120, 0.16);
+  animation: lbCardIn 0.55s 0.25s cubic-bezier(.2, 1.25, .4, 1) both;
+}
+.lb.hit .lb-card { animation: lbCardIn 0.55s 0.25s cubic-bezier(.2, 1.25, .4, 1) both, lbShake 0.28s ease; }
+.lb.skip .lb-card, .lb.view .lb-card { animation: none; }
+@keyframes lbCardIn { from { transform: translateY(40px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes lbShake { 0% { translate: 0 0; } 25% { translate: 0 5px; } 50% { translate: 0 -2px; } 75% { translate: 0 1px; } 100% { translate: 0 0; } }
+.lb-card-head { display: flex; align-items: center; gap: 10px; padding-bottom: clamp(5px, 1vh, 9px); border-bottom: 2px dashed #F1D7E5; }
+.lb-card-head > b { font-weight: 900; font-size: clamp(14px, 1.8vw, 18px); }
+.lb-dots { display: flex; gap: 4px; }
+.lb-dots i { width: 9px; height: 9px; border-radius: 50%; background: #EDEFF7; }
+.lb-dots i.on { background: #FF5E9C; }
+.lb-of { margin-left: auto; font-family: var(--f-num); font-style: italic; font-weight: 900; color: var(--ink-soft); font-size: 14px; }
+.lb-of b { font-size: 22px; color: #FF4F8B; }
+
+.lb-tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)) minmax(0, 1.5fr); gap: clamp(5px, 0.9vw, 10px); }
+.lb-tile {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 2px;
+  min-height: clamp(84px, 19vh, 168px); padding: 6px 3px 7px; border-radius: 14px;
+  background: #F5F7FF; border: 2px solid #E3E8F6; animation: rkuPopBig 0.45s calc(0.4s + var(--i) * 0.05s) cubic-bezier(.2, 1.5, .4, 1) both;
+}
+.lb-day { font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: clamp(10px, min(1.2vw, 1.8vh), 14px); letter-spacing: 0.04em; padding: 1px 8px; border-radius: 999px; background: #fff; color: var(--ink-soft); white-space: nowrap; }
+.lb-rw { display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: nowrap; }
+.lb-one { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.lb-ic { display: inline-flex; width: clamp(28px, min(4.2vw, 6.4vh), 54px); height: clamp(28px, min(4.2vw, 6.4vh), 54px); }
+.lb-ic svg { width: 100%; height: 100%; }
+.lb-gem { display: inline-flex; width: 100%; height: 100%; color: #36B5F0; }
+.lb-n { font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: clamp(12px, min(1.6vw, 2.4vh), 19px); line-height: 1; }
+.lb-name { font-size: clamp(9px, min(1vw, 1.6vh), 12px); font-weight: 800; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.lb-tile.sp { background: linear-gradient(160deg, #FFF8DA, #FFE08A); border-color: #FFC23D; }
+.lb-tile.sp .lb-day { background: #FF9F1C; color: #fff; }
+.lb-tile.done > :not(.lb-stamp) { opacity: 0.4; }
+.lb-tile.done { background: #FFF2F7; border-color: #F7D3E3; }
+.lb-tile.cur { border-color: #FF5E9C; background: #fff; box-shadow: 0 0 0 4px rgba(255, 94, 156, 0.18); }
+.lb-tile.sp.cur { background: linear-gradient(160deg, #FFF8DA, #FFE08A); }
+.lb-tile.today:not(.done) { animation: rkuPopBig 0.45s calc(0.4s + var(--i) * 0.05s) cubic-bezier(.2, 1.5, .4, 1) both, lbGlow 1.1s 0.8s ease-in-out infinite; }
+.lb.hit .lb-tile.today { animation: rkuPopBig 0.45s calc(0.4s + var(--i) * 0.05s) cubic-bezier(.2, 1.5, .4, 1) both; }
+.lb.hit .lb-tile.today > :not(.lb-stamp):not(.lb-ink) { opacity: 0.5; transition: opacity 0.3s; }
+@keyframes lbGlow { 50% { box-shadow: 0 0 0 7px rgba(255, 94, 156, 0.28); } }
+.lb-stamp { position: absolute; left: 50%; top: 55%; width: min(90%, 86px); aspect-ratio: 1; transform: translate(-50%, -50%); color: #FF3F84; opacity: 0.92; pointer-events: none; filter: drop-shadow(0 2px 3px rgba(255, 63, 132, 0.25)); }
+.lb-stamp svg { display: block; width: 100%; height: 100%; }
+.lb-stamp.now { animation: lbStamp 0.32s 1.15s cubic-bezier(.5, 0, .7, .4) both; }
+@keyframes lbStamp { 0% { transform: translate(-50%, -50%) scale(2.6) rotate(10deg); opacity: 0; } 60% { opacity: 0.95; } 70% { transform: translate(-50%, -50%) scale(0.9) rotate(-2deg); } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.92; } }
+.lb-ink { position: absolute; left: 50%; top: 54%; width: 0; height: 0; pointer-events: none; }
+.lb-ink i { position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: #FF5E9C; opacity: 0; }
+.lb.hit:not(.skip) .lb-ink i { animation: lbInk 0.5s ease-out both; }
+@keyframes lbInk { 0% { transform: rotate(var(--a)) translateX(8px) scale(1); opacity: 0.9; } 100% { transform: rotate(var(--a)) translateX(var(--d)) scale(0.2); opacity: 0; } }
+
+.lb-got { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.lb-got-l { font-weight: 900; font-size: clamp(12px, 1.5vw, 14px); color: #FF4F8B; }
+.lb-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.lb-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px 3px 4px; border-radius: 999px; background: #F5F7FF; font-weight: 800; font-size: clamp(11px, 1.3vw, 13px); white-space: nowrap; opacity: 0; }
+.lb-chip .lb-ic { width: 22px; height: 22px; }
+.lb-chip b { font-family: var(--f-num); font-style: italic; }
+.lb.hit .lb-chip, .lb.view .lb-chip { animation: rkuUp 0.4s calc(0.25s + var(--k) * 0.08s) cubic-bezier(.2, 1.4, .4, 1) both; }
+.lb.skip .lb-chip { animation: none; opacity: 1; }
+.lb-got-l { opacity: 0; }
+.lb.hit .lb-got-l, .lb.view .lb-got-l { animation: rkuFade 0.3s 0.2s both; }
+.lb.skip .lb-got-l { animation: none; opacity: 1; }
+.lb-next { text-align: center; font-size: clamp(10px, 1.2vw, 12px); font-weight: 700; color: var(--ink-soft); animation: rkuFade 0.4s 0.9s both; }
+.lb-next-l { display: inline-block; margin-right: 6px; padding: 0 8px; border-radius: 999px; background: #EAF6FF; color: #1E8FD0; font-weight: 900; }
+.lb-tap { position: relative; z-index: 2; text-align: center; font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: 12px; letter-spacing: 0.26em; color: var(--ink-soft); opacity: 0; }
+.lb.ready .lb-tap { animation: rkuBlink 1.4s ease-in-out infinite; }
+/* とちゅうでタップしたら、演出を最後まで飛ばす */
+.lb.skip .lb-ribbon, .lb.skip .lb-total, .lb.skip .lb-char, .lb.skip .lb-bubble, .lb.skip .lb-tile, .lb.skip .lb-stamp.now, .lb.skip .lb-next { animation: none !important; opacity: 1; }
+.lb.skip .lb-stamp.now { opacity: 0.92; }
+
+/* 縦長の画面: メンバーとあいさつを上に、カードを下に（マスは4列） */
+@media (max-aspect-ratio: 1/1) {
+  .lb-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; align-items: end; }
+  .lb-char { display: flex; align-items: flex-start; gap: 4px; width: 100%; height: min(34vh, 340px); margin-bottom: -6px; justify-self: stretch; }
+  .lb-art { flex: none; margin-left: -3vw; }
+  .lb-bubble { position: relative; left: auto; top: auto; flex: 1; width: auto; min-width: 0; margin-top: 12%; transform: none; }
+  .lb-bubble::after { left: -9px; top: 22px; bottom: auto; border: 9px solid transparent; border-left: 0; border-right-color: #fff; }
+  .lb-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lb-tile.sp { grid-column: span 2; }
+  .lb-tile { min-height: clamp(82px, 11.5vh, 120px); }
+  .lb-ic { width: clamp(28px, 8vw, 40px); height: clamp(28px, 8vw, 40px); }
+  .lb-total { position: static; transform: none; }
+  .lb-head { flex-direction: column; gap: 6px; }
+}
+/* 横長で低い画面（スマホの横向き） */
+@media (orientation: landscape) and (max-height: 520px) {
+  .lb { gap: 4px; padding-top: calc(6px + var(--sat)); padding-bottom: calc(4px + var(--sab)); }
+  .lb-ribbon { padding: 3px 32px 4px; }
+  .lb-ribbon b { font-size: 18px; }
+  .lb-ribbon small { display: none; }
+  .lb-total { padding: 3px 10px; }
+  .lb-total b { font-size: 17px; }
+  .lb-char { height: calc(100vh - 54px); margin-bottom: -10px; }
+  .lb-bubble { font-size: 10.5px; padding: 6px 9px; top: 0; }
+  .lb-card { gap: 5px; padding: 8px 12px; border-radius: 18px; }
+  .lb-card-head { padding-bottom: 4px; }
+  .lb-tile { min-height: 76px; padding: 4px 2px 5px; border-radius: 11px; }
+  .lb-ic { width: 26px; height: 26px; }
+  .lb-chip .lb-ic { width: 18px; height: 18px; }
+  .lb-chip { padding: 2px 8px 2px 3px; font-size: 11px; }
+  .lb-tap { font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lb-stripe, .lb-notes i { animation: none; }
+  .lb-notes { display: none; }
+}
+
+/* ================= ストーリーの「エピソード」タブ ================= */
+.arc-tabs[role='tablist'] .arc-tab.ep { grid-column: 1 / -1; align-items: center; justify-content: center; padding-top: 9px; padding-bottom: 9px; border-style: dashed; }
+.arc-tab.ep.on { border-style: solid; }
+.ep-tab-ic { display: inline-flex; width: 20px; height: 20px; color: var(--c); align-self: center; }
+.ep-tab-ic svg { width: 100%; height: 100%; }
+.arc-tab.ep.on .ep-tab-ic { color: #fff; }
+.part-head .ep-count { order: 3; font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: 13px; color: var(--arc); }
+.ep-ev {
+  display: grid; grid-template-columns: 148px minmax(0, 1fr) auto; align-items: center; gap: 14px;
+  padding: 10px 14px 10px 10px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow);
+  border-left: 6px solid var(--e2);
+}
+.ep-ev-art { position: relative; width: 148px; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: var(--e1); }
+.ep-ev-art svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ep-ev-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.ep-ev-tags { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ep-ev-tags small { font-size: 12px; font-weight: 800; color: var(--ink-soft); }
+.ep-tag { font-style: normal; font-size: 11px; font-weight: 900; padding: 2px 9px; border-radius: 999px; color: #fff; background: var(--ink-faint); }
+.ep-tag.now { background: linear-gradient(90deg, #FF5E9C, #FF8A4C); }
+.ep-ev-title { font-family: var(--f-display); font-weight: 400; font-size: 18px; line-height: 1.3; }
+.ep-ev-sub { font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.ep-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: -2px 0 6px; }
+.ep-row {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px;
+  min-height: 52px; padding: 7px 12px 7px 8px; border: 0; border-radius: 14px; background: var(--panel); box-shadow: 0 2px 8px rgba(40, 44, 100, 0.08);
+  text-align: left; color: var(--ink); transition: transform 0.12s;
+}
+.ep-row:not(.locked):hover { transform: translateX(3px); }
+.ep-row.locked { background: var(--panel-soft); box-shadow: none; cursor: default; }
+.ep-no { display: grid; grid-auto-flow: column; align-items: baseline; gap: 1px; min-width: 50px; padding: 6px 8px; border-radius: 10px; background: linear-gradient(135deg, #B79CFF, #9B7BF2); color: #fff; font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: 18px; line-height: 1; justify-content: center; }
+.ep-no small { font-size: 10px; font-style: normal; }
+.ep-row.locked .ep-no { background: var(--line); }
+.ep-title { display: flex; align-items: center; gap: 6px; min-width: 0; font-weight: 800; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ep-row.locked .ep-title { color: var(--ink-faint); }
+.ep-state { font-size: 11px; font-weight: 800; color: var(--ink-faint); white-space: nowrap; }
+.ep-state.read { color: var(--mint-deep); }
+.ep-row.talk .ep-state.read { color: var(--ink-soft); }
+.ep-faces { display: flex; padding-left: 4px; }
+.ep-face { width: 36px; height: 36px; margin-left: -8px; border-radius: 50%; overflow: hidden; border: 2.5px solid var(--c); background: linear-gradient(160deg, #fff, color-mix(in srgb, var(--c) 30%, #fff)); }
+.ep-face svg { display: block; width: 100%; height: 100%; transform: scale(1.8) translateY(16%); }
+.ep-row.locked .ep-face { border-color: var(--line); background: var(--line); }
+.ep-area { margin: 2px 0 -4px; }
+.ep-area small { font-size: 12px; font-weight: 900; color: var(--ink-soft); padding-left: 10px; border-left: 4px solid #C9B8FF; }
+@media (max-width: 600px) {
+  .ep-ev { grid-template-columns: 96px minmax(0, 1fr); gap: 10px; }
+  .ep-ev-art { width: 96px; }
+  .ep-ev-go { grid-column: 1 / -1; justify-self: end; }
+  .ep-ev-title { font-size: 15px; }
+  .ep-rows { grid-template-columns: minmax(0, 1fr); }
+}
+/* スマホの横向き: ストーリーのタブを4列にして、2段に収める */
+@media (orientation: landscape) and (max-height: 520px) {
+  .arc-tabs[role='tablist'] { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .arc-tabs[role='tablist'] .arc-tab { padding: 6px 12px; }
+  .arc-tabs[role='tablist'] .arc-tab b { font-size: 15px; }
+  .arc-tabs[role='tablist'] .arc-tab.ep { grid-column: span 2; }
+}
+
+/* 新しいエリアの NEW（エリアマップのボタンと、マップの中） */
+.tw-globe { position: relative; }
+.tw-globe-ic { display: block; width: 100%; height: 100%; }
+.tw-globe-new { position: absolute; top: -8px; right: -12px; padding: 1px 6px; border-radius: 999px; background: var(--pink); color: #fff; border: 2px solid #fff; font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: 10px; line-height: 1.3; pointer-events: none; animation: tm-new 1.4s ease-in-out infinite; }
+@keyframes tm-new { 50% { transform: translateY(-3px); } }
+.am-cur.am-new { background: var(--pink); }
+
 </style>
 </head>
 <body>
@@ -4163,7 +4533,7 @@ body.low-fx .br-fw { display: none; }
 (function () {
   'use strict';
   const G = (window.Game = window.Game || {});
-  G.VERSION = '2.19.0';
+  G.VERSION = '2.23.0';
   // 制作者の名前（起動時のロゴ・ライセンス・著作権の表示に使う）
   G.MAKER = 'YUKIGROUP';
   G.COPYRIGHT = '© 2026 YUKIGROUP';
@@ -4323,6 +4693,8 @@ body.low-fx .br-fw { display: none; }
     musicVol: 80,
     bgmVol: 60, // タイトル・街・カフェの BGM
     seVol: 60,
+    noteSE: 'new', // ノーツの音: 'new'（さわやか）| 'old'（v2.20 までの音）
+    battWarn: true, // バッテリーが少ないときに知らせる
     fastSlow: true,
     noFail: false,
     lenientFlick: true, // 通常キーでもフリック判定
@@ -4338,6 +4710,8 @@ body.low-fx .br-fw { display: none; }
     useBonus: true, // ライブボーナスを使う
   };
   const clone = (o) => JSON.parse(JSON.stringify(o));
+  // ノーツ速度 → ノーツが画面の奥から判定ラインまで流れる秒数（1.0 で約2.4秒、6.5 で約0.94秒、12 で約0.59秒）
+  G.approachSec = (speed) => 8.5 / (speed + 2.5);
 
   G.Settings = {
     data: clone(DEFAULTS),
@@ -4358,6 +4732,7 @@ body.low-fx .br-fw { display: none; }
       d.lastDiff = U.clamp(d.lastDiff | 0, 0, G.DIFFS.length - 1);
       d.speed = U.clamp(+d.speed || DEFAULTS.speed, 1, 12);
       d.offset = U.clamp(+d.offset || 0, -300, 300);
+      if (d.noteSE !== 'old' && d.noteSE !== 'new') d.noteSE = 'new';
       this.data = d;
       return d;
     },
@@ -4387,6 +4762,7 @@ body.low-fx .br-fw { display: none; }
     team: START_CARDS.slice(),
     missions: [], // 受け取り済みのミッション
     login: '', // 最後にログインボーナスを受け取った日
+    loginDays: 0, // 通算ログイン日数（ログインボーナスのスタンプカード）
     gachaPoints: 0,
     coins: 1000, // ライブでたまるコイン（曲ショップで使う）
     shop: [], // ショップで買った曲
@@ -4400,6 +4776,7 @@ body.low-fx .br-fw { display: none; }
     vlive: [], // 見たバーチャルライブ
     talks: [], // 見たエリア会話
     area: 'street', // ホームのエリア
+    visited: [], // 行ったことのあるエリア
     items: { n1: 0, n2: 0, n3: 0, sheet: 0, shard: 0 }, // 育成の素材
     chars: {}, // キャラクターランク { id: { lv, exp } }
     events: {}, // 期間限定イベントの記録
@@ -13642,7 +14019,7 @@ ${accessory(L, 'top')}
     { id: 'brass', title: 'ブラス・ブーケ編', tab: 'ブラス', en: 'BRASS BOUQUET', lead: '部員が3人になった桜坂高校吹奏楽部。トランペット・サックス・パーカッションで鳴らす、音の花束の物語。', color: '#FF8A4C' },
     { id: 'yoi', title: '宵ノ鈴編', tab: '宵ノ鈴', en: 'YOINOSUZU', lead: '五年前から止まったままの町の夏祭り。神社の娘と、三味線、和太鼓、篠笛の4人が、もう一度お祭りの鈴を鳴らす物語。', color: '#C8323C' },
     { id: 'fes', title: '合同フェス編', tab: 'フェス', en: 'ALL STARS', lead: '4つのグループ、15人が集まった夏のフェス。グループをこえたシャッフルユニットで、新しい音をさがす物語。', color: '#20A8E0' },
-    { id: 'member', title: 'メンバーエピソード', tab: 'エピソード', en: 'EPISODE', lead: 'メンバーひとりひとりの、ちょっと特別なお話。そのメンバーの★3以上のカードを手に入れると読めます。', color: '#FF7AA8' },
+    { id: 'member', title: 'メンバーエピソード', tab: 'メンバー', en: 'MEMBER', lead: 'メンバーひとりひとりの、ちょっと特別なお話。そのメンバーの★3以上のカードを手に入れると読めます。', color: '#FF7AA8' },
   ];
   // 部の見出し（ストーリー一覧で使う）
   G.STORY.parts = {
@@ -13747,11 +14124,94 @@ ${accessory(L, 'top')}
     { id: 'shrine', name: '宵宮神社', en: 'YOIMIYA SHRINE', bg: () => (hour() >= 18 || hour() < 5 ? 'shrine_night' : 'shrine'), floor: [0.7, 0.9], group: 'yoi' },
     // ことりカフェ: 4つのグループのメンバーが集まるお店（ここだけ BGM がカフェの曲になる）
     { id: 'cafe', name: 'ことりカフェ', en: 'KOTORI CAFE', bg: () => (hour() >= 17 || hour() < 6 ? 'cafe_eve' : 'cafe'), floor: [0.79, 0.88], group: null, desc: 'みんなが集まるカフェ' },
+    // v2.23 で追加: 人が1か所に集まりすぎないように、いろいろなグループのメンバーが来る場所をふやした
+    { id: 'plaza', added: true, name: 'そよかぜ公園', en: 'SOYOKAZE PARK', bg: () => (hour() >= 17 || hour() < 6 ? 'plaza_eve' : 'plaza'), floor: [0.7, 0.92], group: null, desc: '野外ステージのある公園' },
+    { id: 'musicshop', added: true, name: 'おとのは楽器店', en: 'OTONOHA MUSIC', bg: () => 'musicshop', floor: [0.76, 0.93], group: null, desc: '楽器がならぶお店' },
+    { id: 'seaside', added: true, name: 'なぎさ海浜公園', en: 'NAGISA SEASIDE', bg: () => (hour() >= 16 || hour() < 6 ? 'seaside_eve' : 'seaside'), floor: [0.72, 0.93], group: null, desc: '海ぞいの遊歩道' },
   ];
   G.areaById = (id) => G.AREAS.find((a) => a.id === id) || G.AREAS[0];
 
   /* ---------------- エリア会話 ---------------- */
   G.AREA_TALKS = [
+    /* ---------- そよかぜ公園 ---------- */
+    {
+      id: 't-bandshell', area: 'plaza', chars: ['mio', 'suzu'], title: '野外ステージの反響',
+      script: [
+        { bg: 'plaza' }, { show: { mio: 'L', suzu: 'R' } },
+        { c: 'mio', e: 'happy', t: 'すずちゃん、見て！　野外ステージ、だれも使ってないよ！　ちょっとだけ、上がってみない？' },
+        { c: 'suzu', e: 'shy', t: 'えっ……かってに上がっても、いいのでしょうか……。' },
+        { c: 'mio', e: 'laugh', t: '「どなたでも自由にどうぞ」って書いてあるもん！　ほら、くるりんっ！' },
+        { c: 'suzu', e: 'smile', t: 'ふふ。……では、わたしも。しゃらん、しゃらん。' },
+        { c: 'mio', e: 'surprised', t: 'わあ、鈴の音が屋根にはね返って、きれい……！　このステージ、音がまあるくなるんだね！' },
+        { c: 'suzu', e: 'happy', t: 'はい。いつか、ここでみんなで歌えたら……すてきですね。' },
+      ],
+    },
+    {
+      id: 't-fountain', area: 'plaza', chars: ['riku', 'gou'], title: '噴水のリズム',
+      script: [
+        { bg: 'plaza' }, { show: { riku: 'L', gou: 'R' } },
+        { n: '噴水のふちに、大きな影がふたつ、ならんでこしかけている。' },
+        { c: 'riku', e: 'normal', t: '……。' },
+        { c: 'gou', e: 'normal', t: '……。' },
+        { c: 'riku', e: 'think', t: '……噴水の音。……一定じゃない。' },
+        { c: 'gou', e: 'think', t: '……うむ。……でも、心地いい。' },
+        { c: 'riku', e: 'smile', t: '……今度、こういうリズム、たたいてみる。' },
+        { c: 'gou', e: 'smile', t: '……いいな。……おれも。' },
+        { n: '会話はそれだけ。でも、ふたりとも、なんだか満足そうだ。' },
+      ],
+    },
+    /* ---------- おとのは楽器店 ---------- */
+    {
+      id: 't-picks', area: 'musicshop', chars: ['sota', 'kaede'], title: '弦とバチ',
+      script: [
+        { bg: 'musicshop' }, { se: 'door' }, { show: { sota: 'L', kaede: 'R' } },
+        { c: 'sota', e: 'happy', t: 'おっ、カエデじゃん！　楽器店で会うなんて、さては新しいピックを買いにきたな？' },
+        { c: 'kaede', e: 'serious', t: 'ピックじゃなくて、バチよ、バチ。三味線の。……あんたこそ、なにしてんの。' },
+        { c: 'sota', e: 'laugh', t: 'オレは弦を買いにきた！　弦だけに、げんきいっぱいでな！' },
+        { c: 'kaede', e: 'think', t: '…………。今の、三味線の糸より細い冗談ね。' },
+        { c: 'sota', e: 'surprised', t: 'うわっ、きびしい！　じゃあ速弾き勝負で決着だ！　「試奏OK」って書いてあるし！' },
+        { c: 'kaede', e: 'wink', t: 'いいわよ。お店の人におこられない音量で、ね！' },
+      ],
+    },
+    {
+      id: 't-reeds', area: 'musicshop', chars: ['yuine', 'itsuki'], title: '一枚一枚ちがう音',
+      script: [
+        { bg: 'musicshop' }, { show: { yuine: 'L', itsuki: 'R' } },
+        { c: 'itsuki', e: 'smile', t: '柊さん、こんにちは。キーボードの試奏ですか？' },
+        { c: 'yuine', e: 'smile', t: 'ええ。新しい音色が気になって。白鳥くんは？' },
+        { c: 'itsuki', e: 'normal', t: 'サックスのリードを。……同じ番号でも、一枚一枚、少しずつ鳴りかたがちがうんです。' },
+        { c: 'yuine', e: 'think', t: 'わかるわ。鍵盤も、同じ機種なのに、さわった感じがちがったりするの。' },
+        { c: 'itsuki', e: 'happy', t: '道具えらびも、練習のうち、ですね。' },
+        { c: 'yuine', e: 'happy', t: 'ええ。……ふふ、なんだか先生どうしの会話みたい。' },
+      ],
+    },
+    /* ---------- なぎさ海浜公園 ---------- */
+    {
+      id: 't-waves', area: 'seaside', chars: ['tsubasa', 'shino'], title: '波の音を録る',
+      script: [
+        { bg: 'seaside' }, { show: { tsubasa: 'L', shino: 'R' } },
+        { n: '手すりのそばで、つばさがスマホを海に向けている。' },
+        { c: 'shino', e: 'surprised', t: 'あ……夜城さん。なにを、しているんですか……？' },
+        { c: 'tsubasa', e: 'normal', t: '波の音を録ってるの。シンセじゃ作れない、不規則なゆらぎ。……曲に入れたくて。' },
+        { c: 'shino', e: 'think', t: '波の音……。わたしも、篠笛で、波をまねしてみたことがあります。' },
+        { c: 'tsubasa', e: 'surprised', t: '笛で？　……聴かせて。今すぐ。' },
+        { c: 'shino', e: 'shy', t: 'え、えっと……。（ひゅるる……）' },
+        { c: 'tsubasa', e: 'smile', t: '……いいわね。録音、もう一回。今度は、あなたの笛もいっしょに。' },
+      ],
+    },
+    {
+      id: 't-seagull', area: 'seaside', chars: ['kotone', 'haru'], title: 'カモメのビート',
+      script: [
+        { bg: 'seaside' }, { se: 'steps' }, { show: { kotone: 'L', haru: 'R' } },
+        { c: 'kotone', e: 'happy', t: 'ハルちゃん！　ソフトクリーム、半分こしましょう！' },
+        { c: 'haru', e: 'laugh', t: 'ええで！　ほな、いただきま——' },
+        { fx: 'shake' },
+        { c: 'haru', e: 'surprised', t: 'あーっ！　カモメに持ってかれた！' },
+        { c: 'kotone', e: 'surprised', t: 'ええっ！？　……あ、でも見てください、カモメ、すっごくいいリズムで羽ばたいてます！' },
+        { c: 'haru', e: 'think', t: 'ほんまや……タン、タタン、タン。……って、感心しとる場合ちゃう！' },
+        { c: 'kotone', e: 'laugh', t: 'あはは！　もう一個、買いましょう。今度は、しっかり持ってますね！' },
+      ],
+    },
     /* ---------- ことりカフェ（いろいろなグループのメンバーが集まる） ---------- */
     {
       id: 't-mixplan', area: 'cafe', chars: ['hiyori', 'tsubasa'], title: 'カフェで作戦会議',
@@ -14228,7 +14688,7 @@ ${accessory(L, 'top')}
   'use strict';
   const G = (window.Game = window.Game || {});
   G.TERMS = {
-    ver: 3,
+    ver: 4,
     date: '2026年11月6日',
     title: 'ソラシド STAGE 利用規約',
     intro: [
@@ -14242,7 +14702,7 @@ ${accessory(L, 'top')}
         '利用者が本規約に同意しない場合、本ゲームを利用することはできません。',
       ] },
       { h: '第2条（本ゲームの内容）', items: [
-        '本ゲームは、ウェブブラウザで遊べる無料の音楽ゲームです。会員登録やログインは必要ありません。',
+        '本ゲームは、ウェブブラウザで遊べる無料の音楽ゲームです。アカウントの登録（ログイン）は任意で、ログインしなくてもすべての機能で遊べます。',
         '本ゲームには、開発中のベータ版が含まれます。内容・仕様・難易度・ゲームバランスは、予告なく変わることがあります。',
         '本ゲームに登場する人物・団体・学校・お店・地名・楽曲・ストーリーは、すべて架空のものであり、実在のものとは関係ありません。',
       ] },
@@ -14257,13 +14717,17 @@ ${accessory(L, 'top')}
         'ガチャの出やすさや報酬の量などは、ゲームバランスを整えるために変わることがあります。',
       ] },
       { h: '第5条（保存データ）', items: [
-        '本ゲームの進み具合・設定・記録・自作の譜面（Make Music）・マイ楽曲は、利用者のブラウザの中（ローカルストレージなど）にだけ保存されます。制作者のサーバーなどには保存されません。',
+        '本ゲームの進み具合・設定・記録・自作の譜面（Make Music）・マイ楽曲は、利用者のブラウザの中（ローカルストレージなど）に保存されます。',
+        'ログインしている場合は、データの引き継ぎのために、保存データ（マイ楽曲の音声をのぞきます）の写しをクラウド（第6条）にも保存します。ログインしていない場合、保存データがブラウザの外に送られることはありません。',
         'ブラウザの履歴やサイトデータの削除、プライベートブラウズの終了、端末の買いかえや故障、ブラウザの容量の制限などによって、保存データが消えることがあります。制作者は、消えた保存データをもとにもどすことはできません。',
         '大切な自作の譜面は、「ファイルに書き出す」機能などを使って、利用者自身でバックアップしてください。',
       ] },
       { h: '第6条（プライバシー）', items: [
-        '本ゲームは、名前・メールアドレス・位置情報などの個人情報を集めません。アカウントの登録もありません。',
-        '本ゲームは、プレイの内容・記録・操作の履歴を、制作者やほかの人に送りません。広告やアクセス解析のしくみも使っていません。',
+        'ログインしない場合、本ゲームは、名前・メールアドレス・位置情報などの個人情報を集めません。',
+        'ログイン（任意）を使う場合、メールアドレスとパスワードは、Google LLC が提供する Firebase Authentication で管理されます。パスワードを制作者が見ることはできません。また、保存データ（進み具合・設定・記録・自作の譜面など）を、データの引き継ぎのために Google LLC の Cloud Firestore に保存します（Firebase の規約・プライバシーポリシーが適用されます）。',
+        '制作者は、メールアドレスと保存データを、ログイン・データの引き継ぎ・確認やパスワード再設定のメールの送信のためだけに使い、ほかの目的には使いません。法律にもとづく場合をのぞき、第三者に売ったり渡したりしません。',
+        'アカウントは、本ゲームの設定の「アカウント」から、いつでも削除できます。削除すると、クラウドに保存したデータも削除されます。',
+        '本ゲームは、ログインとデータの引き継ぎのほかに、プレイの内容・記録・操作の履歴を、制作者やほかの人に送りません。広告やアクセス解析のしくみも使っていません。',
         '本ゲームは、文字を表示するためにウェブフォント（Google Fonts）を読み込むことがあります。そのとき、利用者の端末からそのサービスへの通信が行われます（そのサービスの規約・ポリシーが適用されます）。また、本ゲームを置いているウェブサイト（GitHub Pages など）の運営者が、ふつうのアクセス記録を残すことがあります。',
         '「マイ楽曲」で読み込んだ音声ファイルは、利用者のブラウザの中だけで解析・保存され、外部に送られることはありません。',
         '「みんなでライブ」は、現在オンラインではありません。いっしょに遊ぶ仲間はコンピューター（CPU）で、通信は行いません。',
@@ -14318,8 +14782,9 @@ ${accessory(L, 'top')}
     // 規約の上に出す、大切なところのまとめ
     summary: [
       '無料で遊べます。課金のしくみはありません',
-      '個人情報は集めません。データはこのブラウザの中だけに保存されます',
-      'ブラウザのデータを消すと、記録も消えます',
+      'ログインは任意です。ログインしなければ個人情報は集めず、データはこのブラウザの中だけに保存されます',
+      'ログインすると、メールアドレスと保存データを Firebase（Google）で管理し、ほかの端末に引き継げます',
+      'ログインしていないときにブラウザのデータを消すと、記録も消えます',
       '光の点滅に気をつけて、休けいをとりながら遊んでください',
     ],
   };
@@ -14637,6 +15102,295 @@ ${accessory(L, 'top')}
         },
       },
     },
+  };
+})();
+
+</script>
+<script>
+/*
+ * ソラシド STAGE - data/news.js
+ * ホームのお知らせ（新しいものを上に書く）
+ *   id    … ちがう文字にする（読んだかどうかの記録に使う）
+ *   date  … 'YYYY-MM-DD'
+ *   tag   … 'important'（重要）| 'song'（新曲）| 'event'（イベント）| 'update'（アップデート）
+ *   title … 見出し / body … 本文（段落ごと。'・' ではじめると箇条書き）
+ *   songs … 曲の ID（ジャケットを並べる） / art … 背景の名前（イベントの絵など）
+ *   go    … ボタン { label, screen, params }（画面へ移動）
+ *   pin   … true だと「重要」のように上にとめる
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  G.NEWS = [
+    {
+      id: 'n-2026-11-v223', date: '2026-11-07', tag: 'update',
+      title: 'ホームに新しいエリアが3つ！（街の動作も軽くなりました）',
+      body: [
+        'ホームの街に、新しいエリアが3つふえました。左上の地球のボタン（エリアマップ）から行けます。',
+        '・そよかぜ公園 … 噴水と、貝がらのような屋根の野外ステージがある公園',
+        '・おとのは楽器店 … ギターやドラムがならぶ楽器のお店（BGM はカフェの曲）',
+        '・なぎさ海浜公園 … 灯台と海が見える遊歩道。ソフトクリームのお店も',
+        '新しいエリア会話も6話ふえました（全19話）。',
+        '・メンバーがいろいろな場所に分かれて出てくるようになり、1つのエリアに出てくるのは5人までになりました（「演出を軽くする」がオンなら3人）',
+        '・メンバーの動かし方を軽くして、人が多いときにカクつきにくくしました',
+      ],
+    },
+    {
+      id: 'n-2026-11-v222', date: '2026-11-07', tag: 'update',
+      title: 'ログインボーナスがスタンプカードに！　ストーリーに「エピソード」タブ',
+      body: [
+        '・ログインボーナスの画面を新しくしました。7日でひとまわりするスタンプカードに、毎日スタンプが押されます。7日目は「SPECIAL」で、ジュエル×1,000ときらめきのかけらがもらえます',
+        '・毎日のジュエル×300・コイン×200 に加えて、その日のマスの報酬（練習ノート・コイン・スキルの楽譜など）がもらえます。休んだ日があっても、カードは続きから進みます',
+        '・となりでは、仲間のメンバーが時間帯に合わせてあいさつしてくれます。ホームの「メニュー」→「ログインボーナス」から、いつでも見返せます',
+        '・ストーリーに「エピソード」タブを追加しました。開催中・終わったイベントのストーリーと、街で見つけたエリア会話を読み返せます。終わったイベントのお話は、ポイントがなくても全話読めます',
+        '※ これまでの「メンバーエピソード」のタブは「メンバー」という名前になりました。',
+      ],
+      go: { label: 'エピソードを見る', screen: 'story', params: { arc: 'episode' } },
+    },
+    {
+      id: 'n-2026-11-v221', date: '2026-11-06', tag: 'update',
+      title: 'ノーツの音・ノーツ速度・バッテリーの警告など',
+      body: [
+        '・ノーツの音を、さわやかな新しい音にしました（ガラスのベルのような「ティン」と、はじけるような高い音）。前の音がよい人は、設定の「ノーツの音」で「旧」をえらぶと、もとの音にもどせます',
+        '・ノーツ速度を、どの数字でも約15%速くしました（速度 6.5 で、ノーツが流れてくるのが約1.1秒 → 約0.94秒）。速すぎるときは、数字を少し下げてください',
+        '・バッテリーの残りが20%以下になると、お知らせが出るようになりました（10%以下でもう一度）。バッテリーが少ないと、処理が重くなったり、データを保存できなかったりすることがあります。ライブ中は画面の上に小さく出て、ライブが終わってからくわしく知らせます',
+        '・ブラウザのタブに出るサイトのアイコンを、ソ・ラ・シ・ドの4色のタイルが階段で上がっていく、ポップなアイコンにしました',
+        '※ バッテリーの残りが読み取れるのは、Android の Chrome や、パソコンの Chrome・Edge などです（iPhone・iPad の Safari では読み取れません）。設定の「バッテリーの警告」でオフにもできます。',
+      ],
+      go: { label: '設定を開く', screen: 'settings' },
+    },
+    {
+      id: 'n-2026-11-online', date: '2026-11-06', tag: 'important', pin: true,
+      title: 'アカウント（ログイン）機能を追加しました',
+      body: [
+        'タイトル画面の「ログイン」から、メールアドレスとパスワードでアカウントを登録できるようになりました。',
+        '・ログインすると、データがクラウドに保存されます。ほかの端末でも同じアカウントでログインすると、続きから遊べます',
+        '・ログインしなくても、これまでどおりすべての機能で遊べます（データはこの端末に保存されます）',
+        '・アカウントは、設定の「アカウント」からいつでも削除できます',
+        '※ オンラインのサーバーの準備ができるまでは「準備中」と表示されます。',
+      ],
+      go: { label: 'アカウントを見る', action: 'account' },
+    },
+    {
+      id: 'n-2026-11-terms4', date: '2026-11-06', tag: 'important',
+      title: '利用規約を改定しました',
+      body: [
+        'アカウント機能の追加にあわせて、利用規約を改定しました（2026年11月6日）。',
+        '・第2条・第5条・第6条: ログイン（任意）と、クラウドへのデータ保存、メールアドレスのあつかいについて書きました',
+        '・第1条: 制作者の名前（YUKIGROUP）を書きました',
+        '設定の「利用規約」から、いつでも読めます。',
+      ],
+      go: { label: '利用規約を読む', action: 'terms' },
+    },
+    {
+      id: 'n-2026-11-newsongs', date: '2026-11-06', tag: 'song',
+      title: '新曲3曲を追加しました！',
+      songs: ['aozora-restart', 'synthetic-aurora', 'fuurai-no-mai'],
+      body: [
+        '約2分30秒〜3分の、スライドたっぷりの新曲です。3曲とも最初から遊べます。',
+        '・アオゾラ・リスタート（ソラシド／BPM174）… 一度ぜんぶ止まって「せーの」で再スタート',
+        '・シンセティック・オーロラ（ステラリズム／BPM150）… のびちぢみするオーロラのカーテンと、極夜の三日月',
+        '・風雷ノ舞（宵ノ鈴／BPM190）… 風神のスライドと雷神のギザギザ。BPM228 の雷鳴も',
+      ],
+      go: { label: 'あそぶ', screen: 'select', params: { songId: 'aozora-restart' } },
+    },
+    {
+      id: 'n-2026-11-v219', date: '2026-11-06', tag: 'update',
+      title: 'アップデートのお知らせ（左右フリック・イベント画面など）',
+      body: [
+        '・左右フリック: 横向きの矢印のフリックが登場（HARD 以上）。矢印の向きにはじいて取ります',
+        '・イベント画面を、ポスターとお知らせボードの新しいデザインにしました',
+        '・ゲームを開いたときに、制作者（YUKIGROUP）のロゴが出るようになりました',
+        '・タイトル画面に「ライセンス」を追加しました',
+        '・ホームにお知らせ欄を追加しました（ゲームを開いて、はじめてホームに来たときに出ます）',
+      ],
+    },
+    {
+      id: 'n-2026-11-bgm', date: '2026-11-06', tag: 'update',
+      title: 'BGM・効果音の一新と、ミックスカバーの配信終了について',
+      body: [
+        'タイトル・ホーム・カフェ・神社・イベント・ライブの BGM を、すべて新しい曲にしました。効果音（歓声・ドア・足音）も新しくなりました。',
+        'これにともない、ミックスカバーの6曲は配信を終了しました。遊んでいただき、ありがとうございました。',
+      ],
+    },
+    {
+      id: 'n-2026-11-event1', date: '2026-11-01', tag: 'event',
+      title: 'イベント「放課後ライブはカフェで計画！？」開催中',
+      art: 'cafe',
+      body: [
+        'ソラシドのメンバーが、ことりカフェで作戦会議！ 期間中にライブをしてイベントポイントを集めると、イベントストーリー（全6話）や報酬がもらえます。',
+        '・期間: 2026年11月1日 〜 11月15日',
+        '・ソラシドのメンバーを編成すると、ポイントが大きくアップ',
+      ],
+      go: { label: 'イベントへ', screen: 'event', eventOnly: true },
+    },
+    {
+      id: 'n-2026-11-bossrush', date: '2026-11-05', tag: 'event',
+      title: 'リリース記念 KING ボスラッシュ',
+      body: [
+        'KING 7曲を、休みなしで続けて遊ぶボスラッシュ。ライフは曲をこえて引きつがれます。',
+        '・千本花火 ▶ 宵狐乱舞 ▶ サブウェイ・ブレイク ▶ ハイパードライブ ▶ ゼニス・クレッシェンド ▶ オーバーリミット・ステージ ▶ テンポ・パラドックス',
+      ],
+      go: { label: 'ボスラッシュへ', screen: 'bossRush' },
+    },
+    {
+      id: 'n-2026-11-makemusic', date: '2026-11-04', tag: 'update',
+      title: '新モード「Make Music」（譜面エディタ）',
+      body: [
+        '収録曲の譜面をもとに、ノーツやスライドを自分好みに置きかえて、自分だけの譜面を作れます。作った譜面はそのまま遊べて、ファイルに書き出すこともできます。',
+      ],
+      go: { label: 'Make Music へ', screen: 'makeMusic' },
+    },
+  ];
+})();
+
+</script>
+<script>
+/*
+ * ソラシド STAGE - data/login.js
+ * ログインボーナスの画面で、メンバーが言うあいさつ
+ *   [朝（5〜11時）, 昼（11〜17時）, 夜（17〜5時）]
+ *   出てくるメンバーは、仲間になっているメンバーから日ごとに順番に（js/loginbonus.js）
+ * 文章はすべてオリジナルです。
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  G.LOGIN_LINES = {
+    hiyori: [
+      'おはよう！　朝の空気って、鼻歌がよくひびくんだよ。今日もいっしょに歌おうね♪',
+      'こんにちは！　来てくれてうれしいな。今日はどの曲からいく？',
+      'こんばんは。夜の屋上で、ちょっとだけ歌っていかない？',
+    ],
+    sota: [
+      'おっはよー！　朝イチのギター、ジャカジャーン！　今日も全力でいくぜ！',
+      'よっ、来たな！　昼めしのあとは、ライブで腹ごなしだ！',
+      'こんばんは！　夜でもオレのギターは元気だぜ。……音量はひかえめにな！',
+    ],
+    kotone: [
+      'おはようございます！　今日もベースの低い音で、みんなを支えちゃいますよ！',
+      'こんにちは！　毎日来てくれて、あたし、ほんとにうれしいです！',
+      'こんばんは！　夜ふかしはほどほどに、ですよ？　でも一曲だけなら……いいですよね！',
+    ],
+    riku: [
+      '……おはよう。今日のテンポは、ゆっくりめで。',
+      '……来たか。……リズム、合わせていこう。',
+      '……こんばんは。……無理は、するなよ。',
+    ],
+    yuine: [
+      'おはよう。朝の一曲目は、指をほぐすつもりで弾いてみて。',
+      'こんにちは。毎日の積みかさねが、いちばん確かな力になるのよ。',
+      'こんばんは。今日もおつかれさま。……少しだけ、いっしょに練習しましょうか。',
+    ],
+    tsubasa: [
+      '……おはよう。別に、あなたが来るのを待ってたわけじゃないわ。',
+      '来たのね。新しいフレーズ、ちょうど聴かせたかったところよ。……ちょうど、ね。',
+      'こんばんは。夜は曲作りがはかどるの。……あなたも、少し付き合いなさい。',
+    ],
+    mio: [
+      'おはよー！　朝のストレッチ、くるりんっ！　今日もいっぱい踊ろうね！',
+      'やっほー！　来てくれたんだ！　ミオ、ずっとステップの練習してたんだよ！',
+      'こんばんは〜！　夜のステージって、キラキラしててドキドキするよね！',
+    ],
+    ren: [
+      '……朝か。目覚ましには、低音を一発。',
+      '……来たな。今日のセットリスト、もう組んである。',
+      '……夜はこれからだ。フロア、温めておく。',
+    ],
+    ruka: [
+      'おはようございます！　朝のファンファーレ、パッパラパー！　一日のはじまりです！',
+      'こんにちは！　ログインのお祝いに、もう一回！　パッパラパー！',
+      'こんばんは！　夜は小さな音で……ぷっぱらぱー。えへへ、ひかえめにしました！',
+    ],
+    itsuki: [
+      'おはようございます。今朝は、ロングトーンから始めましょうか。',
+      'こんにちは。本日も、お会いできてうれしいです。',
+      'こんばんは。一日のしめくくりに、やさしい音色をお届けしますね。',
+    ],
+    haru: [
+      'おはようさん！　朝からリズム刻んでいこか！',
+      'まいど！　今日も来てくれたんやな、おおきに！',
+      'こんばんは〜。夜はシェイカーで、しゃかしゃか静かめにいくで。',
+    ],
+    suzu: [
+      'おはようございます。朝の境内は、鈴の音がよく澄むんです。しゃらん。',
+      'こんにちは。来てくださって、ありがとうございます。今日もよい一日になりますように。',
+      'こんばんは。宵宮の灯りがともる時間ですね。しゃらん、しゃらん。',
+    ],
+    kaede: [
+      'おはよう！　朝イチで勝負よ！　三味線、もう音合わせはすんでるんだから！',
+      '来たわね！　今日こそ、あたしの速弾きについてこられる？',
+      'こんばんは！　夜でも手加減しないわよ。……ちょっとだけ、ね。',
+    ],
+    gou: [
+      '……おはよう。……朝の太鼓は、腹にひびく。',
+      '……よく来た。……今日も、どん、といこう。',
+      '……こんばんは。……夜は、静かにたたく。',
+    ],
+    shino: [
+      'お、おはようございます……。朝の篠笛、聴いて、くれますか……？',
+      'あ……こんにちは。来てくれて、その……うれしい、です。',
+      'こんばんは……。夜の音は、やわらかくて、好きです。',
+    ],
+  };
+})();
+
+</script>
+<script>
+/*
+ * ソラシド STAGE - data/license.js
+ * タイトル画面の「ライセンス」に出す内容（LICENSE ファイルと同じ文を入れておく）
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  G.LICENSES = {
+    game: [
+      'ソラシド STAGE',
+      '© 2026 YUKIGROUP',
+      '楽曲・BGM・効果音・譜面・キャラクター・イラスト・ストーリーは、すべて YUKIGROUP がこのゲームのために作ったオリジナル作品です。',
+      '曲・BGM・効果音はブラウザの中でその場で合成しています。外部の音源・画像は使っていません。',
+    ],
+    mit: [
+      'MIT License',
+      '',
+      'Copyright (c) 2026 YUKIGROUP',
+      '',
+      'Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:',
+      '',
+      'The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.',
+      '',
+      'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.',
+    ],
+    // 読み込んで使っているもの（同梱はしていません）
+    third: [
+      { name: 'Dela Gothic One', by: 'artakana', license: 'SIL Open Font License 1.1', note: 'Google Fonts から読み込み（ロゴ・見出しの文字）' },
+      { name: 'M PLUS Rounded 1c', by: 'M+ FONTS PROJECT', license: 'SIL Open Font License 1.1', note: 'Google Fonts から読み込み（本文の文字）' },
+      { name: 'Exo 2', by: 'Natanael Gama', license: 'SIL Open Font License 1.1', note: 'Google Fonts から読み込み（数字・英字）' },
+      { name: 'Firebase Authentication / Cloud Firestore', by: 'Google LLC', license: 'Firebase の利用規約', note: 'ログインしたときだけ通信します（プログラムは同梱していません）' },
+    ],
+  };
+})();
+
+</script>
+<script>
+/*
+ * ソラシド STAGE - data/online.js
+ * オンラインログイン（Firebase）の設定
+ *
+ *   Firebase のプロジェクトを作って、下の apiKey と projectId を書くと、
+ *   タイトル画面の「ログイン」からアカウントを作ったり、データをクラウドに保存したりできるようになります。
+ *   手順は README の「オンラインログインの設定（Firebase）」を見てください。
+ *
+ *   空のままだと、ログインは「準備中」と表示されるだけで、ゲームはふつうに遊べます。
+ *   （apiKey は公開してもよい値です。データを守るのは Firestore のルールなので、README のルールを必ず設定してください）
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  G.ONLINE_CONFIG = {
+    apiKey: '',
+    projectId: '',
   };
 })();
 
@@ -15623,8 +16377,8 @@ ${accessory(L, 'top')}
           const gap = gm.gap != null ? gm.gap : 2;
           const stopLen = gm.stop != null ? gm.stop : 8;
           const stopB = r3(tAt(-gap)), stopA = r3(TM ? tAt(-gap - stopLen) : stopB - stopLen * sd);
-          // 絵の高さ（画面の奥行き）が 0.62 秒ぶん → ノーツ速度が最速（12）でも画面に入る
-          const mul = gm.mul || Math.round(U.clamp(0.62 / (TM ? tAt(len) - tAt(-gap) : (gap + len) * sd), 0.15, 1) * 100) / 100;
+          // 絵の高さ（画面の奥行き）が 0.56 秒ぶん → ノーツ速度が最速（12・約0.59秒）でも画面に入る
+          const mul = gm.mul || Math.round(U.clamp(0.56 / (TM ? tAt(len) - tAt(-gap) : (gap + len) * sd), 0.15, 1) * 100) / 100;
           if (stopLen > 0) scroll.push({ t: stopA, mul: 0, stop: [stopA, stopB] }, { t: stopB, mul, stop: [stopA, stopB] });
           else scroll.push({ t: stopB, mul });
           scroll.push({ t: r3(t1 + 0.02), mul: 1 });
@@ -17329,6 +18083,156 @@ ${accessory(L, 'top')}
     });
   }
 
+  /* ---------- ノーツの音 ---------- */
+  // ベルの音（金ノーツ・ランクアップ）: 基音と、少しずれた高い倍音
+  const bell = (t, f, d) => (t < d ? 0 : Math.sin(TAU * f * (t - d)) * Math.exp(-(t - d) * 7) + 0.35 * Math.sin(TAU * f * 2.76 * (t - d)) * Math.exp(-(t - d) * 16));
+
+  // 旧: v2.20 までの音（ピッと短い電子音）
+  function oldNoteSE(ctx) {
+    return {
+      tap: synthBuffer(ctx, 0.09, (t, r) =>
+        (Math.sin(TAU * 1760 * t) * 0.55 + Math.sin(TAU * 3520 * t) * 0.18) * Math.exp(-t * 48) + r() * Math.exp(-t * 420) * 0.55),
+      great: synthBuffer(ctx, 0.08, (t, r) =>
+        Math.sin(TAU * 1320 * t) * 0.45 * Math.exp(-t * 55) + r() * Math.exp(-t * 500) * 0.4),
+      flick: synthBuffer(ctx, 0.14, (t, r) => {
+        const ph = TAU * (1100 * t + 9000 * t * t);
+        return Math.sin(ph) * 0.42 * Math.exp(-t * 26) + r() * 0.35 * Math.exp(-t * 40) * Math.min(1, t * 200);
+      }),
+      tick: synthBuffer(ctx, 0.06, (t) => Math.sin(TAU * 2637 * t) * 0.32 * Math.exp(-t * 70)),
+      // 金ノーツ: きらきらのベルの和音（ド・ミ・ソ・ド）を少しずつずらして鳴らし、高い音のきらめきを重ねる
+      gold: synthBuffer(ctx, 0.62, (t, r) =>
+        (bell(t, 1046.5, 0) + bell(t, 1318.5, 0.018) + bell(t, 1568, 0.036) + bell(t, 2093, 0.054)) * 0.16 +
+        Math.sin(TAU * 1760 * t) * 0.32 * Math.exp(-t * 42) + r() * Math.exp(-t * 300) * 0.4 +
+        r() * 0.06 * Math.exp(-t * 6) * (0.5 + 0.5 * Math.sin(TAU * 31 * t))),
+      goldFlick: synthBuffer(ctx, 0.62, (t, r) => {
+        const ph = TAU * (1400 * t + 7000 * t * t);
+        return Math.sin(ph) * 0.3 * Math.exp(-t * 22) + (bell(t, 1568, 0.03) + bell(t, 2093, 0.05) + bell(t, 2637, 0.07)) * 0.15 + r() * 0.07 * Math.exp(-t * 6) * (0.5 + 0.5 * Math.sin(TAU * 29 * t));
+      }),
+    };
+  }
+
+  // 減衰するサイン波を足す（t0 秒から。glide でアタックの一瞬だけ高さが上からおりてくる）
+  function addTone(x, sr, t0, f, decay, amp, glide) {
+    const i0 = Math.max(0, Math.floor(t0 * sr));
+    let ph = 0;
+    for (let i = i0; i < x.length; i++) {
+      const t = (i - i0) / sr;
+      const env = Math.exp(-t * decay) * Math.min(1, t * 900);
+      if (t > 0.01 && env < 2e-4) break;
+      ph += (TAU * f * (1 + (glide || 0) * Math.exp(-t * 260))) / sr;
+      x[i] += Math.sin(ph) * env * amp;
+    }
+    return x;
+  }
+  // 中心の高さが時間で動くバンドパス（状態変数フィルター）。fAt(t) が中心の周波数
+  function sweepBP(x, fAt, q, sr) {
+    let lo = 0, bp = 0;
+    const damp = 1 / q;
+    for (let i = 0; i < x.length; i++) {
+      const fc = Math.min(fAt(i / sr), sr / 7);
+      const f = 2 * Math.sin((Math.PI * fc) / sr);
+      const hp = x[i] - lo - damp * bp;
+      bp += f * hp;
+      lo += f * bp;
+      x[i] = bp;
+    }
+    return x;
+  }
+  // ノイズ（env(t) で音量の形を決める）
+  const noise = (n, sr, rnd, env) => {
+    const x = new Float32Array(n);
+    for (let i = 0; i < n; i++) x[i] = rnd() * env(i / sr);
+    return x;
+  };
+
+  /*
+   * 新: さわやかなノーツの音（はじめの設定）
+   *   ガラスのベルのような「ティン」に、炭酸がはじけるような高い「シュワ」を左右に少し広げて重ねる。
+   *   音は短く切って、速い連打でも音がにごらないようにする。
+   */
+  function freshNoteSE(ctx) {
+    // タップ（PERFECT・GREAT）: ソとレ（5度）の明るいベル ＋ 短いアタック ＋ 高い空気の音
+    const tap = stereoBuffer(ctx, 0.16, 0.8, (L, R, sr, rnd) => {
+      const n = L.length;
+      const body = new Float32Array(n);
+      addTone(body, sr, 0, 1567.98, 34, 1, 0.035); // ソ
+      addTone(body, sr, 0, 2349.32, 46, 0.5); // レ
+      addTone(body, sr, 0, 3135.96, 72, 0.28); // 高いソ
+      addTone(body, sr, 0, 1567.98 * 2.76, 120, 0.16); // ガラスのような倍音
+      const click = biquad(noise(n, sr, rnd, (t) => Math.exp(-t * 1100)), 'bp', 4600, 0.8, sr);
+      const airL = biquad(noise(n, sr, rnd, (t) => Math.exp(-t * 40) * Math.min(1, t * 500)), 'hp', 7600, 0.7, sr);
+      const airR = biquad(noise(n, sr, rnd, (t) => Math.exp(-t * 40) * Math.min(1, t * 500)), 'hp', 7600, 0.7, sr);
+      mixIn(L, R, body, 0, 0.62);
+      mixIn(L, R, click, 0, 0.9);
+      mixIn(L, R, airL, -1, 0.34);
+      mixIn(L, R, airR, 1, 0.34);
+    });
+    // GOOD など: ミとシの、少しやわらかい音
+    const great = stereoBuffer(ctx, 0.12, 0.6, (L, R, sr, rnd) => {
+      const n = L.length;
+      const body = new Float32Array(n);
+      addTone(body, sr, 0, 1318.51, 52, 1, 0.02);
+      addTone(body, sr, 0, 1975.53, 72, 0.32);
+      const click = biquad(noise(n, sr, rnd, (t) => Math.exp(-t * 1200)), 'bp', 3400, 0.8, sr);
+      const air = biquad(noise(n, sr, rnd, (t) => Math.exp(-t * 55) * Math.min(1, t * 500)), 'hp', 7000, 0.7, sr);
+      mixIn(L, R, body, 0, 0.7);
+      mixIn(L, R, click, 0, 0.5);
+      mixIn(L, R, air, 0, 0.14);
+    });
+    // フリック: 風を切る「シュッ」（ノイズの帯域が下から上へ）＋ かけあがる音 ＋ 最後に「チン」
+    const flick = stereoBuffer(ctx, 0.2, 0.82, (L, R, sr, rnd) => {
+      const n = L.length;
+      const fAt = (t) => 1700 * Math.pow(5, Math.min(1, t / 0.1));
+      const env = (t) => Math.min(1, t * 70) * Math.exp(-t * 24);
+      const swL = sweepBP(noise(n, sr, rnd, env), fAt, 2.4, sr);
+      const swR = sweepBP(noise(n, sr, rnd, env), fAt, 2.4, sr);
+      const chirp = new Float32Array(n);
+      let ph = 0;
+      for (let i = 0; i < n; i++) {
+        const t = i / sr;
+        ph += (TAU * 1568 * Math.pow(2, Math.min(1, t / 0.055))) / sr;
+        chirp[i] = Math.sin(ph) * Math.exp(-t * 30) * Math.min(1, t * 700);
+      }
+      const ping = new Float32Array(n);
+      addTone(ping, sr, 0.05, 3135.96, 60, 1);
+      addTone(ping, sr, 0.05, 4698.64, 85, 0.35);
+      mixIn(L, R, swL, -0.6, 0.9);
+      mixIn(L, R, swR, 0.6, 0.9);
+      mixIn(L, R, chirp, 0, 0.32);
+      mixIn(L, R, ping, 0, 0.2);
+    });
+    // スライドの中継点: 小さな「チッ」（ガラスの粒）
+    const tick = stereoBuffer(ctx, 0.08, 0.4, (L, R, sr, rnd) => {
+      const n = L.length;
+      const body = new Float32Array(n);
+      addTone(body, sr, 0, 2637.02, 85, 1);
+      addTone(body, sr, 0, 3951.07, 120, 0.3);
+      const air = biquad(noise(n, sr, rnd, (t) => Math.exp(-t * 600)), 'hp', 6000, 0.7, sr);
+      mixIn(L, R, body, 0, 0.8);
+      mixIn(L, R, air, 0, 0.35);
+    });
+    // 金ノーツ: ド・ミ・ソ・シ・レ（メジャーセブンとナインス）を左から右へ、ハープのように少しずつずらして鳴らす
+    const chime = (notes, step, sparkleRate) => (L, R, sr, rnd) => {
+      const n = L.length;
+      notes.forEach((f, k) => {
+        const x = new Float32Array(n);
+        addTone(x, sr, k * step, f, 7.5, 1);
+        addTone(x, sr, k * step, f * 2.76, 18, 0.28);
+        mixIn(L, R, x, -0.45 + (0.9 * k) / Math.max(1, notes.length - 1), 0.2);
+      });
+      const tw = (t) => Math.exp(-t * 5.5) * Math.min(1, t * 60) * (0.55 + 0.45 * Math.sin(TAU * sparkleRate * t));
+      mixIn(L, R, biquad(noise(n, sr, rnd, tw), 'hp', 8800, 0.7, sr), -1, 0.16);
+      mixIn(L, R, biquad(noise(n, sr, rnd, (t) => tw(t + 0.013)), 'hp', 8800, 0.7, sr), 1, 0.16);
+    };
+    const gold = stereoBuffer(ctx, 0.75, 0.76, chime([1046.5, 1318.51, 1567.98, 1975.53, 2349.32], 0.016, 28));
+    const goldFlick = stereoBuffer(ctx, 0.75, 0.66, (L, R, sr, rnd) => {
+      chime([1567.98, 1975.53, 2349.32, 3135.96], 0.02, 31)(L, R, sr, rnd);
+      const sw = sweepBP(noise(L.length, sr, rnd, (t) => Math.min(1, t * 80) * Math.exp(-t * 20)), (t) => 2500 * Math.pow(4, Math.min(1, t / 0.12)), 2.4, sr);
+      mixIn(L, R, sw, 0, 0.35);
+    });
+    return { tap, great, flick, tick, gold, goldFlick };
+  }
+
   const A = {
     ctx: null,
     music: null,
@@ -17358,27 +18262,15 @@ ${accessory(L, 'top')}
       this.clock = new Clock(ctx);
 
       // 効果音（すべてその場で合成）
-      this.seBuf.tap = synthBuffer(ctx, 0.09, (t, r) =>
-        (Math.sin(TAU * 1760 * t) * 0.55 + Math.sin(TAU * 3520 * t) * 0.18) * Math.exp(-t * 48) + r() * Math.exp(-t * 420) * 0.55);
-      this.seBuf.great = synthBuffer(ctx, 0.08, (t, r) =>
-        Math.sin(TAU * 1320 * t) * 0.45 * Math.exp(-t * 55) + r() * Math.exp(-t * 500) * 0.4);
-      this.seBuf.flick = synthBuffer(ctx, 0.14, (t, r) => {
-        const ph = TAU * (1100 * t + 9000 * t * t);
-        return Math.sin(ph) * 0.42 * Math.exp(-t * 26) + r() * 0.35 * Math.exp(-t * 40) * Math.min(1, t * 200);
-      });
-      this.seBuf.tick = synthBuffer(ctx, 0.06, (t) => Math.sin(TAU * 2637 * t) * 0.32 * Math.exp(-t * 70));
       this.seBuf.metro = synthBuffer(ctx, 0.08, (t) => Math.sin(TAU * 1500 * t) * 0.7 * Math.exp(-t * 60));
+      // ログインボーナスのスタンプ: 「ポン」と低くひびく音 ＋ 紙に当たる音
+      this.seBuf.stamp = synthBuffer(ctx, 0.24, (t, r) =>
+        Math.sin(TAU * (92 * t + (150 / 38) * (1 - Math.exp(-t * 38)))) * 0.85 * Math.exp(-t * 20) * Math.min(1, t * 900) +
+        r() * 0.55 * Math.exp(-t * 110));
       this.seBuf.ui = synthBuffer(ctx, 0.06, (t) => Math.sin(TAU * 1200 * t + Math.sin(TAU * 600 * t)) * 0.25 * Math.exp(-t * 60));
-      // 金ノーツ: きらきらのベルの和音（ド・ミ・ソ・ド）を少しずつずらして鳴らし、高い音のきらめきを重ねる
-      const bell = (t, f, d) => (t < d ? 0 : Math.sin(TAU * f * (t - d)) * Math.exp(-(t - d) * 7) + 0.35 * Math.sin(TAU * f * 2.76 * (t - d)) * Math.exp(-(t - d) * 16));
-      this.seBuf.gold = synthBuffer(ctx, 0.62, (t, r) =>
-        (bell(t, 1046.5, 0) + bell(t, 1318.5, 0.018) + bell(t, 1568, 0.036) + bell(t, 2093, 0.054)) * 0.16 +
-        Math.sin(TAU * 1760 * t) * 0.32 * Math.exp(-t * 42) + r() * Math.exp(-t * 300) * 0.4 +
-        r() * 0.06 * Math.exp(-t * 6) * (0.5 + 0.5 * Math.sin(TAU * 31 * t)));
-      this.seBuf.goldFlick = synthBuffer(ctx, 0.62, (t, r) => {
-        const ph = TAU * (1400 * t + 7000 * t * t);
-        return Math.sin(ph) * 0.3 * Math.exp(-t * 22) + (bell(t, 1568, 0.03) + bell(t, 2093, 0.05) + bell(t, 2637, 0.07)) * 0.15 + r() * 0.07 * Math.exp(-t * 6) * (0.5 + 0.5 * Math.sin(TAU * 29 * t));
-      });
+      // ノーツの音（tap / great / flick / tick / gold / goldFlick）は「新」「旧」の2セット。設定の「ノーツの音」で切りかえる
+      this.noteSets = { new: freshNoteSE(ctx), old: oldNoteSE(ctx) };
+      this.setNoteSE(G.Settings.data.noteSE);
       // ランクアップ: かけあがるファンファーレ（ド・ミ・ソ → 高いドの和音）と、きらきら
       this.seBuf.rankup = synthBuffer(ctx, 1.7, (t, r) => {
         const tone = (f, d, k) => {
@@ -17415,6 +18307,30 @@ ${accessory(L, 'top')}
       if (!left.length || !this.ctx) return;
       this.seBuf[left[0]] = this.lazySE[left[0]](this.ctx);
       if (left.length > 1) setTimeout(() => this.warmSE(), 400);
+    },
+    // ノーツの音のセットを切りかえる（'new' さわやか / 'old' これまでの音）
+    setNoteSE(kind) {
+      if (!this.noteSets) return;
+      Object.assign(this.seBuf, this.noteSets[kind] || this.noteSets.new);
+    },
+    // 設定画面の試聴: タップ・フリック・スライドの中継点・金ノーツを、ライブのように続けて鳴らす
+    previewNoteSE() {
+      if (!this.ctx) this.init();
+      if (!this.ctx) return;
+      this.resume();
+      const at = this.ctx.currentTime + 0.06;
+      const seq = [[0, 'tap', 1], [0.2, 'tap', 1], [0.4, 'flick', 1], [0.64, 'tick', 0.5], [0.72, 'tick', 0.5], [0.8, 'tick', 0.5], [0.88, 'tap', 1], [1.04, 'great', 1], [1.3, 'gold', 0.9], [1.3, 'tap', 0.6], [1.62, 'goldFlick', 0.9], [1.62, 'flick', 0.6]];
+      for (const [d, name, vol] of seq) {
+        const buf = this.seBuf[name];
+        if (!buf) continue;
+        const src = this.ctx.createBufferSource();
+        src.buffer = buf;
+        const g = this.ctx.createGain();
+        g.gain.value = vol;
+        src.connect(g);
+        g.connect(this.se);
+        src.start(at + d);
+      }
     },
     playSE(name, vol) {
       if (this.ctx && !this.seBuf[name] && this.lazySE && this.lazySE[name]) this.seBuf[name] = this.lazySE[name](this.ctx);
@@ -17694,7 +18610,7 @@ ${accessory(L, 'top')}
   // ストーリーの背景の名前 → BGM
   A.bgmForBg = (bg) => {
     const b = String(bg || '');
-    if (/^cafe/.test(b)) return 'cafe';
+    if (/^(cafe|musicshop)/.test(b)) return 'cafe';
     if (/^(shrine|matsuri)/.test(b)) return 'wa';
     if (/^(summerfes|fes)/.test(b)) return 'event';
     if (/^(stage|backstage|livehouse|hall)/.test(b)) return 'live';
@@ -18857,19 +19773,57 @@ ${accessory(L, 'top')}
   };
 
   /* ---------------- ログインボーナス（1日1回） ---------------- */
+  // 毎日もらえるもの ＋ 7日でひとまわりするスタンプカードの報酬（休んだ日があっても、続きから進む）
+  const LOGIN_DAILY = { jewels: 300, coins: 200 };
+  const LOGIN_CYCLE = [
+    { items: { n2: 3 } }, // DAY1 練習ノート（中）
+    { coins: 500 }, // DAY2
+    { items: { n2: 5 } }, // DAY3
+    { jewels: 300 }, // DAY4
+    { items: { n3: 2 } }, // DAY5 練習ノート（大）
+    { items: { sheet: 1 } }, // DAY6 スキルの楽譜
+    { jewels: 1000, items: { shard: 1 } }, // DAY7 スペシャル
+  ];
   const Login = {
+    DAILY: LOGIN_DAILY,
+    CYCLE: LOGIN_CYCLE,
     today() {
       const d = new Date();
       return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
     },
+    // 通算ログイン日数（v2.21 までに受け取ったことがある人は、その日を1日目として数える）
+    total() {
+      if (!D().loginDays && D().login) D().loginDays = 1;
+      return D().loginDays || 0;
+    },
+    // 通算 n 日目は、スタンプカードの何日目か（1〜7）
+    dayOf(n) {
+      return n > 0 ? ((n - 1) % 7) + 1 : 0;
+    },
+    gotToday() {
+      return D().login === this.today();
+    },
+    // 今日のぶんを受け取る（もう受け取っていたら 0）
     check() {
       const t = this.today();
+      this.total();
       if (D().login === t) return 0;
       D().login = t;
-      Jewels.add(300);
-      Coins.add(200);
-      if (G.Grow) G.Grow.addItems({ n2: 3 });
-      return { jewels: 300, coins: 200, items: { n2: 3 } };
+      D().loginDays = (D().loginDays || 0) + 1;
+      const day = this.dayOf(D().loginDays);
+      const sp = LOGIN_CYCLE[day - 1];
+      const got = {
+        day,
+        total: D().loginDays,
+        special: sp,
+        jewels: LOGIN_DAILY.jewels + (sp.jewels || 0),
+        coins: LOGIN_DAILY.coins + (sp.coins || 0),
+        items: Object.assign({}, sp.items || {}),
+      };
+      if (G.Grow && Object.keys(got.items).length) G.Grow.addItems(got.items);
+      Coins.add(got.coins);
+      Jewels.add(got.jewels); // ここで保存される
+      return got;
     },
   };
 
@@ -19922,6 +20876,237 @@ ${accessory(L, 'top')}
         ${[[262, 612], [380, 610], [1214, 614]].map(([x, y]) => `<g transform="translate(${x},${y})"><path d="M-16,0 L16,0 L12,26 L-12,26 Z" fill="#E07B5A"/><circle cx="-8" cy="-6" r="9" fill="#FF8FB8"/><circle cx="7" cy="-8" r="9" fill="#FFE27A"/><circle cx="0" cy="-16" r="8" fill="#FF6FA8"/></g>`).join('')}
         ${tree(96, 800, 0.95)}${tree(1504, 806, 0.95)}`);
     },
+    // ホームの街: そよかぜ公園（野外ステージのある広場）
+    plaza(eve) {
+      const g = id();
+      const F = 'font-family="M PLUS Rounded 1c, sans-serif" font-weight="900"';
+      const sky = eve ? ['#6C6AC8', '#F7A98B', '#FFD9A8'] : ['#79C9FF', '#BDE8FF', '#EAF8FF'];
+      const tree = (x, y, s, c) => `<g transform="translate(${x},${y}) scale(${s})"><rect x="-11" y="-130" width="22" height="130" fill="#8A6A4A"/>
+        <circle cx="-44" cy="-140" r="58" fill="${c[0]}"/><circle cx="44" cy="-146" r="56" fill="${c[1]}"/><circle cx="0" cy="-196" r="66" fill="${c[2]}"/><circle cx="-18" cy="-214" r="20" fill="#B6EDB0" opacity=".6"/></g>`;
+      const TC = eve ? ['#4E9A72', '#468C68', '#5DAA7C'] : ['#6CC27A', '#5DB56E', '#7FD08A'];
+      const lamp = (x, y) => `<g><rect x="${x - 6}" y="${y - 250}" width="12" height="250" rx="4" fill="#3F5670"/><rect x="${x - 16}" y="${y - 12}" width="32" height="14" rx="6" fill="#3F5670"/>
+        <circle cx="${x}" cy="${y - 262}" r="22" fill="${eve ? '#FFF1B8' : '#F4FAFF'}" stroke="#3F5670" stroke-width="6"/>
+        ${eve ? `<circle cx="${x}" cy="${y - 262}" r="70" fill="url(#${g}l)"/>` : ''}</g>`;
+      const bench = (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})"><rect x="-70" y="-46" width="140" height="12" rx="5" fill="#C98B5A"/><rect x="-70" y="-28" width="140" height="12" rx="5" fill="#C98B5A"/>
+        <rect x="-74" y="-6" width="148" height="14" rx="5" fill="#B5764A"/><rect x="-62" y="6" width="9" height="26" fill="#3F5670"/><rect x="53" y="6" width="9" height="26" fill="#3F5670"/></g>`;
+      const flowers = (x, y, w) => {
+        let s = `<rect x="${x}" y="${y}" width="${w}" height="34" rx="10" fill="#B5764A"/><rect x="${x + 6}" y="${y - 10}" width="${w - 12}" height="18" rx="9" fill="#6CC27A"/>`;
+        for (let i = 0; i < w / 26; i++) s += `<circle cx="${x + 16 + i * 26}" cy="${y - 10 + (i % 2) * 6}" r="8" fill="${['#FF8FB8', '#FFE27A', '#FF6FA8', '#C9B6FF', '#FFFFFF'][i % 5]}"/>`;
+        return s;
+      };
+      // 野外ステージの屋根（貝がらのような半円）
+      let shell = '';
+      const cx = 800, by = 520;
+      for (let k = 0; k < 6; k++) {
+        const rx = 300 - k * 44, ry = 260 - k * 40;
+        shell += `<path d="M${cx - rx},${by} A${rx},${ry} 0 0 1 ${cx + rx},${by} Z" fill="${k % 2 ? (eve ? '#FFE9C8' : '#FFFFFF') : eve ? '#F6C9A8' : '#E3F1FF'}"/>`;
+      }
+      // 広場の石だたみ（丸い模様）
+      let rings = '';
+      for (let k = 1; k <= 6; k++) rings += `<ellipse cx="800" cy="760" rx="${k * 150}" ry="${k * 38}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="4"/>`;
+      let spokes = '';
+      for (let i = 0; i < 16; i++) {
+        const a = (i / 16) * Math.PI * 2;
+        spokes += `<line x1="800" y1="760" x2="${(800 + Math.cos(a) * 1000).toFixed(0)}" y2="${(760 + Math.sin(a) * 260).toFixed(0)}" stroke="#fff" stroke-opacity=".35" stroke-width="3"/>`;
+      }
+      const flagC = ['#20C9B6', '#FF5E9C', '#FFC23D', '#7A3CFF', '#FF8A4C', '#36B5F0'];
+      let flags = `<path d="M560,300 Q800,380 1040,300" fill="none" stroke="#fff" stroke-width="3"/>`;
+      for (let i = 1; i < 12; i++) {
+        const t = i / 12, x = 560 + 480 * t, y = 300 + 80 * 4 * t * (1 - t) * 0.5;
+        flags += `<path d="M${(x - 11).toFixed(1)},${(y - 2).toFixed(1)} L${(x + 11).toFixed(1)},${(y + 2).toFixed(1)} L${x.toFixed(1)},${(y + 28).toFixed(1)} Z" fill="${flagC[i % flagC.length]}"/>`;
+      }
+      return svg(1600, 900, `
+        <defs>
+          <linearGradient id="${g}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset=".6" stop-color="${sky[1]}"/><stop offset="1" stop-color="${sky[2]}"/></linearGradient>
+          <linearGradient id="${g}p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${eve ? '#D8B298' : '#EAD6BC'}"/><stop offset="1" stop-color="${eve ? '#C99A82' : '#F4E3CC'}"/></linearGradient>
+          <radialGradient id="${g}l"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".7"/><stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/></radialGradient>
+          <linearGradient id="${g}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${eve ? '#FFD36B' : '#FFFFFF'}" stop-opacity="${eve ? 0.55 : 0}"/><stop offset="1" stop-color="#FFD36B" stop-opacity="0"/></linearGradient>
+        </defs>
+        <rect width="1600" height="900" fill="url(#${g}s)"/>
+        ${eve ? '<circle cx="1260" cy="380" r="64" fill="#FFE2A8" opacity=".9"/>' : '<circle cx="1330" cy="120" r="56" fill="#FFF6C8"/><circle cx="1330" cy="120" r="100" fill="#FFF6C8" opacity=".35"/>'}
+        ${cloud(260, 110, 0.9, 0.85)}${cloud(1040, 80, 0.6, 0.8)}
+        ${skyline(500, eve ? '#9A86B8' : '#B9D3EA', 33, 0.8)}
+        <!-- 奥の木々 -->
+        ${Array.from({ length: 18 }, (_, i) => `<circle cx="${i * 96 + 20}" cy="${505 + (i % 3) * 8}" r="${60 + (i % 4) * 8}" fill="${eve ? '#5C9A78' : '#8FD39A'}"/>`).join('')}
+        <rect y="520" width="1600" height="90" fill="${eve ? '#6FA97A' : '#9EDB8E'}"/>
+        <!-- 野外ステージ -->
+        <rect x="470" y="${by - 6}" width="660" height="70" rx="8" fill="#C98B5A"/><rect x="470" y="${by - 12}" width="660" height="14" rx="6" fill="#E6B286"/>
+        ${shell}
+        <path d="M${cx - 300},${by} A300,260 0 0 1 ${cx + 300},${by}" fill="none" stroke="${eve ? '#E39A7A' : '#9FB6E8'}" stroke-width="16"/>
+        <rect x="560" y="${by - 140}" width="480" height="140" fill="url(#${g}b)"/>
+        <g transform="translate(800,${by - 300})"><rect x="-150" y="-30" width="300" height="56" rx="28" fill="#20C9B6" stroke="#fff" stroke-width="5"/>
+          <text x="0" y="8" text-anchor="middle" ${F} font-size="26" fill="#fff">そよかぜ野外ステージ</text></g>
+        ${flags}
+        <!-- スピーカーとマイク -->
+        ${[590, 1010].map((x) => `<g transform="translate(${x},${by - 12})"><rect x="-26" y="-96" width="52" height="96" rx="6" fill="#2B2F45"/><circle cy="-66" r="13" fill="#4A5070"/><circle cy="-26" r="17" fill="#4A5070"/></g>`).join('')}
+        <g transform="translate(800,${by - 12})"><line x1="0" y1="0" x2="0" y2="-92" stroke="#4A5070" stroke-width="5"/><rect x="-7" y="-112" width="14" height="24" rx="7" fill="#2B2F45"/></g>
+        ${[0, 1, 2, 3, 4].map((i) => `<rect x="${640 + i * 64}" y="${by + 30}" width="48" height="30" rx="4" fill="${eve ? '#FFD36B' : '#FFE9B8'}" opacity="${eve ? 0.9 : 0.6}"/>`).join('')}
+        <!-- 広場 -->
+        <path d="M0,600 Q800,560 1600,600 L1600,900 L0,900 Z" fill="url(#${g}p)"/>
+        <g clip-path="url(#${g}c)">${spokes}${rings}</g>
+        <clipPath id="${g}c"><path d="M0,600 Q800,560 1600,600 L1600,900 L0,900 Z"/></clipPath>
+        <path d="M0,600 Q800,560 1600,600" fill="none" stroke="#fff" stroke-width="6" opacity=".7"/>
+        <!-- 噴水 -->
+        <g transform="translate(250,640)"><ellipse cx="0" cy="0" rx="130" ry="34" fill="#9FB6C8"/><ellipse cx="0" cy="-6" rx="116" ry="26" fill="${eve ? '#7FB8E0' : '#9FDCFA'}"/>
+          <rect x="-16" y="-70" width="32" height="64" rx="6" fill="#C9D4E0"/><ellipse cx="0" cy="-70" rx="46" ry="12" fill="#C9D4E0"/>
+          <path d="M0,-74 Q-40,-150 -80,-40 M0,-74 Q40,-150 80,-40 M0,-74 Q0,-170 0,-90" fill="none" stroke="#DDF4FF" stroke-width="7" stroke-linecap="round" opacity=".9"/>
+          <circle cx="-80" cy="-34" r="5" fill="#DDF4FF"/><circle cx="80" cy="-34" r="5" fill="#DDF4FF"/></g>
+        ${bench(1330, 640, 1)}${bench(1520, 650, 0.9)}
+        ${flowers(30, 862, 230)}${flowers(1360, 866, 230)}
+        ${lamp(470, 640)}${lamp(1130, 640)}
+        ${tree(70, 650, 1, TC)}${tree(1560, 655, 1.05, TC)}
+        ${eve ? Array.from({ length: 10 }, (_, i) => `<circle cx="${100 + i * 160}" cy="${60 + (i % 3) * 40}" r="2.5" fill="#fff" opacity=".8"/>`).join('') : ''}`);
+    },
+    // ホームの街: おとのは楽器店（店の中）
+    musicshop() {
+      const g = id();
+      const F = 'font-family="M PLUS Rounded 1c, sans-serif" font-weight="900"';
+      // アコースティックギター（壁にかけてある）
+      const guitar = (x, y, s, c, c2) => `<g transform="translate(${x},${y}) scale(${s})">
+        <rect x="-7" y="-210" width="14" height="150" rx="3" fill="#6A4A3A"/>
+        <path d="M-15,-250 h30 l-4,44 h-22 Z" fill="#5A3A2E"/>${[0, 1, 2].map((k) => `<circle cx="-18" cy="${-242 + k * 12}" r="4" fill="#E8E8F0"/><circle cx="18" cy="${-242 + k * 12}" r="4" fill="#E8E8F0"/>`).join('')}
+        <path d="M0,-80 C-52,-84 -58,-26 -34,-6 C-74,14 -72,96 0,100 C72,96 74,14 34,-6 C58,-26 52,-84 0,-80 Z" fill="${c}" stroke="#5A3A2E" stroke-width="5"/>
+        <path d="M0,-70 C-40,-72 -46,-26 -26,-8 C-60,12 -58,86 0,90 C58,86 60,12 26,-8 C46,-26 40,-72 0,-70 Z" fill="none" stroke="${c2}" stroke-width="4" opacity=".7"/>
+        <circle cx="0" cy="-22" r="18" fill="#3A2A22"/><circle cx="0" cy="-22" r="23" fill="none" stroke="${c2}" stroke-width="3"/>
+        <rect x="-22" y="40" width="44" height="10" rx="3" fill="#3A2A22"/>
+        ${[-4.5, -1.5, 1.5, 4.5].map((d) => `<line x1="${d}" y1="-206" x2="${d}" y2="44" stroke="#F4F4F8" stroke-width="1" opacity=".7"/>`).join('')}
+        <rect x="16" y="-150" width="34" height="22" rx="4" fill="#fff" transform="rotate(8 16 -150)"/><line x1="10" y1="-172" x2="22" y2="-150" stroke="#fff" stroke-width="2"/></g>`;
+      // エレキギター
+      const electric = (x, y, s, c) => `<g transform="translate(${x},${y}) scale(${s})">
+        <rect x="-6" y="-220" width="12" height="160" rx="3" fill="#E6C08A"/><path d="M-12,-262 q10,-10 26,-4 l-6,46 h-14 Z" fill="${c}"/>
+        <path d="M-8,-70 C-60,-80 -62,-10 -40,10 C-64,40 -40,96 0,92 C46,90 66,40 40,8 C56,-14 60,-60 30,-58 L18,-40 C10,-60 4,-70 -8,-70 Z" fill="${c}" stroke="#2B2F45" stroke-width="5"/>
+        <path d="M-20,-34 C-30,-10 -28,30 -6,46 L10,40 C-2,20 -2,-10 6,-30 Z" fill="#fff" opacity=".85"/>
+        <rect x="-16" y="-8" width="32" height="9" rx="2" fill="#2B2F45"/><rect x="-16" y="16" width="32" height="9" rx="2" fill="#2B2F45"/><rect x="-14" y="44" width="28" height="8" rx="2" fill="#B8BCCC"/>
+        <circle cx="30" cy="40" r="5" fill="#B8BCCC"/><circle cx="34" cy="58" r="5" fill="#B8BCCC"/></g>`;
+      let planks = '';
+      for (let i = -12; i < 28; i++) planks += `<line x1="${800 + i * 96}" y1="900" x2="${800 + i * 44}" y2="640" stroke="#8A5A3A" stroke-width="3" opacity=".3"/>`;
+      let peg = '';
+      for (let y = 140; y < 600; y += 26) for (let x = 40; x < 640; x += 26) peg += `<circle cx="${x}" cy="${y}" r="2.6"/>`;
+      let books = '';
+      const bc = ['#FF8FB8', '#36B5F0', '#FFC23D', '#9B7BF2', '#36C98A', '#FF8A3D', '#E85A6A', '#20C9B6'];
+      for (let r = 0; r < 3; r++) for (let i = 0; i < 13; i++) books += `<rect x="${714 + i * 24 + (r % 2) * 4}" y="${236 + r * 92}" width="18" height="${66 + ((i * 7 + r * 3) % 4) * 4}" rx="2" fill="${bc[(i + r * 3) % bc.length]}" transform="translate(0,${(4 - ((i * 7 + r * 3) % 4)) * 4})"/>`;
+      const drum = (x, y, r, c) => `<g transform="translate(${x},${y})"><rect x="${-r}" y="${-r * 0.5}" width="${r * 2}" height="${r * 0.8}" fill="${c}"/><ellipse cy="${r * 0.3}" rx="${r}" ry="${r * 0.26}" fill="${c}"/><ellipse cy="${-r * 0.5}" rx="${r}" ry="${r * 0.26}" fill="#F4F4F8" stroke="#B8BCCC" stroke-width="3"/></g>`;
+      let keys = '';
+      for (let i = 0; i < 22; i++) keys += `<rect x="${i * 16}" y="0" width="15" height="62" rx="2" fill="#fff"/>`;
+      for (let i = 0; i < 21; i++) if ([0, 1, 3, 4, 5].includes(i % 7)) keys += `<rect x="${i * 16 + 10}" y="0" width="10" height="38" rx="2" fill="#2B2F45"/>`;
+      return svg(1600, 900, `
+        <defs>
+          <linearGradient id="${g}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1E2"/><stop offset="1" stop-color="#F6DFC6"/></linearGradient>
+          <radialGradient id="${g}l"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".5"/><stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/></radialGradient>
+          <linearGradient id="${g}sb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFD36B"/><stop offset=".6" stop-color="#E8892E"/><stop offset="1" stop-color="#7A3A1E"/></linearGradient>
+        </defs>
+        <rect width="1600" height="900" fill="url(#${g}w)"/>
+        ${Array.from({ length: 18 }, (_, i) => `<rect x="${i * 92}" y="0" width="46" height="640" fill="#FFE7CF" opacity=".5"/>`).join('')}
+        <rect x="0" y="0" width="1600" height="70" fill="#5A3A2E"/>
+        <g transform="translate(800,36)"><rect x="-230" y="-26" width="460" height="56" rx="28" fill="#FF5E9C" stroke="#fff" stroke-width="5"/>
+          <text x="0" y="12" text-anchor="middle" ${F} font-size="30" fill="#fff">♪ おとのは楽器店 ♪</text></g>
+        <!-- ギターの壁 -->
+        <rect x="24" y="120" width="636" height="500" rx="10" fill="#E8D2B8"/><g fill="#C9AE8E">${peg}</g>
+        ${guitar(120, 370, 0.95, '#E6B26A', '#FFF1C9')}${guitar(270, 370, 0.95, 'url(#' + g + 'sb)', '#FFE7A8')}${electric(420, 360, 0.95, '#E85A6A')}${electric(560, 370, 0.95, '#20C9B6')}
+        <rect x="24" y="470" width="636" height="16" rx="5" fill="#8A5A3A"/>
+        ${['#FF8FB8', '#36B5F0', '#FFC23D', '#9B7BF2', '#36C98A'].map((c, i) => `<g transform="translate(${70 + i * 120},540)"><path d="M-22,-30 Q0,-44 22,-30 L16,24 Q0,34 -16,24 Z" fill="${c}"/><text x="0" y="8" text-anchor="middle" ${F} font-size="20" fill="#fff">♪</text></g>`).join('')}
+        <!-- 楽譜とCDのたな -->
+        <rect x="700" y="210" width="340" height="316" rx="8" fill="#B5764A"/>
+        ${[0, 1, 2].map((r) => `<rect x="700" y="${302 + r * 92}" width="340" height="12" fill="#8A5A3A"/>`).join('')}
+        ${books}
+        <g transform="translate(870,170)"><rect x="-120" y="-24" width="240" height="44" rx="10" fill="#2F3A3A"/><text x="0" y="8" text-anchor="middle" ${F} font-size="22" fill="#FFE7C6">楽譜・CD コーナー</text></g>
+        <!-- ドラムセット（低い台の上） -->
+        <rect x="1080" y="470" width="480" height="70" rx="10" fill="#7A5A8A"/><rect x="1080" y="462" width="480" height="14" rx="6" fill="#9A7AAA"/>
+        <g transform="translate(1320,440)">
+          <line x1="-150" y1="0" x2="-130" y2="-150" stroke="#B8BCCC" stroke-width="5"/><ellipse cx="-130" cy="-152" rx="62" ry="12" fill="#FFD36B" stroke="#C9A040" stroke-width="3"/>
+          <line x1="150" y1="0" x2="134" y2="-170" stroke="#B8BCCC" stroke-width="5"/><ellipse cx="134" cy="-172" rx="56" ry="11" fill="#FFD36B" stroke="#C9A040" stroke-width="3"/>
+          ${drum(-62, -96, 38, '#36B5F0')}${drum(62, -96, 38, '#36B5F0')}${drum(-122, -10, 40, '#36B5F0')}
+          <circle cx="0" cy="-20" r="84" fill="#36B5F0" stroke="#2B6FA0" stroke-width="8"/><circle cx="0" cy="-20" r="62" fill="#F4F4F8"/>
+          <text x="0" y="-6" text-anchor="middle" ${F} font-size="42" fill="#36B5F0">♪</text>
+          ${drum(130, -14, 44, '#36B5F0')}</g>
+        <rect x="1110" y="490" width="96" height="30" rx="6" fill="#fff"/><text x="1158" y="512" text-anchor="middle" ${F} font-size="16" fill="#7A5A8A">試奏OK</text>
+        <!-- キーボード -->
+        <g transform="translate(704,560)"><rect x="-10" y="-14" width="372" height="92" rx="10" fill="#2B2F45"/><g transform="translate(6,6)">${keys}</g>
+          <rect x="20" y="-10" width="40" height="8" rx="3" fill="#FF5E9C"/><rect x="70" y="-10" width="40" height="8" rx="3" fill="#20C9B6"/>
+          <line x1="40" y1="78" x2="10" y2="150" stroke="#4A5070" stroke-width="10"/><line x1="320" y1="78" x2="350" y2="150" stroke="#4A5070" stroke-width="10"/>
+          <line x1="40" y1="150" x2="320" y2="78" stroke="#4A5070" stroke-width="6" opacity=".6"/></g>
+        <!-- レジのカウンター -->
+        <rect x="1300" y="540" width="300" height="140" fill="#C98B5A"/><rect x="1290" y="530" width="310" height="18" rx="6" fill="#E6B286"/>
+        <g transform="translate(1420,500)"><rect x="-44" y="-30" width="88" height="40" rx="6" fill="#4A5070"/><rect x="-34" y="-24" width="40" height="16" rx="3" fill="#9FF4E8"/></g>
+        <g transform="translate(1540,500)"><rect x="-34" y="-50" width="68" height="60" rx="6" fill="#2B2F45"/><circle cy="-22" r="18" fill="#4A5070"/><rect x="-26" y="-46" width="52" height="8" rx="2" fill="#FFC23D"/></g>
+        <!-- 床 -->
+        <rect x="0" y="640" width="1600" height="260" fill="#B5764A"/>${planks}
+        <ellipse cx="800" cy="790" rx="430" ry="78" fill="#FF8FB8" opacity=".35"/><ellipse cx="800" cy="790" rx="390" ry="64" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="14 10" opacity=".6"/>
+        ${[360, 1110, 1460].map((x) => `<g><line x1="${x}" y1="70" x2="${x}" y2="120" stroke="#5A3A2E" stroke-width="4"/><path d="M${x - 40},160 Q${x},100 ${x + 40},160 Z" fill="#FFC23D" stroke="#5A3A2E" stroke-width="4"/><ellipse cx="${x}" cy="162" rx="16" ry="7" fill="#FFF3C4"/><ellipse cx="${x}" cy="230" rx="140" ry="90" fill="url(#${g}l)"/></g>`).join('')}`);
+    },
+    // ホームの街: なぎさ海浜公園（海ぞいの遊歩道）
+    seaside(eve) {
+      const g = id();
+      const F = 'font-family="M PLUS Rounded 1c, sans-serif" font-weight="900"';
+      const sky = eve ? ['#5E5AB8', '#F49A86', '#FFD3A0'] : ['#5FBFFF', '#A9E0FF', '#E2F6FF'];
+      const sea = eve ? ['#E0907E', '#7F7FC0', '#4A6AA8'] : ['#9FE0FA', '#3DA8E0', '#2A86C8'];
+      const HY = 440; // 水平線
+      let waves = '';
+      for (let i = 0; i < 26; i++) {
+        const y = HY + 20 + ((i * 37) % 130), x = (i * 211) % 1600, w = 30 + ((i * 13) % 50);
+        waves += `<path d="M${x},${y} q${w / 2},-8 ${w},0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="${0.4 + ((i * 7) % 5) / 10}"/>`;
+      }
+      // 遊歩道の板（奥へ行くほどせまい）
+      let planks = '';
+      for (let k = 1; k <= 16; k++) {
+        const y = 600 + 300 * Math.pow(k / 16, 1.6);
+        planks += `<line x1="0" y1="${y.toFixed(1)}" x2="1600" y2="${y.toFixed(1)}"/>`;
+      }
+      for (let i = -10; i <= 20; i++) planks += `<line x1="${800 + i * 60}" y1="600" x2="${800 + i * 230}" y2="900" stroke-opacity=".25"/>`;
+      let rail = `<line x1="0" y1="556" x2="1600" y2="556" stroke="#fff" stroke-width="10" stroke-linecap="round"/><line x1="0" y1="582" x2="1600" y2="582" stroke="#fff" stroke-width="6"/>`;
+      for (let x = 20; x < 1600; x += 80) rail += `<rect x="${x - 6}" y="548" width="12" height="56" rx="4" fill="#fff"/>`;
+      const gull = (x, y, s) => `<path d="M${x - 16 * s},${y} q${8 * s},${-10 * s} ${16 * s},0 q${8 * s},${-10 * s} ${16 * s},0" fill="none" stroke="${eve ? '#4A3A5A' : '#5A6A8A'}" stroke-width="${3.4 * s}" stroke-linecap="round"/>`;
+      const lamp = (x) => `<g><rect x="${x - 5}" y="390" width="10" height="190" rx="4" fill="#3F5670"/><path d="M${x - 20},392 h40 l-8,-26 h-24 Z" fill="${eve ? '#FFF1B8' : '#F4FAFF'}" stroke="#3F5670" stroke-width="5" stroke-linejoin="round"/>
+        ${eve ? `<circle cx="${x}" cy="380" r="60" fill="url(#${g}l)"/>` : ''}</g>`;
+      const pine = (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})"><path d="M0,0 C-10,-60 20,-120 -10,-200 C-20,-240 10,-280 0,-300" fill="none" stroke="#7A5A3A" stroke-width="22" stroke-linecap="round"/>
+        <ellipse cx="-40" cy="-200" rx="80" ry="26" fill="${eve ? '#3F7A5A' : '#4E9A6A'}"/><ellipse cx="30" cy="-250" rx="90" ry="28" fill="${eve ? '#468A64' : '#5AAE76'}"/><ellipse cx="-10" cy="-300" rx="70" ry="24" fill="${eve ? '#4E9A6E' : '#6CC284'}"/></g>`;
+      return svg(1600, 900, `
+        <defs>
+          <linearGradient id="${g}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset=".65" stop-color="${sky[1]}"/><stop offset="1" stop-color="${sky[2]}"/></linearGradient>
+          <linearGradient id="${g}o" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sea[0]}"/><stop offset=".35" stop-color="${sea[1]}"/><stop offset="1" stop-color="${sea[2]}"/></linearGradient>
+          <linearGradient id="${g}d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${eve ? '#C9946E' : '#DDB58A'}"/><stop offset="1" stop-color="${eve ? '#B58060' : '#E8C59C'}"/></linearGradient>
+          <radialGradient id="${g}l"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".7"/><stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="1600" height="900" fill="url(#${g}s)"/>
+        ${eve ? `<circle cx="520" cy="${HY - 10}" r="90" fill="#FFB27A"/><circle cx="520" cy="${HY - 10}" r="150" fill="#FFB27A" opacity=".3"/>` : '<circle cx="380" cy="120" r="56" fill="#FFF6C8"/><circle cx="380" cy="120" r="100" fill="#FFF6C8" opacity=".35"/>'}
+        ${cloud(900, 120, 0.9, 0.85)}${cloud(1380, 70, 0.6, 0.8)}${cloud(120, 200, 0.6, 0.7)}
+        <!-- 遠くの島と観覧車 -->
+        <path d="M60,${HY} q120,-60 260,0 Z" fill="${eve ? '#8A78A8' : '#8FC4A8'}"/>
+        <g transform="translate(1040,${HY - 6})" fill="none" stroke="${eve ? '#9A86B8' : '#9FB6D8'}" stroke-width="4"><circle cy="-70" r="62"/>${Array.from({ length: 8 }, (_, i) => `<line x1="0" y1="-70" x2="${(Math.cos((i * Math.PI) / 4) * 62).toFixed(1)}" y2="${(-70 + Math.sin((i * Math.PI) / 4) * 62).toFixed(1)}"/>`).join('')}<path d="M-30,6 L0,-70 L30,6"/></g>
+        <!-- 海 -->
+        <rect y="${HY}" width="1600" height="160" fill="url(#${g}o)"/>
+        ${eve ? `<rect x="470" y="${HY + 4}" width="100" height="150" fill="#FFD3A0" opacity=".35"/>` : ''}
+        ${waves}
+        <g transform="translate(760,${HY + 34})"><path d="M-40,0 h80 l-12,16 h-56 Z" fill="#fff"/><path d="M0,-4 L0,-70 L34,-8 Z" fill="#FF8FB8"/><path d="M-4,-8 L-4,-56 L-30,-8 Z" fill="#fff"/></g>
+        <!-- 灯台 -->
+        <g transform="translate(1360,${HY + 24})">
+          <path d="M-90,0 Q-70,-40 -20,-44 Q40,-50 90,0 Z" fill="${eve ? '#7A6A8A' : '#8A9AA8'}"/>
+          <path d="M-30,-40 L-20,-230 L20,-230 L30,-40 Z" fill="#fff"/>
+          ${[0, 1, 2].map((k) => `<path d="M${-28 + k * 3.4},${-70 - k * 56} L${-26 + k * 3.4},${-98 - k * 56} L${26 - k * 3.4},${-98 - k * 56} L${28 - k * 3.4},${-70 - k * 56} Z" fill="#E85A6A"/>`).join('')}
+          <rect x="-26" y="-262" width="52" height="34" rx="6" fill="${eve ? '#FFF1B8' : '#DDF4FF'}" stroke="#3F5670" stroke-width="5"/><path d="M-32,-262 L0,-292 L32,-262 Z" fill="#E85A6A"/>
+          ${eve ? '<path d="M24,-246 L260,-300 L260,-200 Z" fill="#FFF1B8" opacity=".35"/>' : ''}</g>
+        ${gull(600, 170, 1)}${gull(660, 200, 0.7)}${gull(1180, 230, 0.8)}
+        <!-- 手すり -->
+        ${rail}
+        <!-- 遊歩道 -->
+        <rect y="600" width="1600" height="300" fill="url(#${g}d)"/>
+        <g stroke="#8A5A3A" stroke-opacity=".3" stroke-width="3">${planks}</g>
+        <rect y="596" width="1600" height="10" fill="#fff" opacity=".5"/>
+        ${lamp(330)}${lamp(1270)}
+        <!-- うきわ -->
+        <g transform="translate(900,566)"><circle r="22" fill="none" stroke="#FF5E9C" stroke-width="12"/><circle r="22" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="17.3 17.3"/></g>
+        <!-- パラソルとソフトクリームのお店 -->
+        <g transform="translate(1450,700)"><line x1="0" y1="0" x2="0" y2="-230" stroke="#fff" stroke-width="8"/>
+          <path d="M-130,-200 Q0,-290 130,-200 Z" fill="#36B5F0"/>${[-1, 0, 1].map((k) => `<path d="M${k * 86 - 22},-206 Q${k * 86},-${k === 0 ? 270 : 244} ${k * 86 + 22},-206 Z" fill="#fff"/>`).join('')}
+          <rect x="-90" y="-80" width="180" height="90" rx="10" fill="#fff" stroke="#36B5F0" stroke-width="5"/>
+          <text x="0" y="-40" text-anchor="middle" ${F} font-size="22" fill="#FF5E9C">なぎさソフト</text>
+          <g transform="translate(-50,-10)"><path d="M-10,0 L10,0 L0,24 Z" fill="#E6B26A"/><path d="M-12,0 q0,-22 12,-26 q12,4 12,26 Z" fill="#FFF6EC"/></g>
+          <g transform="translate(50,-10)"><path d="M-10,0 L10,0 L0,24 Z" fill="#E6B26A"/><path d="M-12,0 q0,-22 12,-26 q12,4 12,26 Z" fill="#FFB1C8"/></g></g>
+        <!-- ベンチ -->
+        <g transform="translate(520,660)"><rect x="-80" y="-40" width="160" height="12" rx="5" fill="#fff"/><rect x="-84" y="-10" width="168" height="16" rx="6" fill="#36B5F0"/><rect x="-70" y="6" width="9" height="28" fill="#3F5670"/><rect x="61" y="6" width="9" height="28" fill="#3F5670"/></g>
+        ${pine(90, 760, 1.15)}
+        ${eve ? Array.from({ length: 8 }, (_, i) => `<circle cx="${180 + i * 180}" cy="${40 + (i % 3) * 36}" r="2.5" fill="#fff" opacity=".8"/>`).join('') : ''}`);
+    },
   };
 
   // <svg ...> 文字列を、x/y/幅/高さを指定して別の SVG の中に入れる
@@ -19963,6 +21148,11 @@ ${accessory(L, 'top')}
         case 'cafe': return BG.cafe(false);
         case 'cafe_eve': return BG.cafe(true);
         case 'street_eve': return BG.street(true);
+        case 'plaza': return BG.plaza(false);
+        case 'plaza_eve': return BG.plaza(true);
+        case 'musicshop': return BG.musicshop();
+        case 'seaside': return BG.seaside(false);
+        case 'seaside_eve': return BG.seaside(true);
         default: return BG.black();
       }
     },
@@ -21430,7 +22620,8 @@ ${accessory(L, 'top')}
       this.C = G.Music.compile(song);
       // Make Music の自作譜面（opts.chart）があれば、それで遊ぶ
       this.chart = this.opts.chart || G.Chart.get(song, diffIndex);
-      this.approach = 10 / (this.S.speed + 2.5);
+      // ノーツが奥から判定ラインまで流れてくる秒数（v2.21 で全体を約15%速くしました。速度 6.5 で約0.94秒）
+      this.approach = G.approachSec(this.S.speed);
       this.scroll = this.chart.scroll || null; // ソフラン（スクロール速度の変化）
       // 編成（チームボーナスとスキル）
       this.practice = this.opts.practice || null; // 練習モード（記録・報酬なし、スキルなし）
@@ -23267,7 +24458,7 @@ ${accessory(L, 'top')}
       if (name === 'event') return G.Audio.bgm.play('event');
       if (BGM_LIVE.has(name)) return G.Audio.bgm.play('live');
       const area = G.Progress.data && G.Progress.data.area;
-      G.Audio.bgm.play(name === 'home' && area === 'cafe' ? 'cafe' : name === 'home' && area === 'shrine' ? 'wa' : 'home');
+      G.Audio.bgm.play(name === 'home' && (area === 'cafe' || area === 'musicshop') ? 'cafe' : name === 'home' && area === 'shrine' ? 'wa' : 'home');
     },
     toast(msg) {
       const t = h('div', { class: 'toast', role: 'status' }, msg);
@@ -23366,6 +24557,22 @@ ${accessory(L, 'top')}
   const Screens = {};
 
   /* ---------- タイトル ---------- */
+  /* ================= ライセンス（タイトル画面・設定から） ================= */
+  UI.openLicense = function () {
+    const L = G.LICENSES || { game: [], mit: [], third: [] };
+    let close;
+    const card = h('div', { class: 'modal-card lic-card' },
+      h('div', { class: 'modal-title' }, 'ライセンス'),
+      h('div', { class: 'lic-body', tabindex: '0' },
+        h('section', null, h('h4', null, 'このゲーム'), L.game.map((t, i) => h('p', { class: i < 2 ? 'lic-strong' : '' }, t))),
+        h('section', null, h('h4', null, 'ソースコード（MIT License）'), h('pre', { class: 'lic-pre' }, L.mit.join('\n'))),
+        h('section', null, h('h4', null, '使っているもの'),
+          h('ul', { class: 'lic-list' }, L.third.map((x) => h('li', null, h('b', null, x.name), h('span', null, x.by + '　/　' + x.license), h('small', null, x.note))))),
+        h('section', null, h('h4', null, 'ゲームのバージョン'), h('p', null, 'ソラシド STAGE ' + G.versionText()))),
+      h('div', { class: 'modal-actions' }, h('button', { class: 'btn btn-primary', onclick: () => close() }, 'とじる')));
+    close = UI.modal(card);
+  };
+
   /* ================= 起動時の制作者ロゴ（YUKIGROUP） =================
    * 雪の結晶のマークが回りながら広がって、文字が1つずつあらわれる → タイトルへ。
    * タップ・キーでとばせます。マークと文字はこのゲームのために作ったものです */
@@ -23422,14 +24629,32 @@ ${accessory(L, 'top')}
       h('div', { class: 'logo-scale' }, ['ソ', 'ラ', 'シ', 'ド'].map((s, i) => h('b', { style: { '--i': i } }, s))),
       h('div', { class: 'logo-stage' }, 'STAGE'),
       h('div', { class: 'logo-sub' }, 'みんなで歌う、放課後の音楽ゲーム'));
+    // 右上: ログイン（ログイン中はアカウント）とライセンス。押しても、ゲームははじまらない
+    const corner = h('div', { class: 'title-corner' });
+    const renderCorner = () => {
+      corner.innerHTML = '';
+      const O = G.Online;
+      const on = O && O.loggedIn();
+      const stop = (fn) => (e) => {
+        e.stopPropagation();
+        UI.se();
+        fn();
+      };
+      corner.append(
+        h('button', { class: 'title-cbtn' + (on ? ' on' : ''), onclick: stop(() => (on ? O.openAccount(renderCorner) : O.openLogin(renderCorner))) },
+          h('span', { html: IC.members }), on ? h('span', { class: 'tc-t' }, h('small', null, 'ログイン中'), O.mask(O.user().email)) : 'ログイン'),
+        h('button', { class: 'title-cbtn', onclick: stop(() => UI.openLicense()) }, h('span', { html: IC.help }), 'ライセンス'));
+    };
+    if (G.Online) renderCorner();
     const el = h('div', { class: 'screen title-screen bg-pastel', role: 'button', tabindex: '0', 'aria-label': 'ゲームをはじめる' },
-      notes, logo,
+      notes, logo, corner,
       h('div', { class: 'title-start' }, 'TAP TO START'),
       h('div', { class: 'title-foot' }, 'ソラシド STAGE ' + G.versionText() + '　｜　楽曲・キャラクター・イラストはすべてオリジナル作品です　｜　' + G.COPYRIGHT));
+    corner.addEventListener('pointerdown', (e) => e.stopPropagation());
     UI.root.appendChild(el);
     let started = false;
     const start = async () => {
-      if (started) return;
+      if (started || document.querySelector('body > .modal')) return;
       // まだ音を出せる状態になっていなければ、はじめてのタップではタイトルの BGM を鳴らすだけにする
       // （ブラウザは、さわるまで音を出せないため。BGM はその場で合成するので、鳴りはじめるまで少しかかります）
       const audioOn = !!(G.Audio.ctx && G.Audio.ctx.state === 'running');
@@ -24406,6 +25631,76 @@ ${accessory(L, 'top')}
   function arcHasNew(arcId) {
     return G.STORY.chapters.some((c, i) => c.arc === arcId && !G.Progress.isRead(c.id) && G.Progress.chapterUnlocked(i));
   }
+  /* ---------- ストーリーの「エピソード」タブ: 過去のイベントストーリーと、見つけたエリア会話を読み返す ---------- */
+  const EPISODE_TAB = { id: 'episode', title: 'エピソード', tab: 'エピソード', en: 'ARCHIVE', color: '#9B7BF2',
+    lead: '開催中・終わったイベントのストーリーと、街で見つけたエリア会話を、もう一度読めます。終わったイベントのお話は、ポイントがなくても全話読めます。' };
+  function episodesNew() {
+    const Ev = G.Event;
+    return Ev.pastAndNow().some((ev) => ev.story.some((c) => Ev.readable(ev, c) && !Ev.state(ev).read.includes(c.id)));
+  }
+  function renderEpisodes(listEl) {
+    const Ev = G.Event;
+    const head = (title, right) => h('div', { class: 'part-head', style: { '--arc': EPISODE_TAB.color } }, h('b', null, title), right ? h('small', { class: 'ep-count' }, right) : null);
+    // イベントストーリー（新しいイベントが上）
+    const evs = Ev.pastAndNow();
+    listEl.appendChild(head('イベントストーリー', evs.length + 'イベント'));
+    if (!evs.length) listEl.appendChild(h('p', { class: 'list-lead' }, 'イベントが始まると、ここにイベントストーリーが並びます。'));
+    for (const ev of evs) {
+      const st = Ev.state(ev);
+      const closed = Ev.status(ev) === 'closed';
+      const readN = ev.story.filter((c) => st.read.includes(c.id)).length;
+      listEl.appendChild(h('div', { class: 'ep-ev', style: { '--e1': ev.colors[0], '--e2': ev.colors[1] } },
+        h('div', { class: 'ep-ev-art', 'aria-hidden': 'true', html: G.Art.bg(ev.bg) }),
+        h('div', { class: 'ep-ev-body' },
+          h('span', { class: 'ep-ev-tags' }, h('i', { class: 'ep-tag' + (closed ? ' end' : ' now') }, closed ? '終了' : '開催中'), h('small', null, Ev.periodText(ev))),
+          h('b', { class: 'ep-ev-title' }, ev.title),
+          h('small', { class: 'ep-ev-sub' }, (closed ? '終わったイベントなので、全' + ev.story.length + '話読めます' : 'イベントポイントを集めると読めます') + '（読んだお話 ' + readN + ' / ' + ev.story.length + '）')),
+        !closed ? h('button', { class: 'btn btn-small ep-ev-go', onclick: () => { UI.se(); UI.go('event', { id: ev.id }); } }, 'イベントへ') : null));
+      const rows = h('div', { class: 'ep-rows' });
+      for (const ch of ev.story) {
+        const ok = Ev.readable(ev, ch);
+        const read = st.read.includes(ch.id);
+        rows.appendChild(h('button', { class: 'ep-row' + (ok ? '' : ' locked'), 'aria-disabled': String(!ok), onclick: () => {
+          if (!ok) {
+            UI.toast('イベントポイント ' + ch.need.toLocaleString('en-US') + ' pt で読めます');
+            return;
+          }
+          UI.se();
+          UI.go('eventStory', { ev: ev.id, id: ch.id, from: 'story' });
+        } },
+          h('span', { class: 'ep-no' }, h('small', null, '第'), String(ch.no), h('small', null, '話')),
+          h('b', { class: 'ep-title' }, ok ? ch.title : '？？？', ok && !read ? h('span', { class: 'badge-new' }, 'NEW') : null),
+          h('span', { class: 'ep-state' + (read ? ' read' : '') }, read ? '既読' : ok ? '未読' : ch.need.toLocaleString('en-US') + ' pt')));
+      }
+      listEl.appendChild(rows);
+    }
+    // エリア会話（見つけたものだけ読める）
+    const seen = G.Progress.data.talks || [];
+    listEl.appendChild(head('エリア会話', seen.filter((id) => G.AREA_TALKS.some((t) => t.id === id)).length + ' / ' + G.AREA_TALKS.length));
+    listEl.appendChild(h('p', { class: 'list-lead' }, 'ホームの街で、2人のメンバーの上に吹き出しが出ていたら、タップすると会話が読めます。一度読んだ会話は、ここから読み返せます。'));
+    for (const a of G.AREAS) {
+      const talks = G.AREA_TALKS.filter((t) => t.area === a.id);
+      if (!talks.length) continue;
+      const rows = h('div', { class: 'ep-rows' });
+      for (const t of talks) {
+        const ok = seen.includes(t.id);
+        rows.appendChild(h('button', { class: 'ep-row talk' + (ok ? '' : ' locked'), 'aria-disabled': String(!ok), onclick: () => {
+          if (!ok) {
+            UI.toast(a.name + 'で、メンバーが話しているのを見つけよう');
+            return;
+          }
+          UI.se();
+          UI.go('talkPlay', { id: t.id, from: 'story' });
+        } },
+          h('span', { class: 'ep-faces' }, t.chars.map((c) => h('span', { class: 'ep-face', style: { '--c': G.CHARS[c].color }, html: ok ? G.portrait(c, 'smile') : '' }))),
+          h('b', { class: 'ep-title' }, ok ? t.title : '？？？'),
+          h('span', { class: 'ep-state' + (ok ? ' read' : '') }, ok ? t.chars.map((c) => G.CHARS[c].short).join('・') : 'まだ見つけていません')));
+      }
+      listEl.appendChild(h('div', { class: 'ep-area' }, h('small', null, a.name)));
+      listEl.appendChild(rows);
+    }
+  }
+
   Screens.story = function (params) {
     const chs = G.STORY.chapters;
     let arc = (params && params.arc) || UI.storyArc || 'sorashido';
@@ -24422,9 +25717,20 @@ ${accessory(L, 'top')}
           onclick: () => { arc = a.id; UI.se(); render(); },
         }, h('b', { class: 'tab-long' }, a.title), h('b', { class: 'tab-short' }, a.tab || a.title), h('small', null, a.en), !anyOpen ? h('span', { class: 'arc-lock', html: IC.lock }) : arcHasNew(a.id) ? h('span', { class: 'badge-new' }, 'NEW') : null));
       }
-      const a = G.STORY.arcs.find((x) => x.id === arc);
-      lead.textContent = a.lead + (a.id === 'member' ? '' : 'お話を読むと新しい楽曲が、楽曲をクリアすると次のお話が解放されます。');
+      const E = EPISODE_TAB;
+      tabs.appendChild(h('button', {
+        class: 'arc-tab ep' + (arc === E.id ? ' on' : ''), role: 'tab', 'aria-selected': String(arc === E.id), style: { '--c': E.color },
+        onclick: () => { arc = E.id; UI.se(); render(); },
+      }, h('span', { class: 'ep-tab-ic', html: IC.story }), h('b', { class: 'tab-long' }, E.title), h('b', { class: 'tab-short' }, E.tab), h('small', null, E.en), episodesNew() ? h('span', { class: 'badge-new' }, 'NEW') : null));
       listEl.innerHTML = '';
+      if (arc === E.id) {
+        lead.textContent = E.lead;
+        renderEpisodes(listEl);
+        return;
+      }
+      const a = G.STORY.arcs.find((x) => x.id === arc) || G.STORY.arcs[0];
+      arc = a.id;
+      lead.textContent = a.lead + (a.id === 'member' ? '' : 'お話を読むと新しい楽曲が、楽曲をクリアすると次のお話が解放されます。');
       let part = 0;
       const parts = G.STORY.parts && G.STORY.parts[arc];
       chs.forEach((ch, i) => {
@@ -24919,6 +26225,28 @@ ${accessory(L, 'top')}
       return t;
     };
     const offsetSlider = slider('offset', -300, 300, 5, (v) => (v > 0 ? '+' : '') + v + 'ms');
+    // ノーツの音（新・旧）。えらぶと、その音で試聴する
+    const noteSeg = h('div', { class: 'set-seg', role: 'radiogroup', 'aria-label': 'ノーツの音' });
+    const renderNoteSeg = () => {
+      noteSeg.innerHTML = '';
+      for (const [v, a, b] of [['new', '新', 'さわやか'], ['old', '旧', 'これまでの音']]) {
+        noteSeg.appendChild(h('button', { class: 'set-seg-btn' + (S.noteSE === v ? ' on' : ''), role: 'radio', 'aria-checked': String(S.noteSE === v), onclick: () => {
+          S.noteSE = v;
+          save();
+          G.Audio.init();
+          G.Audio.setNoteSE(v);
+          G.Audio.previewNoteSE();
+          renderNoteSeg();
+        } }, h('b', null, a), h('small', null, b)));
+      }
+    };
+    renderNoteSeg();
+    // バッテリーの残り（読み取れるときだけ）
+    const battText = () => {
+      const B = G.Battery;
+      if (!B || !B.supported) return 'この端末・ブラウザでは、バッテリーの残りを読み取れません（Android の Chrome やパソコンの Chrome・Edge などで使えます）。';
+      return 'いまの残り: ' + Math.round(B.level * 100) + '%' + (B.charging ? '（充電中）' : '') + '。20%以下になったら知らせます。';
+    };
 
     // キー設定
     let waiting = null;
@@ -24976,10 +26304,13 @@ ${accessory(L, 'top')}
         section('表示',
           row('レーンの濃さ', null, slider('laneOpacity', 0.3, 1, 0.05, (v) => Math.round(v * 100) + '%')),
           row('背景の暗さ', null, slider('bgDim', 0, 0.85, 0.05, (v) => Math.round(v * 100) + '%')),
-          row('演出を軽くする', '動作が重いときにオンにしてください。', toggle('lowFx'))),
+          row('演出を軽くする', '動作が重いときにオンにしてください。', toggle('lowFx')),
+          row('バッテリーの警告', battText(), toggle('battWarn', (v) => { if (v && G.Battery) G.Battery.check(true); }))),
         section('サウンド',
           row('楽曲の音量', null, slider('musicVol', 0, 100, 5, (v) => String(v), () => G.Audio.applyVolume())),
           row('効果音の音量', null, slider('seVol', 0, 100, 5, (v) => String(v), () => { G.Audio.applyVolume(); G.Audio.playSE('tap'); })),
+          row('ノーツの音', '新: ガラスのベルのような、さわやかな音（はじめの設定）／旧: v2.20 までの「ピッ」という音。えらぶと試聴できます。', h('div', { class: 'set-ctrl' }, noteSeg,
+            h('button', { class: 'btn btn-small', onclick: () => G.Audio.previewNoteSE() }, '試聴'))),
           row('BGMの音量', 'タイトル・ホーム・イベントなどで流れる曲の音量です。', slider('bgmVol', 0, 100, 5, (v) => String(v), () => G.Audio.applyVolume()))),
         section('キー設定',
           h('div', { class: 'set-row' }, h('div', { class: 'set-label' }, h('b', null, 'キーボードの割り当て'), h('small', null, '変えたい枠をクリックしてから、使いたいキーを押してください（Escでキャンセル）。'))),
@@ -24989,9 +26320,12 @@ ${accessory(L, 'top')}
           row('すべて解放する', '全楽曲・全ストーリーをすぐに遊べるようにします。', toggle('unlockAll')),
           row('マイ楽曲をすべて削除', 'このブラウザに保存した音声と譜面を消去します（元のファイルは消えません）。', h('button', { class: 'btn btn-small', onclick: () => UI.confirm('マイ楽曲をすべて削除しますか？', '保存した ' + G.Local.count() + ' 曲が消えます。', '削除', () => { G.Local.removeAll().then(() => UI.toast('マイ楽曲を削除しました')); }) }, '削除')),
           row('プレイ記録をリセット', 'スコアとストーリーの既読状況を消去します。', h('button', { class: 'btn btn-small', onclick: () => UI.confirm('記録をリセットしますか？', 'スコアとストーリーの進行がすべて消えます。この操作は取り消せません。', 'リセット', () => { G.Progress.reset(); UI.toast('記録をリセットしました'); }) }, 'リセット')),
-          row('設定を初期化', 'キー設定を含むすべての設定を初期値にもどします。', h('button', { class: 'btn btn-small', onclick: () => UI.confirm('設定を初期化しますか？', null, '初期化', () => { G.Settings.resetAll(); G.Audio.applyVolume(); UI.go('settings'); UI.toast('設定を初期化しました'); }) }, '初期化'))),
+          row('設定を初期化', 'キー設定を含むすべての設定を初期値にもどします。', h('button', { class: 'btn btn-small', onclick: () => UI.confirm('設定を初期化しますか？', null, '初期化', () => { G.Settings.resetAll(); G.Audio.applyVolume(); G.Audio.setNoteSE(G.Settings.data.noteSE); UI.go('settings'); UI.toast('設定を初期化しました'); }) }, '初期化'))),
         section('このゲームについて',
+          row('アカウント', G.Online && G.Online.loggedIn() ? 'ログイン中: ' + G.Online.mask(G.Online.user().email) + '（データはクラウドにも保存されます）' : 'ログインすると、データをクラウドに保存して、ほかの端末でも同じデータで遊べます（ログインは任意です）。',
+            h('button', { class: 'btn btn-small', onclick: () => { UI.se(); const re = () => UI.cur === 'settings' && UI.go('settings'); G.Online.loggedIn() ? G.Online.openAccount(re) : G.Online.openLogin(re); } }, G.Online && G.Online.loggedIn() ? 'アカウント' : 'ログイン')),
           row('利用規約', '本ゲームを遊ぶときの約束ごとです。', h('button', { class: 'btn btn-small', onclick: () => { UI.se(); UI.go('terms', { back: 'settings' }); } }, '読む')),
+          row('ライセンス', 'このゲームと、使っているフォントなどのライセンスです。', h('button', { class: 'btn btn-small', onclick: () => { UI.se(); UI.openLicense(); } }, '見る')),
           row('チュートリアル', 'はじめての人向けの、ライブのやり方の練習をもう一度見ます。', h('button', { class: 'btn btn-small', onclick: () => { UI.se(); UI.go('tutorial'); } }, 'もう一度')),
           h('div', { class: 'set-row' }, h('div', { class: 'set-label' }, h('b', null, 'ソラシド STAGE ' + G.versionText()),
             h('small', null, '制作: ' + G.MAKER + '（' + G.COPYRIGHT + '）。楽曲はすべてブラウザ内でその場で合成されるオリジナル曲です。キャラクター・イラスト・ストーリーもこのゲームのために作られたもので、既存の作品とは関係ありません。'))))),
@@ -25172,6 +26506,7 @@ ${accessory(L, 'top')}
 
   /* ---------------- 追加のアイコン ---------------- */
   Object.assign(IC, {
+    stampCard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.8v3.4M16 2.8v3.4"/><circle cx="15.5" cy="15" r="3.1"/><path d="M7 13h3M7 16.5h3"/></svg>',
     globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18M5 7.5h14M5 16.5h14"/></svg>',
     pin: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5a6.5 6.5 0 0 0-6.5 6.5c0 4.8 6.5 12.5 6.5 12.5s6.5-7.7 6.5-12.5A6.5 6.5 0 0 0 12 2.5z"/><circle cx="12" cy="9" r="2.6" fill="#fff"/></svg>',
     gift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><rect x="3.5" y="9" width="17" height="11.5" rx="1.5"/><rect x="2.5" y="6" width="19" height="4" rx="1"/><path d="M12 6v14.5"/><path d="M12 6c-1.5-3.5-6-3.8-5.6-1.2C6.7 6.4 10 6 12 6zm0 0c1.5-3.5 6-3.8 5.6-1.2C17.3 6.4 14 6 12 6z"/></svg>',
@@ -25356,6 +26691,7 @@ ${accessory(L, 'top')}
       h('div', { class: 'mn-grid' },
         it('shop', '曲ショップ', 'コインで限定曲', () => UI.go('shop'), shopBadge ? '!' : null),
         it('mission', 'ミッション', '達成して報酬', () => UI.go('missions'), G.Missions.claimable().length ? '!' : null),
+        it('stampCard', 'ログインボーナス', '通算 ' + G.Login.total() + '日目', () => UI.loginBonus(null, { view: true })),
         it('user', 'プレイヤー情報', 'ランクと記録', () => openProfile()),
         it('members', 'メンバー', '編成とカード', () => UI.go('members')),
         it('star', '育成', 'カードとメンバーを育てる', () => UI.go('members', { tab: 'train' }), growBadge() ? '!' : null),
@@ -25470,15 +26806,31 @@ ${accessory(L, 'top')}
     const met = G.Progress.members();
     return met.some((id) => G.CHARS[id].group === a.group);
   }
+  // みんなが来る場所（商店街・カフェ・公園・楽器店・海浜公園）に出てくる人数
+  //   人が集まりすぎると重くなるので、1か所 5人まで（「演出を軽くする」がオンなら 3人）
+  const MIX_MAX = 5;
+  const MIX_MAX_LOW = 3;
+  const strSeed = (str) => {
+    let x = 2166136261;
+    for (let i = 0; i < str.length; i++) x = Math.imul(x ^ str.charCodeAt(i), 16777619);
+    return x >>> 0;
+  };
   function areaCast(a) {
     const met = G.Progress.members();
     if (a.group) return met.filter((id) => G.CHARS[id].group === a.group);
-    // 商店街: 会話のある2人を優先して、最大8人
-    const talks = availableTalks(a, met).slice(0, 2);
+    const cap = G.Settings.data.lowFx ? MIX_MAX_LOW : MIX_MAX;
+    // 会話のある2人を優先（人数が少ないときは1組だけ）
+    const talks = availableTalks(a, met).slice(0, cap >= 4 ? 2 : 1);
     const first = [];
     talks.forEach((t) => t.chars.forEach((c) => { if (!first.includes(c)) first.push(c); }));
-    const rest = U.shuffle ? U.shuffle(met.filter((id) => !first.includes(id))) : met.filter((id) => !first.includes(id)).sort(() => Math.random() - 0.5);
-    return first.concat(rest).slice(0, 8);
+    // のこりは、日ごと・場所ごとに決まった顔ぶれ（その日は何度もどっても同じ。場所がちがうと顔ぶれもちがう）
+    const r = U.rng(strSeed(G.Login.today() + '/' + a.id));
+    const rest = met.filter((id) => !first.includes(id));
+    for (let i = rest.length - 1; i > 0; i--) {
+      const j = Math.floor(r() * (i + 1));
+      [rest[i], rest[j]] = [rest[j], rest[i]];
+    }
+    return first.concat(rest).slice(0, cap);
   }
   function availableTalks(a, cast) {
     return G.AREA_TALKS.filter((t) => t.area === a.id && t.chars.every((c) => cast.includes(c)) && !G.Progress.data.talks.includes(t.id));
@@ -25501,7 +26853,8 @@ ${accessory(L, 'top')}
       root.appendChild(this.pan);
       this.scroll.addEventListener('scroll', () => this.pan.classList.add('gone'), { once: true, passive: true });
       const day = new Date().getDay();
-      this.outfit = area.id === 'street' && (day === 0 || day === 6) ? 'casual' : 'school';
+      // 土日の街（学校の外）は私服
+      this.outfit = ['street', 'plaza', 'musicshop', 'seaside'].includes(area.id) && (day === 0 || day === 6) ? 'casual' : 'school';
       this.chars = [];
       const cast = areaCast(area);
       const talks = availableTalks(area, cast).slice(0, 2);
@@ -25611,6 +26964,7 @@ ${accessory(L, 'top')}
       this.stage.style.height = sh + 'px';
       this.stage.style.left = (Math.max(W, sw) - sw) / 2 + 'px';
       this.stage.style.top = wh - sh + 'px'; // はみ出すときは上（空）を切る
+      this.sw = sw;
       this.sh = sh;
       this.root.classList.toggle('town-portrait', portrait);
       if (first === true || this._pw !== portrait) {
@@ -25619,23 +26973,33 @@ ${accessory(L, 'top')}
       }
       this.place();
     }
+    // 位置は transform で動かす（ページのレイアウトをやり直さないので、人が多くても軽い）
     place() {
+      for (const c of this.chars) this.placeOne(c, true);
+    }
+    placeOne(c, all) {
       const [f0, f1] = this.area.floor;
-      for (const c of this.chars) {
-        const d = U.clamp((c.y - f0) / (f1 - f0), 0, 1);
-        const hh = this.sh * (0.17 + 0.05 * d);
-        c.el.style.left = c.x * 100 + '%';
-        c.el.style.top = c.y * 100 + '%';
-        c.el.style.height = hh.toFixed(1) + 'px';
-        c.el.style.zIndex = String(10 + Math.round(c.y * 100));
+      const d = U.clamp((c.y - f0) / (f1 - f0), 0, 1);
+      const hh = Math.round(this.sh * (0.17 + 0.05 * d));
+      if (all || c._h !== hh) {
+        c.el.style.height = hh + 'px';
+        c._h = hh;
+      }
+      c.el.style.transform = 'translate3d(' + (c.x * this.sw).toFixed(1) + 'px,' + (c.y * this.sh).toFixed(1) + 'px,0) translate(-50%,-97%)';
+      const z = 10 + Math.round(c.y * 100);
+      if (all || c._z !== z) {
+        c.el.style.zIndex = String(z);
+        c._z = z;
+      }
+      if (all || c._f !== c.face) {
         c.el.style.setProperty('--face', String(c.face));
+        c._f = c.face;
       }
     }
     tick(now) {
       const dt = Math.min(0.1, (now - this.last) / 1000);
       this.last = now;
       const [f0, f1] = this.area.floor;
-      let moved = false;
       for (const c of this.chars) {
         if (c.talk) continue;
         if (c.mode === 'idle' && now > c.until) {
@@ -25659,10 +27023,9 @@ ${accessory(L, 'top')}
             c.x += (dx / dist) * sp;
             c.y += ((dy / dist) * sp) / 1.6;
           }
-          moved = true;
+          this.placeOne(c);
         }
       }
-      if (moved) this.place();
       // ときどき、ひとりごと
       if (now > this.nextChat) {
         this.nextChat = now + 5000 + Math.random() * 5000;
@@ -25690,7 +27053,7 @@ ${accessory(L, 'top')}
         return h('button', { class: 'am-item' + (a.id === cur.id ? ' cur' : '') + (ok ? '' : ' locked'), disabled: !ok, onclick: () => {
           UI.se();
           // 移動の足音。カフェに入るときはドアの音
-          if (a.id !== cur.id) G.Audio.playFile(a.id === 'cafe' ? 'door' : 'steps', 0.9);
+          if (a.id !== cur.id) G.Audio.playFile(a.id === 'cafe' || a.id === 'musicshop' ? 'door' : 'steps', 0.9);
           G.Progress.data.area = a.id;
           G.Progress.save();
           close();
@@ -25699,7 +27062,7 @@ ${accessory(L, 'top')}
           h('span', { class: 'am-bg', html: G.Art.bg(a.bg()) }),
           h('span', { class: 'am-name' }, h('b', null, a.name), h('small', null, ok ? (grp ? grp.name + 'がいる場所' : a.desc || 'みんなが集まる商店街') : 'まだ行けません')),
           nTalk ? h('i', { class: 'am-badge', html: IC.talk }) : null,
-          a.id === cur.id ? h('i', { class: 'am-cur' }, 'いまここ') : null);
+          a.id === cur.id ? h('i', { class: 'am-cur' }, 'いまここ') : a.added && ok && !(G.Progress.data.visited || []).includes(a.id) ? h('i', { class: 'am-cur am-new' }, 'NEW') : null);
       })),
       h('div', { class: 'modal-actions' }, h('button', { class: 'btn', onclick: () => close() }, 'とじる')));
     close = UI.modal(card);
@@ -25711,6 +27074,15 @@ ${accessory(L, 'top')}
       const a = G.areaById(G.Progress.data.area);
       return areaUnlocked(a) ? a : G.AREAS[0];
     })();
+    // 行ったことのある場所（新しいエリアの NEW を消すため）
+    {
+      const D = G.Progress.data;
+      if (!Array.isArray(D.visited)) D.visited = [];
+      if (!D.visited.includes(area.id)) {
+        D.visited.push(area.id);
+        G.Progress.save();
+      }
+    }
     // 一度だけのプレゼント
     G.Presents.once('renewal-2.3', 'ホーム画面リニューアル記念', '運営', 500, 1000);
     G.Presents.once('grow-start', '育成スタートセット', '運営', 0, 2000, { n1: 10, n2: 10, n3: 3, sheet: 3, shard: 3 });
@@ -25727,7 +27099,9 @@ ${accessory(L, 'top')}
       const shopBadge = G.Shop.items().some((x) => !G.Shop.owned(x.id) && G.Coins.get() >= x.shop);
       const np = G.Presents.list().length;
       const nm = G.Missions.claimable().length;
+      const nn = G.News ? G.News.unread() : 0;
       side.append(
+        btn('bell', 'お知らせ', () => G.News.open({ onClose: () => renderSide() }), nn ? String(nn) : null),
         btn('menu', 'メニュー', () => openMenu(), shopBadge ? '!' : null),
         btn('gift', 'プレゼントボックス', () => openPresents(() => { status.refresh(); renderSide(); renderHint(); }), np ? String(np) : null),
         btn('mission', 'ミッション', () => UI.go('missions'), nm ? '!' : null));
@@ -25753,7 +27127,9 @@ ${accessory(L, 'top')}
       h('span', { class: 'tw-event-text' }, h('small', null, 'イベント開催中'), h('b', null, evNow.title), h('i', null, G.Event.remainText(evNow) + '　' + G.Event.state(evNow).total.toLocaleString('en-US') + ' pt')),
       G.Event.hasNew(evNow) ? h('i', { class: 'tw-badge' }, '!') : null) : null;
     const areaEl = h('div', { class: 'tw-area' },
-      h('button', { class: 'tw-globe', 'aria-label': 'エリアマップ', title: 'エリアマップ', html: IC.globe, onclick: () => { UI.se(); openAreaMap(area); } }),
+      h('button', { class: 'tw-globe', 'aria-label': 'エリアマップ', title: 'エリアマップ', onclick: () => { UI.se(); openAreaMap(area); } },
+        h('span', { class: 'tw-globe-ic', html: IC.globe }),
+        G.AREAS.some((a) => a.added && !(G.Progress.data.visited || []).includes(a.id)) ? h('i', { class: 'tw-globe-new' }, 'NEW') : null),
       h('button', { class: 'tw-area-pill', onclick: () => { UI.se(); openAreaMap(area); } }, h('span', { html: IC.pin }), area.name));
 
     const newStory = UI.hasNewStory();
@@ -25783,7 +27159,7 @@ ${accessory(L, 'top')}
         if (UI.cur !== 'home') return;
         G.Onboard.homeTour(() => {
           touring = false;
-          if (got) showLogin();
+          afterIntro();
         });
       }, 700);
     }
@@ -25791,23 +27167,31 @@ ${accessory(L, 'top')}
     function showLogin() {
       loginT = setTimeout(() => {
         if (UI.cur !== 'home') return; // すぐに別の画面へ行ったときは出さない（次にホームを開いたときにも出ない）
-        let close;
-        const m = h('div', { class: 'modal-card small login-card' },
-          h('div', { class: 'modal-title' }, 'ログインボーナス'),
-          h('div', { class: 'login-gems' }, h('span', { class: 'login-gem', html: IC.gem }), h('span', { class: 'login-gem coin', html: IC.coin })),
-          h('p', { class: 'modal-text' }, 'ジュエル ×' + got.jewels + '、コイン ×' + got.coins + '、' + G.Grow.itemText(got.items) + ' を受け取りました！', h('br'), '毎日ログインすると、もらえます。'),
-          h('div', { class: 'modal-actions' }, h('button', { class: 'btn btn-primary', onclick: () => { close(); status.refresh(); } }, 'OK')));
-        close = UI.modal(m, { sticky: true });
+        UI.loginBonus(got, { onClose: () => { status.refresh(); renderSide(); } });
       }, 350);
     }
-    if (got && !touring) showLogin();
+    // ゲームを開いてはじめてホームに来たとき:（ログイン中なら、ほかの端末のデータの確認）→ お知らせ → ログインボーナス
+    async function afterIntro() {
+      if (UI.cur !== 'home') return;
+      if (G.News && !G.News.shown) {
+        if (G.Online && G.Online.loggedIn()) await G.Online.checkCloud();
+        if (UI.cur !== 'home' || (G.Online && G.Online.restoring)) return;
+        G.News.shown = true;
+        G.News.open({ onClose: () => { renderSide(); if (got) showLogin(); } });
+        return;
+      }
+      if (got) showLogin();
+    }
+    let introT = 0;
+    if (!touring) introT = setTimeout(afterIntro, 450);
     const onKey = (e) => {
-      if (document.querySelector('body > .modal, body > .tour')) return;
+      if (document.querySelector('body > .modal, body > .tour, body > .lb, body > .rku')) return;
       if (e.code === 'Enter') UI.go('liveMenu');
     };
     window.addEventListener('keydown', onKey);
     UI.cleanup = () => {
       clearTimeout(loginT);
+      clearTimeout(introT);
       window.removeEventListener('keydown', onKey);
       town.destroy();
       status.stop();
@@ -25816,8 +27200,11 @@ ${accessory(L, 'top')}
   };
 
   /* ---------- エリア会話の再生 ---------- */
-  Screens.talkPlay = function ({ id }) {
+  Screens.talkPlay = function ({ id, from }) {
     const t = G.AREA_TALKS.find((x) => x.id === id);
+    // ストーリーの「エピソード」タブから読み返したときは、そこへもどる
+    const fromStory = from === 'story';
+    const back = () => (fromStory ? UI.go('story', { arc: 'episode' }) : UI.go('home'));
     const area = G.areaById(t.area);
     const script = t.script.map((x) => (x.bg ? Object.assign({}, x, { bg: area.bg() }) : x));
     const ch = { id: t.id, arc: 'area', title: t.title, script };
@@ -25831,15 +27218,15 @@ ${accessory(L, 'top')}
         G.Progress.save();
         return true;
       },
-      onQuit: () => UI.go('home'),
+      onQuit: () => back(),
       onEnd: (first) => {
         if (first) G.Jewels.add(50);
         let close;
         const card = h('div', { class: 'modal-card small' },
           h('div', { class: 'modal-title' }, 'エリア会話「' + t.title + '」'),
           first ? h('div', { class: 'story-gem' }, h('span', { html: IC.gem }), '会話ボーナス ', h('b', null, '+50'), ' ジュエル') : null,
-          h('p', { class: 'modal-text' }, '街のあちこちで、メンバーが話していることがあります。吹き出しのマークをさがしてみよう。'),
-          h('div', { class: 'modal-actions' }, h('button', { class: 'btn btn-primary', onclick: () => { close(); UI.go('home'); } }, 'ホームへ')));
+          h('p', { class: 'modal-text' }, fromStory ? '見つけたエリア会話は、ストーリーの「エピソード」から、いつでも読み返せます。' : '街のあちこちで、メンバーが話していることがあります。吹き出しのマークをさがしてみよう。'),
+          h('div', { class: 'modal-actions' }, h('button', { class: 'btn btn-primary', onclick: () => { close(); back(); } }, fromStory ? 'エピソードへ' : 'ホームへ')));
         close = UI.modal(card, { sticky: true });
       },
     });
@@ -30432,6 +31819,1037 @@ ${accessory(L, 'top')}
 </script>
 <script>
 /*
+ * ソラシド STAGE - loginbonus.js
+ * ログインボーナスの画面（スタンプカード）
+ *   1日1回、ホームに来たときに出ます。7日でひとまわりするスタンプカードに、今日のぶんのスタンプが「ポン」と押されて、
+ *   毎日のボーナス（ジュエル・コイン）と、その日の報酬（7日目はスペシャル）を受け取ります。
+ *   となりでは、仲間のメンバーが時間帯に合わせてあいさつします（data/login.js）。
+ *   休んだ日があっても、カードは続きから進みます（通算ログイン日数で数える）。
+ *
+ *   UI.loginBonus(got, { onClose })        … G.Login.check() が返したもの（受け取った日の演出）
+ *   UI.loginBonus(null, { view: true })   … 見るだけ（ホームのメニューから）
+ *   タップ（または Enter / Space / Esc）でとじる。演出のとちゅうでタップすると、最後まで飛ばす。
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  const U = G.U;
+  const UI = G.UI;
+  const h = U.h;
+  const IC = UI.IC;
+
+  const T_STAMP = 1150; // スタンプが落ちてくる時間（ms）
+  const T_HIT = 1330; // スタンプが当たる時間
+  const T_READY = 1900;
+
+  // 報酬 → [{ ic, n, name }]
+  function parts(rw) {
+    const out = [];
+    if (rw.jewels) out.push({ ic: '<span class="lb-gem">' + IC.gem + '</span>', n: rw.jewels, name: 'ジュエル' });
+    if (rw.coins) out.push({ ic: IC.coin, n: rw.coins, name: 'コイン' });
+    for (const k of Object.keys(rw.items || {})) {
+      const it = G.Grow && G.Grow.ITEMS[k];
+      if (it && rw.items[k]) out.push({ ic: G.Grow.itemIcon(k), n: rw.items[k], name: it.short, long: it.name });
+    }
+    return out;
+  }
+  const rwText = (rw) => parts(rw).map((p) => (p.long || p.name) + '×' + p.n.toLocaleString('en-US')).join('、');
+
+  // オリジナルのスタンプ（星と「GET!」の丸いはんこ）
+  const STAMP = '<svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-14 32 32)">' +
+    '<circle cx="32" cy="32" r="28" fill="#fff" fill-opacity=".86" stroke="currentColor" stroke-width="4.2"/>' +
+    '<circle cx="32" cy="32" r="22.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 2.4"/>' +
+    '<path d="M32 12.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="currentColor"/>' +
+    '<text x="32" y="45.5" text-anchor="middle" font-family="Exo 2, sans-serif" font-weight="900" font-style="italic" font-size="12.5" letter-spacing=".5" fill="currentColor">GET!</text></g></svg>';
+
+  // あいさつするメンバー: 仲間になっているメンバーから、通算ログイン日数で順番に
+  function greeter(total) {
+    const ids = G.Progress.members().filter((id) => G.CHARS[id]);
+    const list = ids.length ? ids : Object.keys(G.CHARS);
+    const id = list[(Math.max(1, total) - 1) % list.length];
+    const hr = new Date().getHours();
+    const band = hr >= 5 && hr < 11 ? 0 : hr >= 11 && hr < 17 ? 1 : 2;
+    const lines = (G.LOGIN_LINES && G.LOGIN_LINES[id]) || ['今日も来てくれて、ありがとう！', 'こんにちは！　今日もいっしょにがんばろう！', 'こんばんは！　今日もおつかれさま！'];
+    return { id, c: G.CHARS[id], line: lines[band] };
+  }
+
+  function loginBonus(got, opts) {
+    opts = opts || {};
+    const L = G.Login;
+    const view = !got;
+    const total = got ? got.total : L.total();
+    const day = L.dayOf(total);
+    const stampedToday = view ? L.gotToday() : true;
+    const gr = greeter(total);
+    const nextDay = L.dayOf(total + 1);
+
+    // スタンプカードのマス
+    const tiles = L.CYCLE.map((rw, i) => {
+      const d = i + 1;
+      const sp = d === 7;
+      const done = d < day || (d === day && view && stampedToday);
+      const now = d === day && !view;
+      const ps = parts(rw);
+      return h('div', { class: 'lb-tile' + (sp ? ' sp' : '') + (done ? ' done' : '') + (now ? ' today' : '') + (d === day ? ' cur' : ''), style: { '--i': i } },
+        h('span', { class: 'lb-day' }, sp ? 'SPECIAL' : 'DAY ' + d),
+        h('span', { class: 'lb-rw' }, ps.map((p) => h('span', { class: 'lb-one' }, h('span', { class: 'lb-ic', html: p.ic }), h('b', { class: 'lb-n' }, '×' + p.n.toLocaleString('en-US'))))),
+        h('small', { class: 'lb-name' }, ps.map((p) => p.name).join('・')),
+        done || now ? h('span', { class: 'lb-stamp' + (now ? ' now' : ''), html: STAMP }) : null,
+        now ? h('span', { class: 'lb-ink', 'aria-hidden': 'true' }, Array.from({ length: 10 }, (_, k) => h('i', { style: { '--a': k * 36 + 'deg', '--d': (26 + (k % 3) * 9) + 'px' } }))) : null);
+    });
+    const todayRw = got || { jewels: L.DAILY.jewels + (L.CYCLE[day - 1] ? L.CYCLE[day - 1].jewels || 0 : 0), coins: L.DAILY.coins + (L.CYCLE[day - 1] ? L.CYCLE[day - 1].coins || 0 : 0), items: L.CYCLE[day - 1] ? L.CYCLE[day - 1].items : null };
+    const chips = parts(todayRw).map((p, k) => h('span', { class: 'lb-chip', style: { '--k': k } }, h('span', { class: 'lb-ic', html: p.ic }), h('span', null, p.long || p.name), h('b', null, '×' + p.n.toLocaleString('en-US'))));
+
+    const card = h('div', { class: 'lb-card' },
+      h('div', { class: 'lb-card-head' },
+        h('b', null, 'スタンプカード'),
+        h('span', { class: 'lb-dots', 'aria-hidden': 'true' }, L.CYCLE.map((_, i) => h('i', { class: i < day ? 'on' : '' }))),
+        h('span', { class: 'lb-of' }, h('b', null, String(day)), ' / 7')),
+      h('div', { class: 'lb-tiles' }, tiles),
+      h('div', { class: 'lb-got' },
+        h('span', { class: 'lb-got-l' }, view ? (stampedToday ? '今日のボーナス（受け取り済み）' : '今日のボーナス') : '今日のボーナスを受け取りました！'),
+        h('span', { class: 'lb-chips' }, chips)),
+      h('div', { class: 'lb-next' }, h('span', { class: 'lb-next-l' }, 'あした'), (nextDay === 7 ? 'SPECIAL' : 'DAY ' + nextDay) + '：' + rwText(L.CYCLE[nextDay - 1]) + '（毎日のジュエル×' + L.DAILY.jewels + '・コイン×' + L.DAILY.coins + 'も）'));
+
+    const chr = h('div', { class: 'lb-char' },
+      h('div', { class: 'lb-art', html: G.portrait(gr.id, 'happy') }),
+      h('div', { class: 'lb-bubble', style: { '--c': gr.c.color } }, h('b', null, gr.c.short), gr.line));
+
+    const notes = [];
+    for (let i = 0; i < 12; i++) {
+      notes.push(h('i', { style: { left: ((i * 41) % 100) + '%', '--d': ((i * 0.37) % 3).toFixed(2) + 's', '--t': (5 + (i % 4)).toFixed(1) + 's', '--s': (16 + (i % 3) * 7) + 'px', '--c': ['#45B4F2', '#20C9B6', '#FF5E9C', '#FFC23D'][i % 4] } }, i % 2 ? '♪' : '♫'));
+    }
+    const el = h('div', { class: 'lb' + (view ? ' view' : ''), role: 'dialog', 'aria-modal': 'true', 'aria-label': 'ログインボーナス 通算' + total + '日目 スタンプカード ' + day + '日目' },
+      h('div', { class: 'lb-bg', 'aria-hidden': 'true' }, h('div', { class: 'lb-stripe' }), h('div', { class: 'lb-notes' }, notes)),
+      h('header', { class: 'lb-head' },
+        h('div', { class: 'lb-ribbon' }, h('b', null, 'LOGIN BONUS'), h('small', null, 'ログインボーナス')),
+        h('div', { class: 'lb-total' }, h('small', null, '通算ログイン'), h('b', null, String(total)), h('small', null, '日目'))),
+      h('div', { class: 'lb-body' }, chr, card),
+      h('div', { class: 'lb-tap' }, view ? 'TAP TO CLOSE' : 'TAP TO CONTINUE'));
+
+    let ready = false, closed = false;
+    const timers = [];
+    const finish = () => {
+      timers.forEach(clearTimeout);
+      timers.length = 0;
+      el.classList.add('skip', 'hit');
+      ready = true;
+      el.classList.add('ready');
+    };
+    const close = () => {
+      if (closed) return;
+      closed = true;
+      timers.forEach(clearTimeout);
+      window.removeEventListener('keydown', onKey, true);
+      el.classList.add('out');
+      setTimeout(() => el.remove(), 260);
+      if (opts.onClose) opts.onClose();
+    };
+    const tap = () => {
+      if (!ready) {
+        finish();
+        return;
+      }
+      UI.se();
+      close();
+    };
+    const onKey = (e) => {
+      if (!el.isConnected) {
+        window.removeEventListener('keydown', onKey, true);
+        return;
+      }
+      if (['Enter', 'Space', 'Escape', 'NumpadEnter'].includes(e.code)) {
+        e.preventDefault();
+        e.stopPropagation();
+        tap();
+      }
+    };
+    el.addEventListener('click', tap);
+    window.addEventListener('keydown', onKey, true);
+    document.body.appendChild(el);
+    if (view) {
+      el.classList.add('hit');
+      timers.push(setTimeout(() => { ready = true; el.classList.add('ready'); }, 450));
+    } else {
+      // スタンプが当たった瞬間に「ポン」、少しあとに受け取りのきらきら
+      timers.push(setTimeout(() => { el.classList.add('hit'); G.Audio.playSE('stamp', 1); }, T_HIT));
+      timers.push(setTimeout(() => G.Audio.playSE(day === 7 ? 'gold' : 'goldFlick', 0.55), T_HIT + 260));
+      timers.push(setTimeout(() => { ready = true; el.classList.add('ready'); }, T_READY));
+    }
+    return close;
+  }
+
+  UI.loginBonus = loginBonus;
+  UI.LOGIN_T_STAMP = T_STAMP;
+})();
+
+</script>
+<script>
+/*
+ * ソラシド STAGE - news.js
+ * ホームのお知らせ欄（data/news.js）
+ *   ゲームを開いて、はじめてホームに来たときに、かならず開きます（ホームの右上のボタンからも開けます）。
+ *   広い画面では左に一覧・右に中身、せまい画面では一覧 → タップで中身。読んだお知らせは NEW が消えます。
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  const U = G.U;
+  const h = U.h;
+  const UI = G.UI;
+  const TAGS = {
+    important: { label: '重要', c: '#FF4F8B' },
+    song: { label: '新曲', c: '#36B5F0' },
+    event: { label: 'イベント', c: '#FFA62B' },
+    update: { label: 'アップデート', c: '#2BC48A' },
+  };
+  const TABS = [['all', 'すべて'], ['important', '重要'], ['song', '新曲'], ['event', 'イベント'], ['update', 'アップデート']];
+
+  const readIds = () => G.Store.get('newsRead', []) || [];
+  const isRead = (n) => readIds().includes(n.id);
+  const markRead = (n) => {
+    const r = readIds();
+    if (!r.includes(n.id)) {
+      r.push(n.id);
+      G.Store.set('newsRead', r.slice(-200));
+    }
+  };
+  // ならび: とめたもの → 新しい順
+  const list = () => (G.NEWS || []).slice().sort((a, b) => (b.pin ? 1 : 0) - (a.pin ? 1 : 0) || (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+  const fmtDate = (d) => d.replace(/-/g, '/');
+
+  function hero(n) {
+    if (n.songs && n.songs.length) {
+      return h('div', { class: 'nw-jackets' }, n.songs.map((id) => G.songById(id)).filter(Boolean).map((s) =>
+        h('figure', null, h('span', { class: 'nw-jk', html: G.Art.jacket(s) }), h('figcaption', null, s.title))));
+    }
+    if (n.art) return h('div', { class: 'nw-art', html: G.Art.bg(n.art) });
+    return null;
+  }
+
+  function open(opts) {
+    opts = opts || {};
+    let close;
+    let tab = 'all';
+    let cur = null;
+    const tabsEl = h('div', { class: 'nw-tabs', role: 'tablist' });
+    const listEl = h('div', { class: 'nw-list' });
+    const detailEl = h('div', { class: 'nw-detail' });
+    const card = h('div', { class: 'modal-card nw-card' },
+      h('div', { class: 'nw-head' }, h('b', null, 'お知らせ'), h('i', null, 'NEWS'), h('small', null, G.MAKER)),
+      tabsEl,
+      h('div', { class: 'nw-body' }, listEl, detailEl),
+      h('div', { class: 'modal-actions' }, h('button', { class: 'btn btn-primary', onclick: () => close() }, 'とじる')));
+    const narrow = () => card.clientWidth < 620;
+    function renderTabs() {
+      tabsEl.innerHTML = '';
+      for (const [id, label] of TABS) {
+        const items = list().filter((n) => id === 'all' || n.tag === id);
+        if (id !== 'all' && !items.length) continue;
+        const unread = items.some((n) => !isRead(n));
+        tabsEl.appendChild(h('button', { class: 'nw-tab' + (tab === id ? ' on' : ''), role: 'tab', 'aria-selected': tab === id ? 'true' : 'false', onclick: () => { UI.se(); tab = id; renderTabs(); renderList(true); } },
+          label, unread ? h('i', { class: 'nw-dot' }) : null));
+      }
+    }
+    function renderList(pickFirst) {
+      listEl.innerHTML = '';
+      const items = list().filter((n) => tab === 'all' || n.tag === tab);
+      for (const n of items) {
+        const t = TAGS[n.tag] || TAGS.update;
+        listEl.appendChild(h('button', { class: 'nw-item' + (cur === n ? ' on' : ''), style: { '--t': t.c }, onclick: () => { UI.se(); show(n); } },
+          h('span', { class: 'nw-meta' }, h('em', null, t.label), h('time', null, fmtDate(n.date)), isRead(n) ? null : h('i', { class: 'nw-new' }, 'NEW')),
+          h('b', null, n.title)));
+      }
+      if (pickFirst && !narrow() && items[0]) show(items[0]);
+      else if (pickFirst && narrow()) {
+        cur = null;
+        card.classList.remove('reading');
+      }
+    }
+    function show(n) {
+      cur = n;
+      markRead(n);
+      const t = TAGS[n.tag] || TAGS.update;
+      detailEl.innerHTML = '';
+      const go = n.go && !(n.go.eventOnly && !G.Event.current()) ? h('button', { class: 'btn btn-primary nw-go', onclick: () => {
+        UI.se();
+        if (n.go.action === 'account') return G.Online && (G.Online.loggedIn() ? G.Online.openAccount() : G.Online.openLogin());
+        close();
+        if (n.go.action === 'terms') return UI.go('terms', { back: UI.cur === 'home' ? 'home' : 'settings' });
+        UI.go(n.go.screen, n.go.params || {});
+      } }, n.go.label) : null;
+      detailEl.append(...[
+        h('button', { class: 'nw-back', onclick: () => { UI.se(); cur = null; card.classList.remove('reading'); renderList(); } }, '‹ 一覧へ'),
+        h('div', { class: 'nw-dmeta', style: { '--t': t.c } }, h('em', null, t.label), h('time', null, fmtDate(n.date))),
+        h('h3', { class: 'nw-title' }, n.title),
+        hero(n),
+        h('div', { class: 'nw-text' }, (n.body || []).map((p) => (p.startsWith('・') ? h('p', { class: 'li' }, p.slice(1)) : h('p', null, p)))),
+        go].filter(Boolean));
+      detailEl.scrollTop = 0;
+      card.classList.add('reading');
+      renderTabs();
+      renderList();
+      if (opts.onRead) opts.onRead();
+    }
+    renderTabs();
+    close = UI.modal(card, { onClose: opts.onClose });
+    renderList(true);
+    return close;
+  }
+
+  G.News = {
+    open,
+    unread() {
+      return (G.NEWS || []).filter((n) => !isRead(n)).length;
+    },
+    shown: false, // この起動でもう自動で開いたか
+  };
+})();
+
+</script>
+<script>
+/*
+ * ソラシド STAGE - online.js
+ * オンラインログイン（Firebase Authentication）と、クラウドへのデータ保存（Cloud Firestore）
+ *
+ *   SDK は使わず、Firebase の REST API を fetch で呼びます（HTML 1つのまま動くように）。
+ *   設定は data/online.js（apiKey・projectId）。空のときは「準備中」になります。
+ *
+ *   - パスワードは、このゲームでは保存しません（Firebase が管理）。ブラウザのパスワード保存は使えます
+ *   - ログインしたときの合言葉（トークン）だけを、この端末に保存します
+ *   - クラウドには「saves/ユーザーID」に、この端末の保存データ（localStorage の sorashido-stage.〜）を1つにまとめて置きます
+ *     （マイ楽曲の音声は端末の中だけ。データが大きすぎるときは、大きい Make Music の譜面からはぶきます）
+ *   - ログイン中は、遊んだあと少しして自動でクラウドに保存します
+ *
+ *   G.Online = { ready, user, signUp, signIn, signOut, sendReset, sendVerify, refreshInfo, deleteAccount,
+ *                push, pull, openLogin, openAccount, checkCloud, summary }
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  const U = G.U;
+  const h = U.h;
+  const PFX = 'sorashido-stage.';
+  // クラウドに送らないもの（ログインの情報・端末の番号・同期の記録・入力したメールアドレス）
+  const SKIP = new Set(['auth', 'device', 'sync', 'lastEmail']);
+  const LIMIT = 900000; // Firestore の1つのドキュメントは 1MB まで
+  const cfg = () => G.ONLINE_CONFIG || {};
+
+  const ERR = {
+    EMAIL_EXISTS: 'このメールアドレスは、もう登録されています。「ログイン」からログインしてください。',
+    EMAIL_NOT_FOUND: 'メールアドレスかパスワードがちがいます。',
+    INVALID_PASSWORD: 'メールアドレスかパスワードがちがいます。',
+    INVALID_LOGIN_CREDENTIALS: 'メールアドレスかパスワードがちがいます。',
+    INVALID_EMAIL: 'メールアドレスの形がただしくありません。',
+    MISSING_EMAIL: 'メールアドレスを入れてください。',
+    MISSING_PASSWORD: 'パスワードを入れてください。',
+    WEAK_PASSWORD: 'パスワードは6文字以上にしてください。',
+    USER_DISABLED: 'このアカウントは使えなくなっています。',
+    TOO_MANY_ATTEMPTS_TRY_LATER: '何度も失敗したので、しばらく待ってからもう一度ためしてください。',
+    OPERATION_NOT_ALLOWED: 'メールとパスワードのログインが、Firebase で有効になっていません（README の手順を見てください）。',
+    CREDENTIAL_TOO_OLD_LOGIN_AGAIN: '安全のため、いちどログアウトして、もう一度ログインしてから操作してください。',
+    TOKEN_EXPIRED: 'ログインの期限が切れました。もう一度ログインしてください。',
+    INVALID_ID_TOKEN: 'ログインの期限が切れました。もう一度ログインしてください。',
+    INVALID_REFRESH_TOKEN: 'ログインの期限が切れました。もう一度ログインしてください。',
+    USER_NOT_FOUND: 'アカウントが見つかりません。もう一度ログインしてください。',
+    PERMISSION_DENIED: 'クラウドに保存できませんでした（Firestore のルールを確かめてください）。',
+    API_KEY_INVALID: 'Firebase の設定（apiKey）がまちがっています。',
+    NOT_READY: 'オンラインログインは準備中です。',
+    NOT_LOGGED_IN: 'ログインしていません。',
+    NETWORK: '通信できませんでした。インターネットにつながっているか確かめてください。',
+  };
+  class OnlineError extends Error {
+    constructor(code, msg) {
+      super(msg || ERR[code] || 'エラーが起きました（' + code + '）');
+      this.code = code;
+    }
+  }
+
+  // fetch して JSON を返す。エラーのときは Firebase のエラーの名前（EMAIL_EXISTS など）を code にした OnlineError
+  async function call(url, opts) {
+    let res;
+    try {
+      res = await fetch(url, opts);
+    } catch (e) {
+      throw new OnlineError('NETWORK');
+    }
+    let body = null;
+    try {
+      body = await res.json();
+    } catch (e) {}
+    if (!res.ok) {
+      const raw = String((body && body.error && (body.error.message || body.error.status)) || res.status);
+      let code = raw.split(/[\s:]/)[0];
+      if (/API key not valid|API_KEY_INVALID/.test(raw)) code = 'API_KEY_INVALID';
+      else if (/firestore/.test(url) && res.status === 403) code = 'PERMISSION_DENIED';
+      else if (/firestore/.test(url) && res.status === 404) code = 'NOT_FOUND';
+      else if (/firestore/.test(url) && res.status === 401) code = 'INVALID_ID_TOKEN';
+      const e = new OnlineError(code);
+      e.status = res.status;
+      throw e;
+    }
+    return body;
+  }
+  const authCall = (op, payload, extraHeaders) =>
+    call('https://identitytoolkit.googleapis.com/v1/accounts:' + op + '?key=' + encodeURIComponent(cfg().apiKey), {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, extraHeaders || {}),
+      body: JSON.stringify(payload),
+    });
+  const docUrl = (uid) => 'https://firestore.googleapis.com/v1/projects/' + encodeURIComponent(cfg().projectId) + '/databases/(default)/documents/saves/' + encodeURIComponent(uid);
+
+  // この端末の番号（どの端末で保存したかを見分けるため。クラウドには送らない）
+  function deviceId() {
+    let d = G.Store.get('device');
+    if (!d) {
+      d = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+      G.Store.set('device', d);
+    }
+    return d;
+  }
+
+  /* ---------------- ログイン ---------------- */
+  const Online = {
+    ready() {
+      return !!(cfg().apiKey && cfg().projectId);
+    },
+    user() {
+      const a = G.Store.get('auth');
+      return a && a.uid ? a : null;
+    },
+    loggedIn() {
+      return this.ready() && !!this.user();
+    },
+    mask(email) {
+      const [a, b] = String(email || '').split('@');
+      if (!b) return email || '';
+      return (a.length <= 2 ? a[0] + '*' : a.slice(0, 2) + '*'.repeat(Math.min(4, a.length - 2))) + '@' + b;
+    },
+    setUser(r, email) {
+      const u = { uid: r.localId || r.user_id, email: email || r.email, idToken: r.idToken || r.id_token, refreshToken: r.refreshToken || r.refresh_token, exp: Date.now() + (Number(r.expiresIn || r.expires_in) || 3600) * 1000 };
+      const old = this.user();
+      if (old && old.uid === u.uid && old.verified) u.verified = true;
+      G.Store.set('auth', u);
+      return u;
+    },
+    async signUp(email, password) {
+      if (!this.ready()) throw new OnlineError('NOT_READY');
+      const r = await authCall('signUp', { email, password, returnSecureToken: true });
+      const u = this.setUser(r, email);
+      G.Store.set('lastEmail', email);
+      this.sendVerify().catch(() => {}); // 確認メール（届かなくても遊べます）
+      return u;
+    },
+    async signIn(email, password) {
+      if (!this.ready()) throw new OnlineError('NOT_READY');
+      const r = await authCall('signInWithPassword', { email, password, returnSecureToken: true });
+      G.Store.set('lastEmail', email);
+      return this.setUser(r, email);
+    },
+    signOut() {
+      G.Store.remove('auth');
+      G.Store.remove('sync');
+      clearTimeout(pushT);
+      dirty = false;
+    },
+    sendReset(email) {
+      if (!this.ready()) return Promise.reject(new OnlineError('NOT_READY'));
+      return authCall('sendOobCode', { requestType: 'PASSWORD_RESET', email }, { 'X-Firebase-Locale': 'ja' });
+    },
+    async sendVerify() {
+      const u = await this.token();
+      return authCall('sendOobCode', { requestType: 'VERIFY_EMAIL', idToken: u.idToken }, { 'X-Firebase-Locale': 'ja' });
+    },
+    // メールの確認がすんだか
+    async refreshInfo() {
+      const u = await this.token();
+      const r = await authCall('lookup', { idToken: u.idToken });
+      const info = r && r.users && r.users[0];
+      if (info) {
+        u.verified = !!info.emailVerified;
+        if (info.email) u.email = info.email;
+        G.Store.set('auth', u);
+      }
+      return u;
+    },
+    // 有効なトークン（期限が近ければ更新する）
+    async token() {
+      if (!this.ready()) throw new OnlineError('NOT_READY');
+      const u = this.user();
+      if (!u) throw new OnlineError('NOT_LOGGED_IN');
+      if (u.exp - 60000 > Date.now()) return u;
+      try {
+        const r = await call('https://securetoken.googleapis.com/v1/token?key=' + encodeURIComponent(cfg().apiKey), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'grant_type=refresh_token&refresh_token=' + encodeURIComponent(u.refreshToken),
+        });
+        return this.setUser(r, u.email);
+      } catch (e) {
+        if (e.code !== 'NETWORK') this.signOut(); // 期限切れ・アカウント削除など
+        throw e;
+      }
+    },
+    async deleteAccount() {
+      const u = await this.token();
+      try {
+        await call(docUrl(u.uid), { method: 'DELETE', headers: { Authorization: 'Bearer ' + u.idToken } });
+      } catch (e) {
+        if (e.code !== 'NOT_FOUND') throw e;
+      }
+      await authCall('delete', { idToken: u.idToken });
+      this.signOut();
+    },
+
+    /* ---------------- クラウドの保存データ ---------------- */
+    snapshot() {
+      const data = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k || !k.startsWith(PFX)) continue;
+        const sk = k.slice(PFX.length);
+        if (!SKIP.has(sk)) data[sk] = localStorage.getItem(k);
+      }
+      let json = JSON.stringify(data);
+      let dropped = 0;
+      if (json.length > LIMIT) {
+        const mm = Object.keys(data).filter((k) => k.startsWith('mm.c.')).sort((a, b) => data[b].length - data[a].length);
+        while (json.length > LIMIT && mm.length) {
+          delete data[mm.shift()];
+          dropped++;
+          json = JSON.stringify(data);
+        }
+      }
+      return { json, dropped };
+    },
+    async push(opts) {
+      opts = opts || {};
+      const u = await this.token();
+      const { json, dropped } = this.snapshot();
+      const now = Date.now();
+      const body = JSON.stringify({ fields: {
+        data: { stringValue: json },
+        updatedAt: { integerValue: String(now) },
+        version: { stringValue: G.VERSION },
+        device: { stringValue: deviceId() },
+      } });
+      await call(docUrl(u.uid), { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + u.idToken }, body, keepalive: !!opts.keepalive && body.length < 60000 });
+      G.Store.set('sync', { at: now, cloudAt: now, dir: 'up' });
+      dirty = false;
+      return { at: now, dropped, size: json.length };
+    },
+    // クラウドの保存データ（なければ null）
+    async pull() {
+      const u = await this.token();
+      try {
+        const d = await call(docUrl(u.uid), { headers: { Authorization: 'Bearer ' + u.idToken } });
+        const f = (d && d.fields) || {};
+        return {
+          json: f.data && f.data.stringValue,
+          updatedAt: Number((f.updatedAt && f.updatedAt.integerValue) || 0),
+          device: f.device && f.device.stringValue,
+          version: f.version && f.version.stringValue,
+        };
+      } catch (e) {
+        if (e.code === 'NOT_FOUND') return null;
+        throw e;
+      }
+    },
+    // クラウドのデータでこの端末を上書きして、読みこみなおす
+    restore(cloud) {
+      const data = JSON.parse(cloud.json);
+      const rm = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith(PFX) && !SKIP.has(k.slice(PFX.length))) rm.push(k);
+      }
+      rm.forEach((k) => localStorage.removeItem(k));
+      for (const k of Object.keys(data)) if (!SKIP.has(k)) localStorage.setItem(PFX + k, data[k]);
+      G.Store.set('sync', { at: Date.now(), cloudAt: cloud.updatedAt, dir: 'down' });
+      // 読みこみなおすまでのあいだに、古いデータで上書きされないようにする
+      G.Store.set = () => {};
+      Online.restoring = true;
+      location.reload();
+    },
+    // 保存データのかんたんなまとめ（くらべる画面用）
+    summary(json) {
+      try {
+        const data = typeof json === 'string' ? JSON.parse(json) : json;
+        const p = JSON.parse(data.progress || '{}');
+        return { rank: (p.rank && p.rank.lv) || 1, plays: (p.stats && p.stats.plays) || 0, songs: Object.keys(p.records || {}).length };
+      } catch (e) {
+        return { rank: '?', plays: '?', songs: '?' };
+      }
+    },
+  };
+
+  /* ---------------- 自動でクラウドに保存 ---------------- */
+  let dirty = false;
+  let pushT = 0;
+  let firstDirty = 0;
+  function markDirty() {
+    if (!Online.loggedIn() || Online.restoring) return;
+    if (!dirty) firstDirty = Date.now();
+    dirty = true;
+    clearTimeout(pushT);
+    // 最後に保存してから20秒後（保存が続いても、最初から60秒たったら）
+    const wait = Math.max(1000, Math.min(20000, firstDirty + 60000 - Date.now()));
+    pushT = setTimeout(autoPush, wait);
+  }
+  function autoPush() {
+    if (!dirty || !Online.loggedIn()) return;
+    // ライブ中は送らない（終わってから）
+    if (G.UI && G.UI.cur === 'live') {
+      pushT = setTimeout(autoPush, 5000);
+      return;
+    }
+    Online.push().catch((e) => {
+      if (e.code === 'NETWORK') pushT = setTimeout(autoPush, 60000); // 通信できなければ、あとでもう一度
+    });
+  }
+  Online.markDirty = markDirty;
+  // 保存されたら「クラウドに送るものがある」しるしを付ける
+  for (const obj of [G.Progress, G.Settings]) {
+    if (!obj || typeof obj.save !== 'function') continue;
+    const orig = obj.save;
+    obj.save = function () {
+      const r = orig.apply(this, arguments);
+      markDirty();
+      return r;
+    };
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden' && dirty && Online.loggedIn()) Online.push({ keepalive: true }).catch(() => {});
+  });
+
+  /* ---------------- 画面（ログイン・アカウント・データのえらびなおし） ---------------- */
+  const UI = G.UI;
+  const fmtDate = (t) => {
+    if (!t) return '—';
+    const d = new Date(t);
+    const p = (n) => String(n).padStart(2, '0');
+    return d.getFullYear() + '/' + p(d.getMonth() + 1) + '/' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  };
+  // 入力中のキーが、ゲームのキー操作（Enter で次へ など）に伝わらないように
+  const guardKeys = (el) => el.addEventListener('keydown', (e) => e.stopPropagation());
+
+  // ログイン・新規登録
+  function openLogin(onDone) {
+    if (!Online.ready()) {
+      let close;
+      close = UI.modal(h('div', { class: 'modal-card small ol-card' },
+        h('div', { class: 'modal-title' }, 'ログイン'),
+        h('div', { class: 'ol-soon' }, h('b', null, '準備中です'), h('p', null, 'オンラインログインは、まだ使えるようになっていません。ログインしなくても、すべての機能で遊べます（データはこの端末に保存されます）。')),
+        h('div', { class: 'modal-actions' }, h('button', { class: 'btn btn-primary', onclick: () => close() }, 'OK'))));
+      return;
+    }
+    let mode = 'in';
+    let busy = false;
+    let close;
+    const email = h('input', { class: 'ol-input', type: 'email', name: 'email', autocomplete: 'username email', inputmode: 'email', placeholder: 'メールアドレス', required: true, value: G.Store.get('lastEmail', '') || '' });
+    const pw = h('input', { class: 'ol-input', type: 'password', name: 'password', autocomplete: 'current-password', placeholder: 'パスワード（6文字以上）', required: true, minlength: 6 });
+    const pw2 = h('input', { class: 'ol-input', type: 'password', name: 'password2', autocomplete: 'new-password', placeholder: 'パスワード（もう一度）', minlength: 6 });
+    const show = h('input', { type: 'checkbox' });
+    show.addEventListener('change', () => {
+      pw.type = pw2.type = show.checked ? 'text' : 'password';
+    });
+    const msg = h('p', { class: 'ol-msg', role: 'status' });
+    const submit = h('button', { class: 'btn btn-primary ol-submit', type: 'submit' }, 'ログイン');
+    const tabIn = h('button', { type: 'button', class: 'ol-tab on', onclick: () => setMode('in') }, 'ログイン');
+    const tabUp = h('button', { type: 'button', class: 'ol-tab', onclick: () => setMode('up') }, '新規登録');
+    const pw2Row = h('div', { class: 'ol-row', hidden: true }, pw2);
+    const forgot = h('button', { type: 'button', class: 'ol-link', onclick: () => doReset() }, 'パスワードを忘れたとき');
+    const note = h('p', { class: 'ol-note' });
+    function setMode(m) {
+      mode = m;
+      tabIn.classList.toggle('on', m === 'in');
+      tabUp.classList.toggle('on', m === 'up');
+      pw2Row.hidden = m !== 'up';
+      pw2.required = m === 'up';
+      pw.autocomplete = m === 'up' ? 'new-password' : 'current-password';
+      submit.textContent = m === 'up' ? '登録してログイン' : 'ログイン';
+      forgot.hidden = m === 'up';
+      note.textContent = m === 'up'
+        ? '登録すると、メールアドレスあてに確認のメールが届きます。メールアドレスとパスワードは Firebase（Google のサービス）で管理され、このゲームの制作者がパスワードを見ることはできません。'
+        : 'ログインすると、この端末のデータをクラウドに保存して、ほかの端末でも同じデータで遊べます。';
+      msg.textContent = '';
+      msg.className = 'ol-msg';
+    }
+    const say = (t, ok) => {
+      msg.textContent = t;
+      msg.className = 'ol-msg ' + (ok ? 'ok' : 'ng');
+    };
+    async function doReset() {
+      const e = email.value.trim();
+      if (!e) return say('メールアドレスを入れてから押してください。');
+      try {
+        await Online.sendReset(e);
+        say('パスワードを決めなおすためのメールを送りました（とどかないときは、迷惑メールのフォルダも見てください）。', true);
+      } catch (err) {
+        say(err.code === 'EMAIL_NOT_FOUND' ? 'パスワードを決めなおすためのメールを送りました。' : err.message, err.code === 'EMAIL_NOT_FOUND');
+      }
+    }
+    const form = h('form', { class: 'ol-form', novalidate: true },
+      h('div', { class: 'ol-row' }, email),
+      h('div', { class: 'ol-row' }, pw),
+      pw2Row,
+      h('label', { class: 'ol-show' }, show, 'パスワードを表示する'),
+      msg,
+      submit,
+      forgot);
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (busy) return;
+      const e = email.value.trim();
+      const p = pw.value;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return say(ERR.INVALID_EMAIL);
+      if (p.length < 6) return say(ERR.WEAK_PASSWORD);
+      if (mode === 'up' && p !== pw2.value) return say('2つのパスワードが同じではありません。');
+      busy = true;
+      submit.disabled = true;
+      submit.textContent = mode === 'up' ? '登録しています…' : 'ログインしています…';
+      try {
+        if (mode === 'up') await Online.signUp(e, p);
+        else await Online.signIn(e, p);
+        pw.value = pw2.value = '';
+        close();
+        UI.toast(mode === 'up' ? 'アカウントを登録して、ログインしました' : 'ログインしました');
+        await afterLogin();
+        if (onDone) onDone(true);
+      } catch (err) {
+        busy = false;
+        submit.disabled = false;
+        setMode(mode);
+        say(err.message);
+      }
+    });
+    guardKeys(form);
+    const card = h('div', { class: 'modal-card ol-card' },
+      h('div', { class: 'modal-title' }, 'ログイン'),
+      h('div', { class: 'ol-tabs', role: 'tablist' }, tabIn, tabUp),
+      form,
+      note,
+      h('div', { class: 'modal-actions' }, h('button', { class: 'btn', onclick: () => close() }, 'とじる')));
+    setMode('in');
+    close = UI.modal(card);
+    setTimeout(() => (email.value ? pw : email).focus(), 60);
+  }
+
+  // ログインしたあと: クラウドのデータとくらべる
+  async function afterLogin() {
+    let cloud = null;
+    try {
+      cloud = await Online.pull();
+    } catch (e) {
+      UI.toast(e.message);
+      return;
+    }
+    if (!cloud || !cloud.json) {
+      // はじめてのログイン: この端末のデータをクラウドへ
+      try {
+        await Online.push();
+        UI.toast('この端末のデータをクラウドに保存しました');
+      } catch (e) {
+        UI.toast(e.message);
+      }
+      return;
+    }
+    await chooseData(cloud, 'login');
+  }
+
+  // クラウドとこの端末、どちらのデータを使うか
+  function chooseData(cloud, why) {
+    return new Promise((resolve) => {
+      let close;
+      const local = Online.summary(Online.snapshot().json);
+      const cl = Online.summary(cloud.json);
+      const box = (cls, title, s, when, btn) => h('div', { class: 'ol-data ' + cls },
+        h('b', null, title),
+        h('dl', null, h('dt', null, 'ランク'), h('dd', null, String(s.rank)), h('dt', null, 'ライブ'), h('dd', null, s.plays + '回'), h('dt', null, '遊んだ曲'), h('dd', null, s.songs + '曲'), h('dt', null, '保存'), h('dd', null, when)),
+        btn);
+      const done = (v) => {
+        close();
+        resolve(v);
+      };
+      const card = h('div', { class: 'modal-card ol-card wide' },
+        h('div', { class: 'modal-title' }, why === 'login' ? 'どちらのデータで遊びますか？' : 'クラウドに新しいデータがあります'),
+        h('p', { class: 'modal-text' }, why === 'login'
+          ? 'このアカウントには、クラウドに保存したデータがあります。使うほうをえらんでください。'
+          : 'ほかの端末で保存したデータが、クラウドにあります。読みこみますか？'),
+        h('div', { class: 'ol-datas' },
+          box('cloud', 'クラウドのデータ', cl, fmtDate(cloud.updatedAt) + (cloud.version ? '（v' + cloud.version + '）' : ''),
+            h('button', { class: 'btn btn-primary', onclick: () => { Online.restore(cloud); done('cloud'); } }, 'クラウドのデータを使う')),
+          box('local', 'この端末のデータ', local, '—',
+            h('button', { class: 'btn', onclick: async () => {
+              try {
+                await Online.push();
+                UI.toast('この端末のデータをクラウドに保存しました');
+              } catch (e) {
+                UI.toast(e.message);
+              }
+              done('local');
+            } }, 'この端末のデータでクラウドを上書き'))),
+        h('p', { class: 'ol-warn' }, 'えらばなかったほうのデータは消えます（もとにもどせません）。'),
+        h('div', { class: 'modal-actions' }, h('button', { class: 'btn', onclick: () => done(null) }, 'あとで決める')));
+      close = UI.modal(card, { sticky: true });
+    });
+  }
+
+  // 起動して最初にホームへ来たとき: ほかの端末でクラウドに保存されたデータがあれば知らせる
+  async function checkCloud() {
+    if (!Online.loggedIn()) return false;
+    try {
+      const cloud = await Online.pull();
+      const sync = G.Store.get('sync', {}) || {};
+      if (cloud && cloud.json && cloud.device !== deviceId() && cloud.updatedAt > (sync.cloudAt || 0) + 1000) {
+        await chooseData(cloud, 'newer');
+        return true;
+      }
+    } catch (e) {
+      /* 通信できないときは、なにもしない */
+    }
+    return false;
+  }
+
+  // アカウント（ログイン中）
+  function openAccount(onChange) {
+    if (!Online.loggedIn()) return openLogin(onChange);
+    let close;
+    const u = Online.user();
+    const sync = G.Store.get('sync', {}) || {};
+    const ver = h('dd', null, u.verified ? '確認ずみ' : '未確認');
+    const syncEl = h('dd', null, fmtDate(sync.at) + (sync.dir === 'down' ? '（読みこみ）' : sync.at ? '（保存）' : ''));
+    const busy = (btn, fn) => async () => {
+      btn.disabled = true;
+      try {
+        await fn();
+      } catch (e) {
+        UI.toast(e.message);
+      }
+      btn.disabled = false;
+    };
+    const bSave = h('button', { class: 'btn btn-primary' }, '今すぐクラウドに保存');
+    bSave.onclick = busy(bSave, async () => {
+      const r = await Online.push();
+      syncEl.textContent = fmtDate(r.at) + '（保存）';
+      UI.toast(r.dropped ? 'クラウドに保存しました（大きい Make Music の譜面 ' + r.dropped + ' 個は入りませんでした）' : 'クラウドに保存しました');
+    });
+    const bLoad = h('button', { class: 'btn' }, 'クラウドから読みこむ');
+    bLoad.onclick = busy(bLoad, async () => {
+      const cloud = await Online.pull();
+      if (!cloud || !cloud.json) return UI.toast('クラウドに保存したデータはまだありません');
+      close();
+      await chooseData(cloud, 'login');
+    });
+    const bVerify = h('button', { class: 'btn btn-small' }, '確認メールをもう一度送る');
+    bVerify.onclick = busy(bVerify, async () => {
+      await Online.sendVerify();
+      UI.toast('確認メールを送りました');
+    });
+    const bOut = h('button', { class: 'btn' }, 'ログアウト');
+    bOut.onclick = () => {
+      UI.confirm('ログアウトしますか？', 'この端末のデータは消えません。もう一度ログインすると、クラウドのデータとくらべられます。', 'ログアウト', () => {
+        Online.signOut();
+        close();
+        UI.toast('ログアウトしました');
+        if (onChange) onChange(false);
+      });
+    };
+    const bDel = h('button', { class: 'btn ol-danger' }, 'アカウントを削除');
+    bDel.onclick = () => {
+      UI.confirm('アカウントを削除しますか？', 'アカウントと、クラウドに保存したデータを削除します。もとにもどせません（この端末のデータは残ります）。', '削除', async () => {
+        try {
+          await Online.deleteAccount();
+          close();
+          UI.toast('アカウントを削除しました');
+          if (onChange) onChange(false);
+        } catch (e) {
+          UI.toast(e.message);
+        }
+      });
+    };
+    const card = h('div', { class: 'modal-card ol-card' },
+      h('div', { class: 'modal-title' }, 'アカウント'),
+      h('dl', { class: 'ol-info' },
+        h('dt', null, 'メールアドレス'), h('dd', null, u.email || '—'),
+        h('dt', null, 'メールの確認'), ver,
+        h('dt', null, 'クラウドとの同期'), syncEl),
+      h('p', { class: 'ol-note' }, 'ログイン中は、遊んだあと少しして、自動でクラウドに保存します。ほかの端末でも、同じメールアドレスでログインすると同じデータで遊べます。'),
+      h('div', { class: 'ol-btns' }, bSave, bLoad, u.verified ? null : bVerify),
+      h('div', { class: 'ol-btns sub' }, bOut, bDel),
+      h('div', { class: 'modal-actions' }, h('button', { class: 'btn', onclick: () => close() }, 'とじる')));
+    close = UI.modal(card);
+    // メールの確認がすんだかを見に行く
+    Online.refreshInfo().then((x) => {
+      ver.textContent = x.verified ? '確認ずみ' : '未確認（メールのリンクを開いてください）';
+      if (x.verified) bVerify.remove();
+    }).catch(() => {});
+  }
+
+  Online.openLogin = openLogin;
+  Online.openAccount = openAccount;
+  Online.checkCloud = checkCloud;
+  Online.chooseData = chooseData;
+  Online.Error = OnlineError;
+  G.Online = Online;
+})();
+
+</script>
+<script>
+/*
+ * ソラシド STAGE - battery.js
+ * バッテリーの残りが少ないときの警告
+ *   端末のバッテリー（navigator.getBattery）を読み取って、充電していないときに
+ *   残りが 20% 以下になったら知らせます（10% 以下でもう一度）。
+ *   バッテリーが少ないと、省電力モードで処理が重くなったり、途中で電源が切れてセーブできなかったりするため。
+ *
+ *   ・ライブ・ストーリー・リザルトのあいだはじゃまをしないように、画面の上に小さく出すだけにして、
+ *     次に落ち着いた画面（ホームなど）になったら、くわしいお知らせを出します
+ *   ・読み取れるのは Android の Chrome や、パソコンの Chrome・Edge など（iPhone の Safari・Firefox では読み取れません）
+ *   ・設定の「バッテリーの警告」でオフにできます
+ */
+(function () {
+  'use strict';
+  const G = window.Game;
+  const U = G.U;
+  const h = U.h;
+  const UI = G.UI;
+
+  // ライブ中などで、ポップアップを出さずにあとまわしにする画面
+  const DEFER = new Set(['splash', 'live', 'mvPlay', 'vlivePlay', 'tutorial', 'storyPlay', 'talkPlay', 'eventStory',
+    'result', 'rushResult', 'practiceResult', 'tutorialResult', 'mmResult', 'multiSelect']);
+  const LOW = 0.2;
+  const VERY_LOW = 0.1;
+
+  const icon = (lv) => {
+    const w = Math.max(1.5, Math.round(14 * U.clamp(lv, 0, 1) * 10) / 10);
+    return '<svg viewBox="0 0 26 14" aria-hidden="true"><rect x="1" y="1" width="20" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>' +
+      '<rect x="22.2" y="4.5" width="2.6" height="5" rx="1.2" fill="currentColor"/><rect x="4" y="4" width="' + w + '" height="6" rx="1.4" fill="currentColor"/></svg>';
+  };
+
+  const B = {
+    supported: false,
+    level: null,
+    charging: null,
+    warned: 0, // どこまで知らせたか（0 / 0.2 / 0.1）
+    pending: false, // ポップアップをあとで出す
+    cardEl: null,
+    isOpen() {
+      return !!(this.cardEl && this.cardEl.isConnected);
+    },
+    init() {
+      if (!navigator.getBattery) return;
+      let p;
+      try {
+        p = navigator.getBattery();
+      } catch (e) {
+        return;
+      }
+      Promise.resolve(p).then((bat) => {
+        if (!bat) return;
+        this.supported = true;
+        const upd = () => {
+          this.level = typeof bat.level === 'number' ? bat.level : null;
+          this.charging = !!bat.charging;
+          this.check();
+        };
+        bat.addEventListener('levelchange', upd);
+        bat.addEventListener('chargingchange', upd);
+        upd();
+      }).catch(() => {});
+    },
+    pct() {
+      return Math.round((this.level || 0) * 100);
+    },
+    low() {
+      return this.supported && this.level != null && this.level <= LOW && !this.charging;
+    },
+    // force: 設定でオンにしたときなど（もう知らせたあとでも、いまの状態をもう一度知らせる）
+    check(force) {
+      if (!this.supported || this.level == null) return;
+      // 充電をはじめたか、22% より多くなったら、また知らせられるようにもどす
+      if (this.charging || this.level > LOW + 0.02) {
+        this.warned = 0;
+        this.pending = false;
+        return;
+      }
+      if (!G.Settings.data.battWarn) return;
+      const band = this.level <= VERY_LOW ? VERY_LOW : LOW;
+      if (force) this.warned = 0;
+      if (this.warned && this.warned <= band) return;
+      this.warned = band;
+      this.pending = true;
+      if (UI.cur === 'splash' || !UI.cur) return; // ロゴのあいだは待って、タイトルで知らせる
+      if (DEFER.has(UI.cur)) this.pill();
+      else this.flush();
+    },
+    // 画面が切りかわったら、あとまわしにしていたお知らせを出す
+    flush() {
+      if (!this.pending || this.isOpen() || DEFER.has(UI.cur) || !UI.cur) return;
+      if (!this.low() || !G.Settings.data.battWarn) {
+        this.pending = false;
+        return;
+      }
+      this.pending = false;
+      this.modal();
+    },
+    // ライブ中など: 画面の上に小さく（タッチのじゃまをしない）
+    pill() {
+      document.querySelectorAll('.batt-pill').forEach((x) => x.remove());
+      const el = h('div', { class: 'batt-pill' + (this.level <= VERY_LOW ? ' red' : ''), role: 'status' },
+        h('span', { class: 'batt-ic', html: icon(this.level) }), 'バッテリー残り ' + this.pct() + '%');
+      document.body.appendChild(el);
+      setTimeout(() => el.classList.add('out'), 4200);
+      setTimeout(() => el.remove(), 4800);
+    },
+    modal() {
+      const veryLow = this.level <= VERY_LOW;
+      document.querySelectorAll('.batt-pill').forEach((x) => x.remove());
+      const O = G.Online;
+      const cloud = !!(O && O.ready && O.ready() && O.loggedIn && O.loggedIn());
+      let close;
+      const card = h('div', { class: 'modal-card batt-card' + (veryLow ? ' red' : '') },
+        h('div', { class: 'batt-head' },
+          h('span', { class: 'batt-big', html: icon(this.level) }),
+          h('b', { class: 'batt-pct' }, String(this.pct()), h('small', null, '%'))),
+        h('div', { class: 'modal-title' }, veryLow ? 'バッテリーがほとんどありません' : 'バッテリーが少なくなっています'),
+        h('p', { class: 'modal-text' }, 'バッテリーが少なくなると、端末の省電力モードで処理が重くなって、ライブがカクついたり、判定がずれたりすることがあります。' +
+          'また、遊んでいるとちゅうで電源が切れると、データを保存できないことがあります。'),
+        h('p', { class: 'modal-text batt-tip' }, veryLow ? 'いったん充電してから遊ぶのがおすすめです。' : '充電しながら遊ぶか、充電してから遊ぶのがおすすめです。'),
+        cloud ? h('p', { class: 'modal-text batt-note' }, 'ログイン中なので、いまのデータをクラウドにも保存しておきます。') : null,
+        h('div', { class: 'modal-actions' },
+          h('button', { class: 'btn btn-ghost', onclick: () => {
+            UI.se();
+            G.Settings.data.battWarn = false;
+            G.Settings.save();
+            close();
+            UI.toast('バッテリーの警告をオフにしました（設定でオンにもどせます）');
+          } }, 'もう表示しない'),
+          h('button', { class: 'btn btn-primary', onclick: () => { UI.se(); close(); } }, 'OK')));
+      this.cardEl = card;
+      close = UI.modal(card);
+      if (cloud) {
+        try {
+          Promise.resolve(O.push()).catch(() => {});
+        } catch (e) {}
+      }
+    },
+  };
+
+  // 画面が切りかわるたびに、あとまわしにしていたお知らせを出す（画面の切りかえの動きが終わるころ）
+  const go0 = UI.go;
+  UI.go = function (name, params) {
+    const r = go0.call(this, name, params);
+    if (B.pending) setTimeout(() => B.flush(), 900);
+    return r;
+  };
+
+  G.Battery = B;
+})();
+
+</script>
+<script>
+/*
  * ソラシド STAGE - train.js
  * 育成の画面（メンバー画面の「育成」タブ、カードごとの育成、素材ショップ、特訓の演出）
  */
@@ -30932,6 +33350,14 @@ ${accessory(L, 'top')}
     storyOpen(ev, ch) {
       return this.state(ev).total >= ch.need;
     },
+    // 読めるか: 開催中はポイントで解放、終わったイベントは全話読める（ストーリーの「エピソード」タブ）
+    readable(ev, ch) {
+      return this.status(ev) === 'closed' || this.storyOpen(ev, ch);
+    },
+    // 開催中・終わったイベント（新しい順）
+    pastAndNow() {
+      return G.EVENTS.filter((e) => this.status(e) !== 'before').sort((a, b) => this.startAt(b) - this.startAt(a));
+    },
     // 開催中のイベントの課題曲なら、選曲画面に出すしるし
     songBadge(song) {
       const ev = this.current();
@@ -30997,7 +33423,7 @@ ${accessory(L, 'top')}
     function renderStory(body) {
       body.appendChild(h('p', { class: 'list-lead' }, ev.lead));
       body.appendChild(h('div', { class: 'ev-story' }, ev.story.map((ch) => {
-        const ok = Ev.storyOpen(ev, ch);
+        const ok = Ev.readable(ev, ch);
         const read = st.read.includes(ch.id);
         return h('button', { class: 'ev-ch' + (ok ? '' : ' locked'), disabled: !ok, onclick: () => { UI.se(); UI.go('eventStory', { ev: ev.id, id: ch.id }); } },
           h('span', { class: 'ev-ch-no' }, h('small', null, '第'), String(ch.no), h('small', null, '話')),
@@ -31128,7 +33554,7 @@ ${accessory(L, 'top')}
       closePanel = UI.modal(card);
     }
     const missionBadge = () => open && Ev.missions(ev).some((m) => m.done && !m.claimed);
-    const storyBadge = () => ev.story.some((c) => Ev.storyOpen(ev, c) && !st.read.includes(c.id));
+    const storyBadge = () => ev.story.some((c) => Ev.readable(ev, c) && !st.read.includes(c.id));
 
     /* ---------- 画面（イベント掲示板） ----------
      * 左: 壁に貼ったポスター（背景・メンバー・タイトル・のこり日数のシール）
@@ -31234,6 +33660,8 @@ ${accessory(L, 'top')}
     const ev = Ev.byId(params.ev);
     const ch0 = ev.story.find((c) => c.id === params.id);
     const ch = { id: ch0.id, arc: 'event', no: ch0.no, title: ch0.title, script: ch0.script };
+    const fromStory = params.from === 'story';
+    const back = () => (fromStory ? UI.go('story', { arc: 'episode' }) : UI.go('event', { id: ev.id, tab: 'story' }));
     const container = h('div', { class: 'screen', style: { animation: 'none' } });
     UI.root.appendChild(container);
     const player = new G.StoryPlayer(container, ch, {
@@ -31245,18 +33673,20 @@ ${accessory(L, 'top')}
         G.Progress.save();
         return true;
       },
-      onQuit: () => UI.go('event', { id: ev.id, tab: 'story' }),
+      // ストーリーの「エピソード」タブから読んだときは、そこへもどる
+      onQuit: () => back(),
       onEnd: (first) => {
         const idx = ev.story.indexOf(ch0);
         const next = ev.story[idx + 1];
+        const nextOk = next && Ev.readable(ev, next);
         let close;
         const card = h('div', { class: 'modal-card' },
           h('div', { class: 'modal-title' }, 'イベントストーリー 第' + ch.no + '話「' + ch.title + '」'),
           first ? h('div', { class: 'story-gem' }, h('span', { html: IC.gem }), '読了ボーナス ', h('b', null, '+50'), ' ジュエル') : null,
-          next ? h('p', { class: 'modal-text' }, Ev.storyOpen(ev, next) ? '次のお話「' + next.title + '」が読めます。' : '次のお話は、イベントポイント ' + fmt(next.need) + ' pt で読めます。') : h('p', { class: 'modal-text' }, 'イベントストーリーはこれでおしまい。最後まで読んでくれてありがとう！'),
+          next ? h('p', { class: 'modal-text' }, nextOk ? '次のお話「' + next.title + '」が読めます。' : '次のお話は、イベントポイント ' + fmt(next.need) + ' pt で読めます。') : h('p', { class: 'modal-text' }, 'イベントストーリーはこれでおしまい。最後まで読んでくれてありがとう！'),
           h('div', { class: 'modal-actions' },
-            h('button', { class: 'btn', onclick: () => { close(); UI.go('event', { id: ev.id, tab: 'story' }); } }, 'イベントへ'),
-            next && Ev.storyOpen(ev, next) ? h('button', { class: 'btn btn-primary', onclick: () => { close(); UI.go('eventStory', { ev: ev.id, id: next.id }); } }, '次のお話へ') : null));
+            h('button', { class: 'btn', onclick: () => { close(); back(); } }, fromStory ? 'エピソードへ' : 'イベントへ'),
+            nextOk ? h('button', { class: 'btn btn-primary', onclick: () => { close(); UI.go('eventStory', { ev: ev.id, id: next.id, from: params.from }); } }, '次のお話へ') : null));
         close = UI.modal(card, { sticky: true });
       },
     });
@@ -31503,6 +33933,7 @@ ${accessory(L, 'top')}
     G.Progress.load();
     G.UI.init(document.getElementById('app'));
     G.UI.go('splash'); // 起動したときは、制作者のロゴ → タイトル
+    if (G.Battery) G.Battery.init(); // バッテリーが少ないときの警告
     // キャンバスで使うフォントを先に読み込んでおく
     if (document.fonts && document.fonts.load) {
       ['italic 900 40px "Exo 2"', 'italic 800 40px "Exo 2"', '800 20px "Exo 2"'].forEach((f) => document.fonts.load(f).catch(() => {}));
