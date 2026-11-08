@@ -5490,11 +5490,182 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
 }
 .live-banner.tier1 .banner-band::after { content: ''; position: absolute; left: 30%; right: 30%; bottom: 10px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--mint), var(--sky), transparent); animation: lbLine 0.5s 0.35s cubic-bezier(.2, 1.2, .3, 1) both; }
 
+/* ---------- ブラウザの中のブラウザで開かれたときの警告（v2.35。js/guard.js） ---------- */
+.guard {
+  position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; padding: 16px; overflow-y: auto;
+  background: radial-gradient(circle at 20% 15%, #FFE3EF 0, transparent 45%), radial-gradient(circle at 85% 85%, #DDF0FF 0, transparent 45%), #F4F6FF;
+  font-family: 'M PLUS Rounded 1c', system-ui, sans-serif; color: #272B52;
+}
+.guard-card { width: min(480px, 100%); padding: 26px 24px 18px; border-radius: 26px; background: #fff; box-shadow: 0 18px 50px rgba(39, 43, 82, 0.18); text-align: center; border-top: 6px solid #FFC23D; }
+.guard-icon { width: 56px; height: 56px; margin: 0 auto 4px; }
+.guard-icon svg { width: 100%; height: 100%; display: block; }
+.guard-en { font-family: 'Exo 2', sans-serif; font-style: italic; font-weight: 900; font-size: 13px; letter-spacing: 0.12em; color: #E2A100; }
+.guard-title { margin: 4px 0 12px; font-size: 21px; font-weight: 900; line-height: 1.4; }
+.guard-text { margin: 0 0 8px; font-size: 14px; font-weight: 700; line-height: 1.75; color: #555A80; text-align: left; }
+.guard-acts { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.guard-btn { min-height: 46px; padding: 0 18px; border: 2px solid #D6DBF2; border-radius: 99px; background: #fff; color: #272B52; font: inherit; font-size: 15px; font-weight: 900; cursor: pointer; }
+.guard-btn.primary { border-color: transparent; background: linear-gradient(90deg, #20C9B6, #45B4F2); color: #fff; box-shadow: 0 6px 16px rgba(69, 180, 242, 0.35); }
+.guard-btn.ghost { border-color: transparent; background: none; color: #8A8FB0; font-size: 13px; text-decoration: underline; }
+.guard-btn:focus-visible { outline: 3px solid #FF6FA8; outline-offset: 2px; }
+.guard-foot { margin-top: 14px; font-size: 11px; font-weight: 800; color: #A0A4C0; }
+
 </style>
 </head>
 <body>
 <div id="app"></div>
 <noscript>このゲームを遊ぶには JavaScript を有効にしてください。</noscript>
+<script>
+/*
+ * ソラシド STAGE - guard.js
+ * 「ブラウザの中のブラウザ」で開かれたときの警告（v2.35）
+ *
+ *   ほかのページの中（iframe。ブラウザの中に表示されたブラウザ）で開かれると、セーブデータ（localStorage）が
+ *   ふつうに開いたときとは別の場所になったり、保存できなかったりして、データがおかしくなることがあります。
+ *   そのため、ほかのページの中で開かれたときは、ゲームを起動しないで警告を出します（セーブデータには一切さわりません）。
+ *
+ *   LINE・Instagram などのアプリの中のブラウザで開かれたときも、データが消えやすいので警告を出します
+ *   （こちらは「それでも遊ぶ」で続けられます）。
+ *
+ *   いちばん最初に読みこまれ、js/main.js が起動する前に G.Guard.check() で調べます。
+ */
+(function () {
+  'use strict';
+
+  // ほかのページの中で開かれているか
+  let framed = false;
+  try {
+    framed = window.self !== window.top;
+  } catch (e) {
+    framed = true; // 別のサイトの中だと、top を見ることもできない
+  }
+
+  // アプリの中のブラウザ（ユーザーエージェントに名前が入っているもの）
+  const IN_APP = [
+    [/\bLine\//i, 'LINE'],
+    [/Instagram/i, 'Instagram'],
+    [/FBAN|FBAV|FB_IAB/i, 'Facebook'],
+    [/Twitter/i, 'X（Twitter）'],
+    [/TikTok|musical_ly|BytedanceWebview/i, 'TikTok'],
+    [/MicroMessenger/i, 'WeChat'],
+    [/KAKAOTALK/i, 'KakaoTalk'],
+    [/YJApp/i, 'Yahoo! JAPAN'],
+  ];
+  const ua = navigator.userAgent || '';
+  let inApp = null;
+  for (const [re, name] of IN_APP) {
+    if (re.test(ua)) {
+      inApp = name;
+      break;
+    }
+  }
+
+  const el = (tag, cls, text) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  };
+  const canOpen = () => /^(https?|file):$/.test(location.protocol);
+
+  function copyUrl(btn) {
+    const url = location.href;
+    const done = () => {
+      btn.textContent = 'コピーしました';
+      setTimeout(() => (btn.textContent = 'URL をコピー'), 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, () => prompt('この URL をコピーしてください', url));
+    else prompt('この URL をコピーしてください', url);
+  }
+
+  // 新しいタブで開く（だめなら、いちばん外側のページごと切りかえる）
+  function openDirect() {
+    let w = null;
+    try {
+      w = window.open(location.href, '_blank', 'noopener');
+    } catch (e) {
+      w = null;
+    }
+    if (w) return;
+    try {
+      window.top.location.href = location.href;
+    } catch (e) {
+      alert('ここからは開けませんでした。ブラウザのアドレスバーに URL を入れて、直接ひらいてください。');
+    }
+  }
+
+  // 警告の画面。kind: 'frame'（起動しない） / 'inapp'（onGo で続けられる）
+  function show(kind, onGo) {
+    const G = window.Game || {};
+    const box = el('div', 'guard', null);
+    box.setAttribute('role', 'alertdialog');
+    box.setAttribute('aria-modal', 'true');
+    const card = el('div', 'guard-card');
+    const icon = el('div', 'guard-icon');
+    icon.innerHTML = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 L45 41 H3 Z" fill="#FFC23D" stroke="#272B52" stroke-width="3" stroke-linejoin="round"/><rect x="21.6" y="16" width="4.8" height="14" rx="2.4" fill="#272B52"/><circle cx="24" cy="35" r="2.8" fill="#272B52"/></svg>';
+    card.append(icon, el('div', 'guard-en', kind === 'frame' ? 'CAN\'T START HERE' : 'IN-APP BROWSER'));
+    const title = el('h1', 'guard-title', kind === 'frame' ? 'このページの中では遊べません' : 'アプリの中のブラウザで開いています');
+    card.appendChild(title);
+    const p = (t) => card.appendChild(el('p', 'guard-text', t));
+    if (kind === 'frame') {
+      p('ソラシド STAGE が、ほかのページの中（ブラウザの中に表示されたブラウザ）で開かれています。');
+      p('このままだと、セーブデータが正しく保存されなかったり、こわれたりすることがあるため、ここではゲームを起動しません。');
+      p(canOpen() ? '下のボタンから、ブラウザで直接ひらいて遊んでください。' : 'ゲームのファイル（HTML）を、Chrome や Safari などのブラウザで直接ひらいて遊んでください。');
+    } else {
+      p(inApp + ' などのアプリの中のブラウザでは、セーブデータが消えたり、こわれたりすることがあります。');
+      p('Safari や Chrome で開いて遊んでください。画面のすみのメニュー（… や ⋮）から「ブラウザで開く」をえらぶと開けます。');
+    }
+    const acts = el('div', 'guard-acts');
+    if (kind === 'frame' && canOpen()) {
+      const b = el('button', 'guard-btn primary', '新しいタブで開く');
+      b.type = 'button';
+      b.onclick = openDirect;
+      acts.appendChild(b);
+    }
+    if (/^https?:$/.test(location.protocol)) {
+      const b = el('button', 'guard-btn', 'URL をコピー');
+      b.type = 'button';
+      b.onclick = () => copyUrl(b);
+      acts.appendChild(b);
+    }
+    if (kind === 'inapp' && onGo) {
+      const b = el('button', 'guard-btn ghost', 'それでも遊ぶ（おすすめしません）');
+      b.type = 'button';
+      b.onclick = () => {
+        box.remove();
+        onGo();
+      };
+      acts.appendChild(b);
+    }
+    card.appendChild(acts);
+    card.appendChild(el('div', 'guard-foot', 'ソラシド STAGE' + (G.VERSION ? '　v' + G.VERSION + (G.VERSION_STAGE ? ' ' + G.VERSION_STAGE : '') : '') + '　｜　YUKIGROUP'));
+    box.appendChild(card);
+    document.body.appendChild(box);
+    const first = acts.querySelector('button');
+    if (first) first.focus();
+    return box;
+  }
+
+  window.Game = window.Game || {};
+  window.Game.Guard = {
+    framed,
+    inApp,
+    show,
+    // 起動してよければ true。だめなら警告を出して false（onGo: アプリの中のブラウザで「それでも遊ぶ」を押したとき）
+    check(onGo) {
+      if (framed) {
+        show('frame');
+        return false;
+      }
+      if (inApp) {
+        show('inapp', onGo);
+        return false;
+      }
+      return true;
+    },
+  };
+})();
+
+</script>
 <script>
 /*
  * ソラシド STAGE - core.js
@@ -5503,7 +5674,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
 (function () {
   'use strict';
   const G = (window.Game = window.Game || {});
-  G.VERSION = '2.33.0';
+  G.VERSION = '2.35.0';
   // 制作者の名前（起動時のロゴ・ライセンス・著作権の表示に使う）
   G.MAKER = 'YUKIGROUP';
   G.COPYRIGHT = '© 2026 YUKIGROUP';
@@ -16680,6 +16851,23 @@ ${accessory(L, 'top')}
   const G = window.Game;
   G.NEWS = [
     {
+      id: 'n-2026-11-v235', date: '2026-11-08', tag: 'important',
+      title: 'ほかのページの中では起動しないようにしました',
+      body: [
+        'ソラシド STAGE が、ほかのページの中（ブラウザの中に表示されたブラウザ）で開かれたときは、セーブデータがおかしくなることがあるため、ゲームを起動しないで警告を出すようにしました。「新しいタブで開く」ボタンから、ブラウザで直接ひらいて遊んでください。',
+        'LINE・Instagram などのアプリの中のブラウザで開いたときも、データが消えやすいので警告が出ます（「それでも遊ぶ」で続けることもできます）。',
+      ],
+    },
+    {
+      id: 'n-2026-11-v234', date: '2026-11-08', tag: 'update',
+      title: '2本指のときにノーツが反応しない問題を直しました',
+      body: [
+        '片手でスライドを押さえながら、もう片方の手でノーツを取るときに、ノーツが反応しないことがある問題を直しました。',
+        '・フリックを待って指を置いていると、その指が「スライドを押さえている指」とまちがえられて、フリックが反応しないことがありました',
+        '・ひとつ前のノーツを取りのがしたとき、同じレーンの次のノーツを押すと、取りのがしたほうのノーツ（BAD）を取ってしまい、押したノーツが反応しないように見えることがありました。いまは、時刻の近いほうのノーツを取ります',
+      ],
+    },
+    {
       id: 'n-2026-11-v233', date: '2026-11-08', tag: 'update',
       title: 'ライブの終わりの演出が、結果に合わせて豪華になりました',
       body: [
@@ -25401,15 +25589,34 @@ ${accessory(L, 'top')}
             if (p.lf >= pos - 1.1 && p.lf <= pos + sw + 1.1) held = true;
           });
         }
-        // しばらく（0.2秒より長く）このスライドの上にいる指は、このスライドを押さえている指とみなす（いちばん近いスライド）
+        // スライドを押さえている指（p.slide）をさがす（v2.34 で厳しくした）
+        //   ・スライドの帯の上（ほぼ真上）に 0.25秒以上いつづけた指で、
+        //   ・帯が動いているときは、いっしょに動いている指だけ（止まっている指の下を帯が通りすぎただけなら、ちがう）
+        //   前は「帯から1.1レーン以内に0.2秒」で決めていたので、もう片方の手でフリックを待っている指まで
+        //   スライドの指あつかいになり、そのフリックが反応しないことがあった
         if (s.startDone && !this.auto) {
+          const nowMs = performance.now();
           this.pointers.forEach((p) => {
-            if (p.slide === s || performance.now() - (p.down || 0) < 200) return;
             const dist = p.lf < pos ? pos - p.lf : p.lf > pos + sw ? p.lf - pos - sw : 0;
-            if (dist > 1.1) return;
-            if (p.slide && !p.slide.done && (p.slideDist == null || p.slideDist <= dist)) return;
-            p.slide = s;
-            p.slideDist = dist;
+            if (p.slide === s) {
+              // 帯からはなれた指・終わったスライドは、もうスライドの指ではない
+              if (dist > 1.4 || t > s.end + 0.15) p.slide = null;
+              return;
+            }
+            if (dist > 0.3) {
+              if (p.onS === s) p.onS = null;
+              return;
+            }
+            if (p.onS !== s) {
+              p.onS = s;
+              p.onT = nowMs;
+              p.onLf = p.lf;
+              p.onPos = pos;
+              return;
+            }
+            if (nowMs - p.onT < 250 || (p.slide && !p.slide.done)) return;
+            const moved = Math.abs(pos - p.onPos), fmoved = Math.abs(p.lf - p.onLf);
+            if (moved < 0.4 || fmoved > moved * 0.4) p.slide = s;
           });
         }
         if (held && (s.startDone || t >= s.time - J.good)) s.lastHeld = t;
@@ -25481,6 +25688,16 @@ ${accessory(L, 'top')}
       // 'defer'（画面タップのときのフリックノーツ）: すぐには取らずに覚えておき、
       // もっと時刻の近いノーツが同じレーンにあればそちらを取る。なければ止める（はじく前の指で、うしろのノーツを取らない）
       let deferred = null;
+      // late: GREAT の幅より遅れているノーツ（取りのがしたノーツ）。同じレーンにもっと時刻の近いノーツがあれば、そちらを取る
+      // （前は、取りのがしたノーツを BAD で取ってしまい、いま押したかったノーツが「反応しない」ように見えた）
+      let late = null;
+      const pick = (n) => {
+        if (deferred && Math.abs(t - deferred.time) <= Math.abs(t - n.time)) {
+          this.blocked = true;
+          return null;
+        }
+        return n;
+      };
       for (let i = this.head; i < this.notes.length; i++) {
         const n = this.notes[i];
         if (n.time > t + maxW) break;
@@ -25495,18 +25712,21 @@ ${accessory(L, 'top')}
         if (onSlide && n.time - t > J.perfect * mul && (kind === 'key' || (kind === 'flickKey' && n.type !== 'flick'))) continue;
         const r = accept(n);
         if (r === 'ok') {
-          if (deferred && Math.abs(t - deferred.time) <= Math.abs(t - n.time)) {
-            this.blocked = true;
-            return null;
+          if (late) return pick(Math.abs(t - n.time) < Math.abs(t - late.time) ? n : late);
+          if (t - n.time > J.great * mul) {
+            late = n;
+            continue;
           }
-          return n;
+          return pick(n);
         }
         if (r === 'block') {
+          if (late) return pick(late);
           this.blocked = true;
           return null;
         }
         if (r === 'defer' && !deferred) deferred = n;
       }
+      if (late) return pick(late);
       if (deferred) this.blocked = true;
       return null;
     }
@@ -25733,11 +25953,19 @@ ${accessory(L, 'top')}
       const hs = p.slide && tNow <= p.slide.end + 0.15 ? p.slide : null;
       if (hs) {
         const win = G.JUDGE.great * G.FLICK_MUL;
+        // いまの帯の真下にあるフリック（帯と重なっているもの。となりのレーンはふくめない）は取ってよい
+        const tc = U.clamp(tNow, hs.time, hs.end);
+        const bp = G.Chart.slidePosAt(hs.nodes, tc), bw = WAT(hs, tc);
         let due = false;
         for (let i = this.head; i < this.notes.length && !due; i++) {
           const n = this.notes[i];
           if (n.time > tNow + win) break;
-          if (n.type !== 'flick' || n.done || Math.abs(n.time - tNow) > win || n.time < hs.end - win) continue;
+          if (n.type !== 'flick' || n.done || Math.abs(n.time - tNow) > win) continue;
+          if (L0(n) + NW(n) > bp + 0.25 && L0(n) < bp + bw - 0.25) {
+            due = true;
+            continue;
+          }
+          if (n.time < hs.end - win) continue;
           const ew = WAT(hs, hs.end);
           const eL = hs.nodes ? hs.nodes[hs.nodes.length - 1].lane : hs.endLane;
           if (L0(n) + NW(n) > eL - 1 && L0(n) < eL + ew + 1) due = true;
@@ -38257,8 +38485,14 @@ ${accessory(L, 'top')}
     }, 300);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-  else boot();
+  // ほかのページの中（ブラウザの中のブラウザ）で開かれたときは、セーブデータにさわる前に止めて警告を出す（js/guard.js）
+  function start() {
+    if (G.Guard && !G.Guard.check(boot)) return;
+    boot();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 })();
 
 </script>
