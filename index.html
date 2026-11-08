@@ -5409,6 +5409,87 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
 }
 .gacha-tab { white-space: nowrap; font-size: 14px; }
 
+/* ---------- ライブの終わりの演出（v2.33）: クリア < フルコンボ < オールパーフェクト ---------- */
+.live-banner { overflow: hidden; }
+.live-banner > i, .live-banner .lb-cfs { position: absolute; pointer-events: none; }
+.live-banner .banner-band { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+/* クリア: 帯の文字がはずむ ＋ 光の輪 ＋ 小さなきらめき */
+.live-banner.tier1 .banner-band span { animation: bandText 0.7s 0.1s cubic-bezier(.2, 1.4, .3, 1) both, lbBob 1.6s 0.8s ease-in-out infinite; }
+@keyframes lbBob { 50% { transform: translateY(-4px); } }
+.lb-ring { left: 50%; top: 50%; width: 30vmin; height: 30vmin; margin: -15vmin 0 0 -15vmin; border-radius: 50%; border: 4px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 18px rgba(124, 240, 216, 0.8), inset 0 0 18px rgba(124, 240, 216, 0.6); opacity: 0; animation: lbRing 1.1s var(--d) ease-out both; }
+@keyframes lbRing { 0% { transform: scale(0.3); opacity: 0.95; } 100% { transform: scale(3.2); opacity: 0; } }
+.lb-spark { width: calc(22px * var(--s)); height: calc(22px * var(--s)); margin: calc(-11px * var(--s)) 0 0 calc(-11px * var(--s)); z-index: 4; opacity: 0;
+  background: radial-gradient(circle, #fff 0 16%, transparent 17%), conic-gradient(from 45deg, transparent 0 20%, #fff 22% 28%, transparent 30% 45%, #fff 47% 53%, transparent 55% 70%, #fff 72% 78%, transparent 80%);
+  -webkit-mask: radial-gradient(circle, #000 0 30%, transparent 62%); mask: radial-gradient(circle, #000 0 30%, transparent 62%);
+  filter: drop-shadow(0 0 6px #FFF6B0); animation: lbSpark 1.3s var(--d) ease-in-out infinite; }
+@keyframes lbSpark { 0%, 100% { opacity: 0; transform: scale(0.2) rotate(0deg); } 45% { opacity: 1; transform: scale(1) rotate(45deg); } }
+/* フルコンボ: ＋ 光る ＋ 回る光の筋 ＋ 1文字ずつ ＋ 帯のライン ＋ MAX COMBO */
+.lb-flash { inset: 0; z-index: 1; background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 143, 200, 0.4) 60%, transparent 100%); opacity: 0; animation: lbFlash 0.7s ease-out both; }
+@keyframes lbFlash { 15% { opacity: 1; } 100% { opacity: 0; } }
+.lb-rays { left: 50%; top: 50%; width: 220vmax; height: 220vmax; margin: -110vmax 0 0 -110vmax; z-index: 0; opacity: 0;
+  background: repeating-conic-gradient(rgba(255, 255, 255, 0.24) 0 5deg, transparent 5deg 15deg);
+  -webkit-mask: radial-gradient(circle, #000 0, rgba(0, 0, 0, 0.6) 22%, transparent 48%); mask: radial-gradient(circle, #000 0, rgba(0, 0, 0, 0.6) 22%, transparent 48%);
+  animation: lbRaysIn 0.6s 0.15s ease-out forwards, gfxSpin 16s linear infinite; }
+@keyframes lbRaysIn { to { opacity: 1; } }
+.live-banner.fc .lb-rays { background: repeating-conic-gradient(rgba(255, 170, 214, 0.32) 0 5deg, transparent 5deg 15deg); }
+.live-banner.fc .lb-ring { box-shadow: 0 0 18px rgba(255, 111, 168, 0.85), inset 0 0 18px rgba(124, 200, 255, 0.7); }
+.live-banner.tier2 .banner-band, .live-banner.tier3 .banner-band { padding: 22px 0 18px; }
+.live-banner.tier2 .banner-band::before, .live-banner.tier2 .banner-band::after,
+.live-banner.tier3 .banner-band::before, .live-banner.tier3 .banner-band::after {
+  content: ''; position: absolute; left: 10%; right: 10%; height: 5px; border-radius: 3px; background: linear-gradient(90deg, transparent, var(--pink), var(--sky), transparent);
+  animation: lbLine 0.55s 0.2s cubic-bezier(.2, 1.2, .3, 1) both; }
+.live-banner.tier2 .banner-band::before, .live-banner.tier3 .banner-band::before { top: 6px; }
+.live-banner.tier2 .banner-band::after, .live-banner.tier3 .banner-band::after { bottom: 6px; }
+@keyframes lbLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.lb-word { display: inline-flex; animation: none !important; background: none !important; }
+.lb-word b {
+  display: inline-block; font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: clamp(40px, 10vw, 92px); letter-spacing: 0.08em; line-height: 1.1;
+  background-image: linear-gradient(90deg, var(--pink), var(--sky)); background-size: calc(var(--n) * 100%) 100%; background-position: calc(var(--i) / max(1, var(--n) - 1) * 100%) 0;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 3px 0 rgba(255, 255, 255, 0.9)) drop-shadow(0 4px 10px rgba(255, 94, 156, 0.35));
+  animation: lbLetter 0.55s calc(0.15s + var(--i) * 0.045s) cubic-bezier(.2, 1.6, .4, 1) both;
+}
+.lb-word b.sp { min-width: 0.35em; }
+@keyframes lbLetter { from { opacity: 0; transform: translateY(-60%) scale(1.8) rotate(-12deg); } to { opacity: 1; transform: none; } }
+.lb-sub { font-family: var(--f-num); font-style: italic; font-weight: 900; font-size: clamp(14px, 2.6vw, 22px); letter-spacing: 0.14em; color: #8A5AA8; animation: gfxUp 0.4s 0.75s ease both; }
+.lb-sub b { margin: 0 2px; font-size: 1.25em; color: var(--pink); }
+/* オールパーフェクト: ＋ 暗くなる ＋ 金の光 ＋ 王冠 ＋ 虹色に流れる文字 ＋ 光の輪3つ ＋ 花火 ＋ 紙ふぶき */
+.lb-dim { inset: 0; z-index: 0; background: radial-gradient(circle at 50% 50%, rgba(40, 20, 70, 0.15), rgba(16, 10, 40, 0.62)); opacity: 0; animation: lbRaysIn 0.5s ease-out forwards; }
+.live-banner.ap .lb-flash { background: radial-gradient(circle, #fff, rgba(255, 213, 74, 0.6) 55%, transparent 100%); }
+.live-banner.ap .lb-rays { background: repeating-conic-gradient(rgba(255, 228, 120, 0.4) 0 4deg, transparent 4deg 10deg, rgba(255, 170, 214, 0.28) 10deg 13deg, transparent 13deg 20deg); animation: lbRaysIn 0.6s 0.15s ease-out forwards, gfxSpin 11s linear infinite; }
+.live-banner.ap .lb-ring { border-color: #FFF3B0; box-shadow: 0 0 22px rgba(255, 213, 74, 0.95), inset 0 0 22px rgba(255, 143, 200, 0.7); }
+.live-banner.ap .banner-band { background: linear-gradient(90deg, transparent, rgba(255, 252, 240, 0.95) 14%, rgba(255, 252, 240, 0.95) 86%, transparent); box-shadow: 0 0 40px rgba(255, 213, 74, 0.45); }
+.live-banner.ap .banner-band::before, .live-banner.ap .banner-band::after { height: 6px; background: linear-gradient(90deg, transparent, #FF6FA8, #FFD54A, #7CF0C8, #7CC8FF, #B48CFF, transparent); background-size: 200% 100%; animation: lbLine 0.55s 0.2s cubic-bezier(.2, 1.2, .3, 1) both, lbFlow 1.6s 0.8s linear infinite; }
+@keyframes lbFlow { to { background-position: -200% 0; } }
+.live-banner.ap .lb-word b {
+  background-image: linear-gradient(90deg, #FFB800, #FF5E9C, #fff 48%, #45B4F2, #20C9B6, #FFB800); background-size: calc(var(--n) * 200%) 100%;
+  filter: drop-shadow(0 3px 0 #fff) drop-shadow(0 0 12px rgba(255, 213, 74, 0.8));
+  animation: lbLetterAp 0.7s calc(0.35s + var(--i) * 0.06s) cubic-bezier(.2, 1.7, .4, 1) both, lbShine 2.2s calc(1.2s + var(--i) * 0.05s) linear infinite;
+}
+@keyframes lbLetterAp { from { opacity: 0; transform: translateY(-140%) scale(0.6) rotate(18deg); } 60% { opacity: 1; transform: translateY(8%) scale(1.15); } to { opacity: 1; transform: none; } }
+@keyframes lbShine { from { background-position: calc(var(--i) / max(1, var(--n) - 1) * 50%) 0; } to { background-position: calc(var(--i) / max(1, var(--n) - 1) * 50% - 200%) 0; } }
+.live-banner.ap .lb-sub { color: #C98A00; animation-delay: 1.15s; }
+.live-banner.ap .lb-sub b { color: #FF5E9C; }
+.lb-crown { width: clamp(46px, 8vw, 74px); margin-bottom: -6px; filter: drop-shadow(0 4px 10px rgba(255, 184, 0, 0.6)); animation: lbCrown 0.7s 0.2s cubic-bezier(.2, 1.6, .4, 1) both, lbBob 1.8s 1s ease-in-out infinite; }
+.lb-crown svg { display: block; width: 100%; height: auto; }
+@keyframes lbCrown { from { opacity: 0; transform: translateY(-80px) rotate(-25deg) scale(0.4); } to { opacity: 1; transform: none; } }
+.lb-fw { z-index: 2; width: 0; height: 0; }
+.lb-fw b { position: absolute; left: 0; top: 0; width: 6px; height: 6px; margin: -3px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c), 0 0 2px #fff; opacity: 0; transform: rotate(var(--a)) translateY(0); animation: lbFw 1.1s var(--d) cubic-bezier(.1, .7, .3, 1) both; }
+@keyframes lbFw { 0% { opacity: 1; transform: rotate(var(--a)) translateY(0) scale(1.4); } 70% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--a)) translateY(-14vmin) scale(0.4); } }
+.lb-fw::before { content: ''; position: absolute; left: -24px; top: -24px; width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle, #fff, var(--c) 40%, transparent 70%); opacity: 0; animation: lbFwCore 0.6s var(--d) ease-out both; }
+@keyframes lbFwCore { 0% { opacity: 1; transform: scale(0.3); } 100% { opacity: 0; transform: scale(2.2); } }
+.lb-cfs { inset: 0; z-index: 4; overflow: hidden; }
+.lb-cf { position: absolute; top: -20px; width: calc(9px * var(--s)); height: calc(15px * var(--s)); border-radius: 2px; background: var(--c); opacity: 0; animation: lbCf 2.6s var(--d) cubic-bezier(.3, .1, .6, 1) both; }
+@keyframes lbCf { 0% { opacity: 1; transform: translate(0, 0) rotate(var(--r)); } 100% { opacity: 1; transform: translate(var(--x), 110vh) rotate(calc(var(--r) + 720deg)); } }
+/* 演出を軽くする */
+.live-banner.low .lb-rays { animation: lbRaysIn 0.6s 0.15s ease-out forwards; }
+.live-banner.low .lb-spark, .live-banner.low .lb-word b { filter: none; }
+@media (prefers-reduced-motion: reduce) {
+  .lb-rays, .lb-spark, .lb-cf, .lb-crown, .live-banner.tier1 .banner-band span { animation-iteration-count: 1; }
+  .lb-cfs { display: none; }
+}
+.live-banner.tier1 .banner-band::after { content: ''; position: absolute; left: 30%; right: 30%; bottom: 10px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--mint), var(--sky), transparent); animation: lbLine 0.5s 0.35s cubic-bezier(.2, 1.2, .3, 1) both; }
+
 </style>
 </head>
 <body>
@@ -5422,7 +5503,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
 (function () {
   'use strict';
   const G = (window.Game = window.Game || {});
-  G.VERSION = '2.32.0';
+  G.VERSION = '2.33.0';
   // 制作者の名前（起動時のロゴ・ライセンス・著作権の表示に使う）
   G.MAKER = 'YUKIGROUP';
   G.COPYRIGHT = '© 2026 YUKIGROUP';
@@ -16599,6 +16680,17 @@ ${accessory(L, 'top')}
   const G = window.Game;
   G.NEWS = [
     {
+      id: 'n-2026-11-v233', date: '2026-11-08', tag: 'update',
+      title: 'ライブの終わりの演出が、結果に合わせて豪華になりました',
+      body: [
+        'ライブの最後に出る演出が、LIVE CLEAR・FULL COMBO・ALL PERFECT で変わるようになりました。すごい結果ほど豪華です。',
+        '・LIVE CLEAR … 文字がはずんで、光の輪ときらめき。ベルのジングル',
+        '・FULL COMBO … 画面が光って、うしろで光の筋が回り、文字が1文字ずつ飛びこみます。MAX COMBO も表示。かけあがる和音のジングル',
+        '・ALL PERFECT … 金色の光と王冠、虹色に流れる文字、花火と紙ふぶき。PERFECT の数も表示。ファンファーレのジングル',
+        '「演出を軽くする」がオンのときは、つぶの数を減らします。',
+      ],
+    },
+    {
       id: 'n-2026-11-v232', date: '2026-11-08', tag: 'important', pin: true,
       title: '誕生日ガチャと ★5 誕生日カードが登場！',
       body: [
@@ -19831,6 +19923,83 @@ ${accessory(L, 'top')}
     });
   }
 
+  /* ---------- ライブの終わりのジングル（v2.33）: クリア < フルコンボ < オールパーフェクト の順に豪華 ---------- */
+  // 倍音の多い音（金管っぽい）。t0 から dur 秒鳴って、そのあと消える
+  function addBrass(x, sr, t0, f, dur, amp) {
+    const i0 = Math.max(0, Math.floor(t0 * sr));
+    const w = (TAU * f) / sr;
+    for (let i = i0; i < x.length; i++) {
+      const t = (i - i0) / sr;
+      const env = Math.min(1, t * 60) * (t < dur ? 1 - 0.25 * (t / Math.max(0.01, dur)) : 0.75 * Math.exp(-(t - dur) * 9));
+      if (t > dur && env < 2e-4) break;
+      const ph = w * i * (1 + 0.004 * Math.sin(TAU * 5.5 * t) * Math.min(1, t * 3));
+      const bright = 0.35 + 0.65 * Math.min(1, t * 14);
+      x[i] += (Math.sin(ph) + 0.6 * bright * Math.sin(2 * ph) + 0.38 * bright * Math.sin(3 * ph) + 0.2 * bright * Math.sin(4 * ph) + 0.1 * Math.sin(5 * ph)) * env * amp;
+    }
+    return x;
+  }
+  const sparkleNoise = (n, sr, rnd, t0, k) => biquad(noise(n, sr, rnd, (t) => (t < t0 ? 0 : Math.exp(-(t - t0) * k) * (0.5 + 0.5 * Math.sin(TAU * 23 * t)))), 'hp', 8200, 0.7, sr);
+  // クリア: ド・ミ・ソ・ドとかけあがるベル ＋ きらきら
+  function makeLvClear(ctx) {
+    return stereoBuffer(ctx, 1.4, 0.62, (L, R, sr, rnd) => {
+      const n = L.length;
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, k) => {
+        const x = new Float32Array(n);
+        addTone(x, sr, k * 0.07, f, k === 3 ? 3.2 : 7, 1);
+        addTone(x, sr, k * 0.07, f * 2, k === 3 ? 4 : 10, 0.3);
+        mixIn(L, R, x, -0.4 + (0.8 * k) / 3, 0.32);
+      });
+      mixIn(L, R, sparkleNoise(n, sr, rnd, 0.2, 3.5), -0.6, 0.12);
+      mixIn(L, R, sparkleNoise(n, sr, rnd, 0.22, 3.5), 0.6, 0.12);
+    });
+  }
+  // フルコンボ: 2段でかけあがって（ソ・シ・レ → ド・ミ・ソ）、明るい和音がひろがる ＋ 風 ＋ きらきら
+  function makeLvFc(ctx) {
+    return stereoBuffer(ctx, 2.2, 0.72, (L, R, sr, rnd) => {
+      const n = L.length;
+      [392, 493.88, 587.33, 523.25, 659.25, 783.99].forEach((f, k) => {
+        const x = new Float32Array(n);
+        addTone(x, sr, k * 0.06, f * 2, 9, 1);
+        mixIn(L, R, x, -0.6 + (1.2 * k) / 5, 0.2);
+      });
+      const ch = new Float32Array(n);
+      [523.25, 659.25, 783.99, 987.77, 1174.66].forEach((f) => addBrass(ch, sr, 0.38, f, 0.5, 0.16));
+      mixIn(L, R, ch, 0, 0.5);
+      [2093, 2637.02, 3135.96, 4186.01].forEach((f, k) => mixIn(L, R, addTone(new Float32Array(n), sr, 0.42 + k * 0.08, f, 5, 1), -0.7 + 0.45 * k, 0.09));
+      mixIn(L, R, sweepBP(noise(n, sr, rnd, (t) => Math.min(1, t * 8) * Math.exp(-Math.max(0, t - 0.35) * 3)), (t) => 500 * Math.pow(12, Math.min(1, t / 0.45)), 1.6, sr), 0, 0.22);
+      mixIn(L, R, sparkleNoise(n, sr, rnd, 0.4, 2.4), -0.85, 0.14);
+      mixIn(L, R, sparkleNoise(n, sr, rnd, 0.42, 2.4), 0.85, 0.14);
+    });
+  }
+  // オールパーフェクト: 低い「ドーン」→ ファンファーレ（タタタ・ターン）→ 大きな和音とベルの雨 ＋ 歓声のような風
+  function makeLvAp(ctx) {
+    return stereoBuffer(ctx, 3.2, 0.85, (L, R, sr, rnd) => {
+      const n = L.length;
+      mixIn(L, R, addTone(new Float32Array(n), sr, 0, 55, 3, 1, 1.4), 0, 0.6);
+      const fan = new Float32Array(n);
+      // タタタ（ソ・ソ・ソ）→ ターン（高いド）→ シ・ド（のばす）
+      [[0.1, 783.99, 0.07], [0.22, 783.99, 0.07], [0.34, 783.99, 0.07], [0.46, 1046.5, 0.32], [0.86, 987.77, 0.1], [1.0, 1046.5, 0.9]].forEach(([t0, f, d]) => {
+        addBrass(fan, sr, t0, f, d, 0.22);
+        addBrass(fan, sr, t0, f / 2, d, 0.12);
+      });
+      mixIn(L, R, fan, 0, 0.55);
+      const big = new Float32Array(n);
+      [261.63, 392, 523.25, 659.25, 783.99, 1046.5].forEach((f) => addBrass(big, sr, 1.0, f, 0.95, 0.08));
+      mixIn(L, R, big, 0, 0.5);
+      for (let k = 0; k < 10; k++) {
+        const f = [2093, 2349.32, 2637.02, 3135.96, 3520, 4186.01][k % 6] * (k > 5 ? 1.0 : 1);
+        mixIn(L, R, addTone(new Float32Array(n), sr, 1.0 + k * 0.09, f, 4.2, 1), k % 2 ? 0.7 : -0.7, 0.08);
+      }
+      mixIn(L, R, sweepBP(noise(n, sr, rnd, (t) => Math.min(1, t * 3) * Math.exp(-Math.max(0, t - 1.0) * 1.6)), (t) => 400 * Math.pow(14, Math.min(1, t / 1.0)), 1.4, sr), 0, 0.2);
+      // 歓声のようなざわめき（帯域をしぼったノイズを左右で少しずらす）
+      const crowd = (t) => (t < 0.95 ? 0 : Math.min(1, (t - 0.95) * 4) * Math.exp(-(t - 0.95) * 0.9) * (0.7 + 0.3 * Math.sin(TAU * 3.3 * t)));
+      mixIn(L, R, biquad(noise(n, sr, rnd, crowd), 'bp', 1400, 0.6, sr), -0.5, 0.16);
+      mixIn(L, R, biquad(noise(n, sr, rnd, (t) => crowd(t + 0.05)), 'bp', 1700, 0.6, sr), 0.5, 0.16);
+      mixIn(L, R, sparkleNoise(n, sr, rnd, 1.0, 1.5), -0.9, 0.15);
+      mixIn(L, R, sparkleNoise(n, sr, rnd, 1.02, 1.5), 0.9, 0.15);
+    });
+  }
+
   const bell = (t, f, d) => (t < d ? 0 : Math.sin(TAU * f * (t - d)) * Math.exp(-(t - d) * 7) + 0.35 * Math.sin(TAU * f * 2.76 * (t - d)) * Math.exp(-(t - d) * 16));
 
   // 旧: v2.20 までの音（ピッと短い電子音）
@@ -20028,7 +20197,7 @@ ${accessory(L, 'top')}
         return lead * 0.1 + (bell(t, 2093, 0.3) + bell(t, 2637, 0.38) + bell(t, 3136, 0.46)) * 0.07 + (t > 0.255 ? r() * 0.05 * Math.exp(-(t - 0.255) * 3.5) * (0.5 + 0.5 * Math.sin(TAU * 27 * t)) : 0);
       });
       // 場面の効果音（歓声・ドア・足音）もその場で合成する（少し重いので、あとで手のあいたときに作る）
-      this.lazySE = { cheer: makeCheer, door: makeDoor, steps: makeSteps, gDrop: makeGDrop, gRise: makeGRise, gUp: makeGUp, gFlip: makeGFlip, gStar: makeGStar };
+      this.lazySE = { cheer: makeCheer, door: makeDoor, steps: makeSteps, gDrop: makeGDrop, gRise: makeGRise, gUp: makeGUp, gFlip: makeGFlip, gStar: makeGStar, lvClear: makeLvClear, lvFc: makeLvFc, lvAp: makeLvAp };
       setTimeout(() => this.warmSE(), 3000);
       BGM.onReady();
       return ctx;
@@ -25000,6 +25169,13 @@ ${accessory(L, 'top')}
       bar.style.width = '100%';
       pct.textContent = '100%';
       if (ldg) ldg.set(1, 'まもなく始まります！');
+      // 終わりの演出のジングルを、ロード画面のあいだに作っておく（ライブ中に作るとカクつくので）
+      if (G.Audio.lazySE && G.Audio.ctx) {
+        for (const k of ['lvClear', 'lvFc', 'lvAp']) {
+          if (!G.Audio.seBuf[k] && G.Audio.lazySE[k]) G.Audio.seBuf[k] = G.Audio.lazySE[k](G.Audio.ctx);
+          await U.wait(0);
+        }
+      }
       // ロード画面を見せる最低の時間（設定の「ロード画面を短くする」なら短く）
       const minLoad = this.opts.minLoad || (G.Loading && G.Loading.quick() ? 600 : 1500);
       const wait = Math.max(0, minLoad - (performance.now() - t0));
@@ -26424,14 +26600,70 @@ ${accessory(L, 'top')}
         else [text, cls] = [R.last ? 'RUSH CLEAR' : 'STAGE CLEAR', 'clear'];
       }
       if (failed) G.Audio.fadeOut(this.music, 1.2);
-      const banner = h('div', { class: 'live-banner ' + cls }, h('div', { class: 'banner-band' }, h('span', null, text)));
+      const banner = this.finishBanner(text, cls, res);
       this.overlay.appendChild(banner);
+      // 豪華な演出ほど、少し長く見せる（クリア 2.6秒 → フルコンボ 3.2秒 → オールパーフェクト 3.9秒）
+      const ms = failed ? 2200 : cls === 'ap' ? 3900 : cls === 'fc' ? 3200 : 2600;
       setTimeout(() => {
         if (this.destroyed) return;
         G.Audio.fadeOut(this.music, 0.8);
         this.state = 'done';
         this.exit('finish', res);
-      }, failed ? 2200 : 2600);
+      }, ms);
+    }
+    /* ライブの終わりの演出（v2.33）: すごい順に豪華になる
+     *   LIVE CLEAR   … 白い帯、文字がはずむ、光の輪1つ、小さなきらめき、ベルのジングル
+     *   FULL COMBO   … ＋ 画面が一瞬光る、うしろで回る光の筋、1文字ずつ飛びこむ文字、帯の上下にピンクと水色のライン、
+     *                  きらめき多め、「MAX COMBO」、かけあがる和音のジングル
+     *   ALL PERFECT  … ＋ 画面が少し暗くなって金の光、王冠、虹色に流れる文字、虹色のライン、光の輪3つ、花火3発、
+     *                  紙ふぶき、「PERFECT ○ / ○」、ファンファーレのジングル
+     *   演出を軽くする設定のときは、つぶの数を減らして回転などを止める */
+    finishBanner(text, cls, res) {
+      const h = U.h;
+      const tier = cls === 'ap' ? 3 : cls === 'fc' ? 2 : cls === 'clear' ? 1 : 0;
+      const low = !!this.S.lowFx;
+      const kids = [];
+      if (tier >= 3) kids.push(h('i', { class: 'lb-dim' }));
+      if (tier >= 2) kids.push(h('i', { class: 'lb-flash' }), h('i', { class: 'lb-rays' }));
+      if (tier >= 1) for (let k = 0; k < (tier >= 3 ? 3 : 1); k++) kids.push(h('i', { class: 'lb-ring', style: { '--d': (0.12 + k * 0.32).toFixed(2) + 's' } }));
+      // 花火（オールパーフェクト）
+      if (tier >= 3) {
+        const spots = [[22, 30, 0.55, '#FFD54A'], [78, 26, 0.95, '#FF8FC8'], [50, 74, 1.35, '#7CF0D8']];
+        for (const [x, y, d, c] of spots) {
+          const sparks = [];
+          const n = low ? 8 : 14;
+          for (let k = 0; k < n; k++) sparks.push(h('b', { style: { '--a': ((360 / n) * k).toFixed(1) + 'deg' } }));
+          kids.push(h('i', { class: 'lb-fw', style: { left: x + '%', top: y + '%', '--d': d + 's', '--c': c } }, sparks));
+        }
+        const cols = ['#FFD54A', '#FF8FC8', '#7CF0D8', '#7CC8FF', '#B48CFF', '#fff'];
+        const cf = [];
+        for (let k = 0; k < (low ? 14 : 40); k++) cf.push(h('i', { class: 'lb-cf', style: { left: ((k * 37 + 3) % 100) + '%', '--c': cols[k % cols.length], '--d': (0.5 + ((k * 0.17) % 1.6)).toFixed(2) + 's', '--r': ((k * 53) % 360) + 'deg', '--s': (0.7 + ((k * 7) % 5) / 8).toFixed(2), '--x': (((k * 29) % 9) - 4) * 8 + 'px' } }));
+        kids.push(h('div', { class: 'lb-cfs' }, cf));
+      }
+      // きらめき（帯のまわり）
+      if (tier >= 1) {
+        const n = low ? [0, 4, 8, 12][tier] : [0, 6, 14, 24][tier];
+        for (let k = 0; k < n; k++) kids.push(h('i', { class: 'lb-spark', style: { left: (6 + ((k * 41 + 7) % 88)) + '%', top: (36 + ((k * 23 + 5) % 28)) + '%', '--d': (0.25 + ((k * 0.13) % 1.2)).toFixed(2) + 's', '--s': (0.6 + ((k * 7) % 6) / 7).toFixed(2) } }));
+      }
+      // 文字: フルコンボ以上は1文字ずつ
+      const chars = Array.from(text);
+      const word = tier >= 2
+        ? h('span', { class: 'lb-word', style: { '--n': chars.length } }, chars.map((ch, i) => h('b', { class: ch === ' ' ? 'sp' : null, style: { '--i': i } }, ch === ' ' ? '\u00a0' : ch)))
+        : h('span', null, text);
+      let sub = null;
+      if (tier === 3) sub = h('div', { class: 'lb-sub' }, 'PERFECT ', h('b', null, String(res.counts.perfect)), ' / ' + res.total);
+      else if (tier === 2) sub = h('div', { class: 'lb-sub' }, 'MAX COMBO ', h('b', null, String(res.maxCombo)));
+      const crown = tier >= 3 ? h('div', { class: 'lb-crown', html: '<svg viewBox="0 0 64 44" aria-hidden="true"><defs><linearGradient id="lbcg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF6B0"/><stop offset=".55" stop-color="#FFD54A"/><stop offset="1" stop-color="#F0A020"/></linearGradient></defs><path d="M6,38 L3,12 L18,24 L32,4 L46,24 L61,12 L58,38 Z" fill="url(#lbcg)" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/><rect x="6" y="36" width="52" height="6" rx="2" fill="#F0A020" stroke="#fff" stroke-width="2"/><circle cx="32" cy="24" r="4" fill="#FF6FA8"/><circle cx="18" cy="29" r="3" fill="#7CF0D8"/><circle cx="46" cy="29" r="3" fill="#7CC8FF"/></svg>' }) : null;
+      const band = h('div', { class: 'banner-band' }, crown, word, sub);
+      kids.push(band);
+      const el = h('div', { class: 'live-banner ' + cls + ' tier' + tier + (low ? ' low' : '') }, kids);
+      // ジングル（演奏の最後の音とかさならないように、少しだけ待つ）
+      const jingle = { 1: 'lvClear', 2: 'lvFc', 3: 'lvAp' }[tier];
+      if (jingle) {
+        if (G.Audio.warm) G.Audio.warm([jingle]);
+        this.timers.push(setTimeout(() => !this.destroyed && G.Audio.playSE(jingle, 0.9), 120));
+      }
+      return el;
     }
     exit(kind, res) {
       if (this.destroyed) return;
