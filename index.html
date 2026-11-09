@@ -1548,20 +1548,21 @@ button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focu
 .story-bg.next { opacity: 0; transition: opacity 0.6s; }
 .story-bg.next.show { opacity: 1; }
 .story-chars { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+/* v2.37: CSS の filter（drop-shadow・brightness）は使わない（iPad の Safari で、キャラの一部が描かれなかったり、
+   たてのすじが残ったりしたため）。暗くするのは SVG の中の .p-dim。大きさは js/story.js の fit() が --ch で決める */
 .story-char {
   position: absolute;
-  bottom: -4%;
-  height: 86%;
+  bottom: var(--cb, -4%);
+  height: var(--ch, 86%);
   aspect-ratio: 400 / 520;
   transform: translateX(-50%);
-  transition: left 0.45s cubic-bezier(.3, .9, .3, 1), filter 0.25s, opacity 0.35s, transform 0.35s;
+  transition: left 0.45s cubic-bezier(.3, .9, .3, 1), height 0.45s cubic-bezier(.3, .9, .3, 1), bottom 0.45s cubic-bezier(.3, .9, .3, 1), opacity 0.35s, transform 0.35s;
 }
-.story-chars.crowd .story-char { height: 74%; }
-.story-chars.crowd8 .story-char { height: 60%; }
-.story-char svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 8px 16px rgba(20, 16, 50, 0.3)); }
+.story-char svg { width: 100%; height: 100%; display: block; }
+.story-char .p-dim { opacity: 0; transition: opacity 0.25s; }
+.story-char.dim .p-dim { opacity: 0.3; }
 .story-char.enter { opacity: 0; transform: translateX(-50%) translateY(30px); }
 .story-char.leave { opacity: 0; transform: translateX(-50%) translateY(20px); }
-.story-char.dim { filter: brightness(0.72) saturate(0.85); }
 .story-char.hop { animation: hop 0.3s ease; }
 @keyframes hop { 40% { transform: translateX(-50%) translateY(-12px); } }
 .story-place {
@@ -5674,7 +5675,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
 (function () {
   'use strict';
   const G = (window.Game = window.Game || {});
-  G.VERSION = '2.36.0';
+  G.VERSION = '2.37.0';
   // 制作者の名前（起動時のロゴ・ライセンス・著作権の表示に使う）
   G.MAKER = 'YUKIGROUP';
   G.COPYRIGHT = '© 2026 YUKIGROUP';
@@ -13182,7 +13183,10 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
     return '';
   }
 
-  G.portrait = function (id, expr, outfit) {
+  // opts.dim … ストーリー用。キャラの形だけを暗くする層（.p-dim）をつける（v2.37）
+  //   CSS の filter（brightness・drop-shadow）で暗くすると、iPad の Safari で、キャラの一部が描かれなかったり
+  //   消えたりすることがあったので、SVG の中で暗くする
+  G.portrait = function (id, expr, outfit, opts) {
     const c = G.CHARS[id];
     if (!c) return '';
     const L = c.look;
@@ -13202,6 +13206,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
   <radialGradient id="${k}bl"><stop offset="0" stop-color="#FF8FA3" stop-opacity=".9"/><stop offset="1" stop-color="#FF8FA3" stop-opacity="0"/></radialGradient>
   <clipPath id="${k}fc"><path d="${FACE}"/></clipPath>
 </defs>
+<g id="${k}all">
 <g ${head}>${backHair(L, k)}</g>
 ${body(L, outfit, c.color)}
 ${outfit && outfit !== 'school' && (L.acc === 'pick' || L.acc === 'reed') ? '' : accessory(L, 'neck')}
@@ -13222,6 +13227,9 @@ ${fh.html}
 <g opacity=".4">${brows(L, expr)}</g>
 ${accessory(L, 'top')}
 </g>
+</g>${opts && opts.dim ? `
+<mask id="${k}m" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="520" style="mask-type:alpha"><use href="#${k}all"/></mask>
+<rect class="p-dim" width="400" height="520" fill="#1A1636" mask="url(#${k}m)"/>` : ''}
 </svg>`;
   };
 
@@ -13371,6 +13379,9 @@ ${brows(L, expr)}
 ${fh.html}
 ${accessory(L, 'top')}
 </g>
+</g>${opts && opts.dim ? `
+<mask id="${k}m" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="520" style="mask-type:alpha"><use href="#${k}all"/></mask>
+<rect class="p-dim" width="400" height="520" fill="#1A1636" mask="url(#${k}m)"/>` : ''}
 </svg>`;
   };
 })();
@@ -16850,6 +16861,14 @@ ${accessory(L, 'top')}
   'use strict';
   const G = window.Game;
   G.NEWS = [
+    {
+      id: 'n-2026-11-v237', date: '2026-11-09', tag: 'update',
+      title: 'ストーリーのキャラの表示を直しました',
+      body: [
+        'iPad などで、ストーリーのキャラの一部が描かれなかったり（四角く切れる・たてのすじが出る・いるはずのキャラが消える）していた問題を直しました。',
+        '3人ならんだときに、キャラが大きすぎて顔に髪がかぶるほど重なっていたので、画面の広さに合わせて大きさを変えるようにしました。話している人がいちばん前に来ます。',
+      ],
+    },
     {
       id: 'n-2026-11-v236', date: '2026-11-09', tag: 'update',
       title: 'スライドを押さえながらのタップが反応しない問題を直しました',
@@ -27031,6 +27050,7 @@ ${accessory(L, 'top')}
       this.el = h('div', { class: 'story' }, this.bgEl, this.bgNext, this.charsEl, this.placeEl, this.box, top, this.fxEl);
       this.root.appendChild(this.el);
       this.on(this.el, 'click', () => this.advance());
+      this.on(window, 'resize', () => this.fit());
       this.on(window, 'keydown', (e) => {
         if (this.modal) {
           if (e.code === 'Escape') this.closeModal();
@@ -27085,21 +27105,41 @@ ${accessory(L, 'top')}
         const x = typeof p === 'number' ? p : POS[p] != null ? POS[p] : 0.5;
         let o = this.onStage.get(id);
         if (!o) {
-          const el = h('div', { class: 'story-char enter', html: G.portrait(id, 'normal') });
+          const el = h('div', { class: 'story-char enter', html: G.portrait(id, 'normal', null, { dim: true }) });
           el.style.left = x * 100 + '%';
-          el.style.zIndex = String(10 + k);
           this.charsEl.appendChild(el);
           requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('enter')));
-          o = { el, expr: 'normal', x };
+          o = { el, expr: 'normal', x, z: 10 + k };
           this.onStage.set(id, o);
         } else {
           o.el.style.left = x * 100 + '%';
-          o.el.style.zIndex = String(10 + k);
           o.x = x;
+          o.z = 10 + k;
         }
+        o.el.style.zIndex = String(o.el.classList.contains('talk') ? 40 : o.z);
       });
       this.charsEl.classList.toggle('crowd', ids.length >= 4);
       this.charsEl.classList.toggle('crowd8', ids.length >= 7);
+      this.fit();
+    }
+    /* キャラの大きさ（v2.37）: となりのキャラとの間かくに合わせて小さくする。
+     *   iPad のように縦が長めの画面では、3人ならんだときに大きくなりすぎて、顔に髪がかぶるほど重なっていたため。
+     *   キャラの横はば（= 高さ × 400/520）が、となりとの間かくの1.85倍までになるようにする */
+    fit() {
+      const W = this.el.clientWidth || window.innerWidth;
+      const H = this.el.clientHeight || window.innerHeight;
+      const xs = Array.from(this.onStage.values()).map((o) => o.x).sort((a, b) => a - b);
+      let gap = 1;
+      for (let i = 1; i < xs.length; i++) gap = Math.min(gap, Math.max(0.06, xs[i] - xs[i - 1]));
+      const base = xs.length >= 7 ? 0.6 : xs.length >= 4 ? 0.74 : 0.86;
+      const hPx = Math.min(H * base, gap * W * 1.85 * (520 / 400));
+      this.charsEl.style.setProperty('--ch', Math.round(hPx) + 'px');
+      // 小さくしたぶん、少し上へ（顔がセリフの枠に近づきすぎないように）
+      //   ただし、からだの下のはしは、セリフの枠のうしろにかくれるように
+      const er = this.el.getBoundingClientRect(), br = this.box.getBoundingClientRect();
+      const boxTop = br.height ? br.top - er.top : H * 0.7;
+      const cb = Math.min(-0.04 * H + (H * base - hPx) * 0.45, H - boxTop - 40);
+      this.charsEl.style.setProperty('--cb', Math.round(cb) + 'px');
     }
     removeChar(id) {
       const o = this.onStage.get(id);
@@ -27112,12 +27152,14 @@ ${accessory(L, 'top')}
       const o = this.onStage.get(id);
       if (!o || !expr || o.expr === expr) return;
       o.expr = expr;
-      o.el.innerHTML = G.portrait(id, expr);
+      o.el.innerHTML = G.portrait(id, expr, null, { dim: true });
     }
     focus(id) {
       this.onStage.forEach((o, k) => {
         o.el.classList.toggle('dim', !!id && k !== id);
         o.el.classList.toggle('talk', k === id);
+        // 話している人を、いちばん前に
+        o.el.style.zIndex = String(k === id ? 40 : o.z || 10);
         if (k === id) {
           o.el.classList.remove('hop');
           void o.el.offsetWidth;
