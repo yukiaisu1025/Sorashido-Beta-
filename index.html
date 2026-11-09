@@ -5674,7 +5674,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
 (function () {
   'use strict';
   const G = (window.Game = window.Game || {});
-  G.VERSION = '2.35.0';
+  G.VERSION = '2.36.0';
   // 制作者の名前（起動時のロゴ・ライセンス・著作権の表示に使う）
   G.MAKER = 'YUKIGROUP';
   G.COPYRIGHT = '© 2026 YUKIGROUP';
@@ -16851,6 +16851,15 @@ ${accessory(L, 'top')}
   const G = window.Game;
   G.NEWS = [
     {
+      id: 'n-2026-11-v236', date: '2026-11-09', tag: 'update',
+      title: 'スライドを押さえながらのタップが反応しない問題を直しました',
+      body: [
+        '片手でスライドを押さえながら、もう片方の手でとなりのレーンのタップノーツを叩くと、反応しないことがある問題を直しました。',
+        '・iPad などでは、スライドを押さえている指のすぐ近くをタップすると、2本の指が1本にまとまってしまい、新しいタップとして届かないことがありました。そのときも、指がタップのレーンに入ったことで、タップを取るようにしました',
+        '・少し早く画面に指を置いてから、ずらしてタップのレーンに入ったときも取れるようにしました',
+      ],
+    },
+    {
       id: 'n-2026-11-v235', date: '2026-11-08', tag: 'important',
       title: 'ほかのページの中では起動しないようにしました',
       body: [
@@ -25929,8 +25938,12 @@ ${accessory(L, 'top')}
     onPointerMove(e) {
       const p = this.pointers.get(e.pointerId);
       if (!p || this.state !== 'playing') return;
+      const prevLane = Math.floor(p.lf);
       p.lf = this.laneFromPoint(e.clientX, e.clientY);
       const ts = this.evTime(e);
+      // 指が、押したまま別のレーンに入った（v2.36）: そのレーンにちょうどタップが来ていれば取る
+      const nl = Math.floor(p.lf);
+      if (e.pointerType === 'touch' && nl !== prevLane && nl >= 0 && nl <= 5) this.laneEnter(p, nl, ts);
       const lx = p.lx, ly = p.ly;
       p.lx = e.clientX;
       p.ly = e.clientY;
@@ -25943,6 +25956,39 @@ ${accessory(L, 'top')}
       }
       const dx = e.clientX - p.ax, dy = e.clientY - p.ay;
       if (Math.hypot(dx, dy) >= this.flickPx) this.flickMove(p, e.clientX, e.clientY, dx, dy, ts);
+    }
+    /* 押したままの指が、別のレーンに入ったとき（v2.36）
+     *   そのレーンにタップ（またはスライドの始点）がちょうど来ていれば（GREAT の幅の中）取る。
+     *   ・iPad などでは、スライドを押さえている指のすぐ近くを、もう片方の指でタップすると、2本の指が1本にまとまって、
+     *     新しいタッチ（pointerdown）が来ないことがある。そのときは、スライドの指の位置がタップした側へ一瞬ずれるだけなので、
+     *     前はタップが「無反応」になっていた
+     *   ・少し早く指を置いてから、ずらしてタップのレーンに入ったときも取れる
+     *   いまスライドの帯がかかっているレーンでは取らない（スライドを追いかける指で、帯の下のノーツを取らないように）。
+     *   スライドを押さえている指は、スライドの始点は取らない（押さえているスライドが、ほかのスライドに移らないように）。 */
+    laneEnter(p, lane, ts) {
+      const t = this.songTimeAt(ts);
+      for (const s of this.slides) {
+        if (!s.startDone || s.done || t < s.time || t > s.end) continue;
+        const pos = G.Chart.slidePosAt(s.nodes, t), w = WAT(s, t);
+        if (lane + 1 > pos + 0.05 && lane < pos + w - 0.05) return false;
+      }
+      const win = G.JUDGE.great;
+      const holder = p.slide && !p.slide.done;
+      let best = null;
+      for (let i = this.head; i < this.notes.length; i++) {
+        const n = this.notes[i];
+        if (n.time > t + win) break;
+        if (n.done || n.type === 'flick' || Math.abs(n.time - t) > win) continue;
+        if (n.type === 'slide' && (n.startDone || holder)) continue;
+        if (lane + 1 <= L0(n) + 1e-6 || lane >= L0(n) + NW(n) - 1e-6) continue;
+        if (!best || Math.abs(n.time - t) < Math.abs(best.time - t)) best = n;
+      }
+      if (!best) return false;
+      this.hitNote(best, t);
+      this.lastHit = best;
+      this.laneFlash[lane] = 1;
+      if (best.type === 'slide') p.slide = best;
+      return true;
     }
     // 指がフリックの距離だけ動いた: フリックノーツを探す
     flickMove(p, x, y, dx, dy, ts) {
